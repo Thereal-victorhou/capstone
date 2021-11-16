@@ -4,7 +4,7 @@ from flask_login import UserMixin
 
 
 class User(db.Model, UserMixin):
-    __tablename__ = 'users'
+    __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(40), nullable=False, unique=True)
@@ -28,3 +28,6 @@ class User(db.Model, UserMixin):
             'username': self.username,
             'email': self.email
         }
+
+    daily_nutrition_goals = db.relationship("Daily_Nutrition_Goals", back_populates="user")
+    food_log = db.relationship("Food_Log", back_populates="user")
