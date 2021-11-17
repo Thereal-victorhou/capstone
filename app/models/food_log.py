@@ -6,7 +6,7 @@ class Food_Log(db.Model):
     name = db.Column(db.String(100), nullable=False)
     food_type = db.Column(db.String(100), nullable=False)
     meal = db.Column(db.String(10), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False, unique=True)
     created_at = db.Column(db.DateTime(), nullable=False)
 
     def to_id(self):
@@ -19,8 +19,8 @@ class Food_Log(db.Model):
             "createdAt": self.createdAt
         }
 
-    user = db.relationship("User", back_populates="food_log")
     favorite_foods = db.relationship("Favorite_Foods", back_populates="food_log")
     breakfast = db.relationship("Breakfast", back_populates="food_log")
     lunch = db.relationship("Lunch", back_populates="food_log")
     dinner = db.relationship("Dinner", back_populates="food_log")
+    user = db.relationship("User", back_populates="food_log")

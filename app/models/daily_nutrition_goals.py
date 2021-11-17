@@ -7,7 +7,7 @@ class Daily_Nutrition_Goals(db.Model):
     carbohydrates = db.Column(db.Integer, nullable=False)
     fat = db.Column(db.Integer, nullable=False)
     protein = db.Column(db.Integer, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False, unique=True)
     created_at = db.Column(db.Date(), nullable=False)
 
     def to_dict(self):
@@ -21,7 +21,7 @@ class Daily_Nutrition_Goals(db.Model):
             "created_at": self.created_at
         }
 
-    user = db.relationship("User", back_populates="daily_nutrition_goals")
     breakfast = db.relationship("Breakfast", back_populates="daily_nutrition_goals")
     lunch = db.relationship("Lunch", back_populates="daily_nutrition_goals")
     dinner = db.relationship("Dinner", back_populates="daily_nutrition_goals")
+    user = db.relationship("User", back_populates="daily_nutrition_goals")
