@@ -28,3 +28,6 @@ class User(db.Model, UserMixin):
             'username': self.username,
             'email': self.email
         }
+
+    food_log = db.relationship("Food_Log", back_populates="user")
+    daily_nutrition_goals = db.relationship("Daily_Nutrition_Goals", back_populates="user")
