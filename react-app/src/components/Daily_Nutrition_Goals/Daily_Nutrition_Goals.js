@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { userDng } from '../../store/daily_nutrition_goals'
-import { createNewDng } from '../../store/daily_nutrition_goals'
+import { userDng } from '../../store/daily_nutrition_goals';
+import { createNewDng } from '../../store/daily_nutrition_goals';
 import { updateCurrentDng } from "../../store/daily_nutrition_goals";
+import { deleteUserDng } from "../../store/daily_nutrition_goals";
 
 const DailyNutritionGoals = () => {
 
@@ -21,9 +22,9 @@ const DailyNutritionGoals = () => {
 
     useEffect(() => {
         dispatch(userDng(user?.id))
-    },[dispatch])
+    },[dispatch, calories, carbohydrates, fat, protein, counter])
 
-    useEffect(() => {},[calories, carbohydrates, fat, protein, counter])
+    // useEffect(() => {},[calories, carbohydrates, fat, protein, counter])
 
     const updateCalories = (e) => {
         setCalories(e.target.value);
@@ -40,23 +41,34 @@ const DailyNutritionGoals = () => {
 
     const handleButton = async (e) => {
         e.preventDefault()
-        // console.log(e.target.innerText)
+
         switch (e.target.innerText) {
             case "Create New Goal":
-                await dispatch(createNewDng({ "calories": parseInt(calories, 10), "carbohydrates": parseInt(carbohydrates, 10), "fat": parseInt(fat, 10), "protein": parseInt(protein, 10), "user_id": parseInt(user?.id, 10)}))
+                await dispatch(createNewDng({
+                    "calories": parseInt(calories, 10),
+                    "carbohydrates": parseInt(carbohydrates, 10),
+                    "fat": parseInt(fat, 10),
+                    "protein": parseInt(protein, 10),
+                    "user_id": parseInt(user?.id, 10)
+                }))
                 setCounter(prev => prev + 1);
                 break;
             case "Update Goal":
-                await dispatch(updateCurrentDng({ "calories": parseInt(calories, 10), "carbohydrates": parseInt(carbohydrates, 10), "fat": parseInt(fat, 10), "protein": parseInt(protein, 10), "user_id": parseInt(user?.id, 10)}))
+                await dispatch(updateCurrentDng({
+                    "calories": parseInt(calories, 10),
+                    "carbohydrates": parseInt(carbohydrates, 10),
+                    "fat": parseInt(fat, 10),
+                    "protein": parseInt(protein, 10),
+                    "user_id": parseInt(user?.id, 10)
+                }))
                 setCounter(prev => prev + 1);
                 break;
             case "Delete Goal":
+                await dispatch(deleteUserDng(user?.id))
+                setCounter(prev => prev + 1);
                 break
         }
-        // console.log(`calories: ${calories}, carbohydrates: ${carbohydrates}, fat: ${fat}, protein: ${protein}`)
-
     }
-
 
     return (
         <>
@@ -117,7 +129,7 @@ const DailyNutritionGoals = () => {
                         />
                         <div className="login-lower">
                             <button className="submit-btn" type="submit" onClick={handleButton}>
-                                {currentGoal ? "Update Goal" : "Create New Goal"}
+                                {currentGoal?.msg !== "No Current Goals" ? "Update Goal" : "Create New Goal"}
                             </button>
                             <button className="delete-btn" type="submit" onClick={handleButton}>
                                 Delete Goal

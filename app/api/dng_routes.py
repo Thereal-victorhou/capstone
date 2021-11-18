@@ -13,7 +13,7 @@ dng_routes = Blueprint('daily-nutrition-goals', __name__)
 def get_goals(user_id):
     goals = Daily_Nutrition_Goals.query.filter_by(user_id=user_id).all()
     if not goals:
-        return { "message": "User does not currently have a daily nutrition goal"}
+        return {"daily_goals": "False"}
     return {'daily_goals': [goal.to_dict() for goal in goals]}
 
 # Update dng for current user
@@ -70,4 +70,4 @@ def delete_dng(user_id):
     Daily_Nutrition_Goals.query.filter_by(user_id=user_id).delete()
     db.session.commit()
 
-    return {"msg": "User does not currently have a Daily Nutrition Goal"}
+    return {'daily_goals': {"userId": user_id, "msg": "User does not currently have a Daily Nutrition Goal"}}

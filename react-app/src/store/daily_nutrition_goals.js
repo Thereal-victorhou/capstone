@@ -4,7 +4,9 @@ const GET_USER_DNG = "dng/GET_USER_DNG";
 
 const CREATE_DNG = "dng/CREATE_DNG";
 
-const UPDATE_DNG ="dng/UPDATE_DNG";
+const UPDATE_DNG = "dng/UPDATE_DNG";
+
+const DELETE_DNG = "dng/DELETE_DNG";
 
 // Action
 const getUserDng = (dng) => ({
@@ -22,12 +24,23 @@ const updateDng = (dng) => ({
     dng
 })
 
+const deleteDng = (dng) => ({
+    type: DELETE_DNG,
+    dng
+})
+
 // Thunk
 // get user dng
 export const userDng = (userId) => async (dispatch) => {
     const res = await fetch(`/api/dng/${userId}`);
-    const dng = await res.json();
-    dispatch(getUserDng(dng));
+    let dng = await res.json();
+
+    if (!(dng.daily_goals == "False")) {
+        dispatch(getUserDng(dng));
+    } else {
+        dng = {"daily_goals": [{user_id: userId, msg: "No Current Goals"}]}
+        dispatch(getUserDng(dng))
+    }
 }
 // create new dng
 export const createNewDng = (newDng) => async (dispatch) => {
@@ -66,16 +79,26 @@ export const updateCurrentDng = (modifiedDng) => async (dispatch) => {
     if (dng) {
         dispatch(updateDng(dng));
     } else {
-        dng = {"daily_goals": [{id: 0, msg: "No Current Goals"}]}
+        dng = {"daily_goals": [{user_id: user_id, msg: "No Current Goals"}]}
         dispatch(updateDng(dng))
     }
+}
+// delete dng
+export const deleteUserDng = (userId) => async (dispatch) => {
+    const res = await fetch(`/api/dng/${userId}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+    })
+    let msg = await res.json();
+    console.log(msg)
+    dispatch(deleteDng(msg))
 }
 
 // Reducer
 const dngReducer = (state = {}, action) => {
     let newState;
     switch(action.type) {
-        case GET_USER_DNG || CREATE_DNG || UPDATE_DNG:
+        case GET_USER_DNG || CREATE_DNG || UPDATE_DNG || DELETE_DNG:
             newState = {...state}
             action.dng.daily_goals.forEach(goal => {
                 newState[goal.user_id] = goal
