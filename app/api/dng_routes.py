@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import db, Daily_Nutrition_Goals, user
 from datetime import datetime
+from operator import itemgetter
 
 # dng == daily nutrition goals
 dng_routes = Blueprint('daily-nutrition-goals', __name__)
@@ -16,22 +17,27 @@ def get_goals(user_id):
     return {'daily_goals': [goal.to_dict() for goal in goals]}
 
 # Update dng for current user
-@dng_routes.route('/', methods=['PUT'])
-def change_goals():
+@dng_routes.route('/<int:user_id>', methods=['PUT'])
+def change_goals(user_id):
+    # calories, carbohydrates, fat, protein, user_id = itemgetter("calories", "carbohydrates", "fat", "protein")(request.json)
+    print("\n\n\n\n inside put route \n\n\n\n")
     updated_goal = request.json
-    current_goal = Daily_Nutrition_Goals.query.filter_by(user_id=updated_goal["user_id"]).first()
 
-    #check to see if goal already exist
+    current_goal = Daily_Nutrition_Goals.query.filter_by(user_id=user_id).first()
+
+    # print("\n\n\n\n", request.json, "\n\n\n\n")
+
+    # check to see if goal already exist
     if current_goal:
-        current_goal.calories = updated_goal["calories"]
-        current_goal.carbohydrates = updated_goal["carbohydrates"]
-        current_goal.fat = updated_goal["fat"]
-        current_goal.protein = updated_goal["protein"]
+        current_goal.calories = request.json["calories"]
+        current_goal.carbohydrates = request.json["carbohydrates"]
+        current_goal.fat = request.json["fat"]
+        current_goal.protein = request.json["protein"]
         current_goal.created_at = datetime.now()
         db.session.commit()
 
     #return goals
-    goals = Daily_Nutrition_Goals.query.filter_by(user_id=updated_goal["user_id"]).first()
+    goals = Daily_Nutrition_Goals.query.filter_by(user_id=user_id).first()
     # print("\n\n\n", goals.to_dict(), "\n\n\n")
     return {'daily_goals': goals.to_dict()}
 

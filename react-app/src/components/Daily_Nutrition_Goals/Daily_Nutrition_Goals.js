@@ -1,24 +1,29 @@
 import { useState, useEffect } from "react"
 import { useDispatch, useSelector } from 'react-redux';
 import { userDng } from '../../store/daily_nutrition_goals'
+import { createNewDng } from '../../store/daily_nutrition_goals'
+import { updateCurrentDng } from "../../store/daily_nutrition_goals";
 
 const DailyNutritionGoals = () => {
+
+    const user = useSelector(state => state.session.user)
+    const currentGoal = useSelector(state => state.dng[user?.id])
+
     const dispatch = useDispatch();
 
     const [errors, setErrors] = useState([]);
-    const [calories, setCalories] = useState("");
-    const [carbohydrates, setCarbohydrates] = useState("");
-    const [fat, setFat] = useState("");
-    const [protein, setProtein] = useState("");
+    const [calories, setCalories] = useState(currentGoal ? currentGoal?.calories : "");
+    const [carbohydrates, setCarbohydrates] = useState(currentGoal ? currentGoal?.carbohydrates : "");
+    const [fat, setFat] = useState(currentGoal ? currentGoal?.fat : "");
+    const [protein, setProtein] = useState(currentGoal ? currentGoal?.protein : "");
+    const [counter, setCounter] = useState(0);
 
-    const user = useSelector(state => state.session.user)
-    const currentGoal = useSelector(state => state.dng[user.id])
 
     useEffect(() => {
-        dispatch(userDng(user.id))
+        dispatch(userDng(user?.id))
     },[dispatch])
 
-    useEffect(() => {}, [calories, carbohydrates, fat, protein])
+    useEffect(() => {},[calories, carbohydrates, fat, protein, counter])
 
     const updateCalories = (e) => {
         setCalories(e.target.value);
@@ -33,21 +38,31 @@ const DailyNutritionGoals = () => {
         setProtein(e.target.value);
     }
 
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        console.log(`calories: ${calories}, carbohydrates: ${carbohydrates}, fat: ${fat}, protein: ${protein}`)
+    const handleButton = async (e) => {
+        e.preventDefault()
+        // console.log(e.target.innerText)
+        switch (e.target.innerText) {
+            case "Create New Goal":
+                await dispatch(createNewDng({ "calories": parseInt(calories, 10), "carbohydrates": parseInt(carbohydrates, 10), "fat": parseInt(fat, 10), "protein": parseInt(protein, 10), "user_id": parseInt(user?.id, 10)}))
+                setCounter(prev => prev + 1);
+                break;
+            case "Update Goal":
+                await dispatch(updateCurrentDng({ "calories": parseInt(calories, 10), "carbohydrates": parseInt(carbohydrates, 10), "fat": parseInt(fat, 10), "protein": parseInt(protein, 10), "user_id": parseInt(user?.id, 10)}))
+                setCounter(prev => prev + 1);
+                break;
+            case "Delete Goal":
+                break
+        }
+        // console.log(`calories: ${calories}, carbohydrates: ${carbohydrates}, fat: ${fat}, protein: ${protein}`)
+
     }
 
 
     return (
         <>
             <h1>Welcome to DailyNutritionGoals Page</h1>
-            {/* <h3>{`Calories: ${currentGoal.calories}`}</h3>
-            <h3>{`Carbohydrates: ${currentGoal.carbohydrates}`}</h3>
-            <h3>{`Fat: ${currentGoal.fat}`}</h3>
-            <h3>{`Protein: ${currentGoal.protein}`}</h3> */}
             <div className="dng-form">
-                <form onSubmit={onSubmit} className="-submit" autoComplete="off">
+                <form className="-submit" autoComplete="off">
                     <div className="errors">
                         {errors.map((error, ind) => (
                         <div key={ind}>{error}</div>
@@ -101,8 +116,11 @@ const DailyNutritionGoals = () => {
                             onChange={updateProtein}
                         />
                         <div className="login-lower">
-                            <button className="submit-btn" type="submit">
-                                Submit
+                            <button className="submit-btn" type="submit" onClick={handleButton}>
+                                {currentGoal ? "Update Goal" : "Create New Goal"}
+                            </button>
+                            <button className="delete-btn" type="submit" onClick={handleButton}>
+                                Delete Goal
                             </button>
                         </div>
                     </div>
