@@ -42,7 +42,8 @@ def create_goals():
     goal_check = Daily_Nutrition_Goals.query.filter_by(user_id=new_goal["user_id"]).first()
     # Check to see if user already has a dng
     if not goal_check:
-        dng = Daily_Nutrition_Goals(calories=new_goal["calories"],
+        dng = Daily_Nutrition_Goals(
+            calories=new_goal["calories"],
             carbohydrates=new_goal["carbohydrates"],
             fat=new_goal["fat"],
             protein=new_goal["protein"],
