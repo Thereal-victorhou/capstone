@@ -9,6 +9,7 @@ import UsersList from './components/UsersList';
 import User from './components/User';
 import { authenticate } from './store/session';
 import DailyNutritionGoals from './components/Daily_Nutrition_Goals';
+import FoodLog from './components/Food_Log';
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -46,6 +47,9 @@ function App() {
         </ProtectedRoute>
         <Route path='/daily-nutrition-goals' exact={true}>
           <DailyNutritionGoals />
+        </Route>
+        <Route path='/food-log' exact={true}>
+          <FoodLog />
         </Route>
       </Switch>
     </BrowserRouter>

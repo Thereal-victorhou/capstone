@@ -93,7 +93,6 @@ export const deleteUserDng = (userId) => async (dispatch) => {
     console.log(msg)
     dispatch(deleteDng(msg))
 }
-
 // Reducer
 const dngReducer = (state = {}, action) => {
     let newState;

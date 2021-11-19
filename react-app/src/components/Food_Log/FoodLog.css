@@ -1,0 +1,21 @@
+.foodlog-main {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    background-color: brown;
+}
+
+.foodlog-left {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    background-color: rgb(108, 23, 108);
+}
+
+.foodlog-right {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    background-color: rgb(111, 27, 206);
+}
