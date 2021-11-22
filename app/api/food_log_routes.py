@@ -2,22 +2,35 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required
 from app.models import db, Food_Log, Breakfast, Lunch, Dinner
 from datetime import datetime
-from collections import ChainMap
+
 
 food_log_routes = Blueprint('food_log_routes', __name__)
+
 
 # Get Food_log
 @food_log_routes.route('/<int:user_id>', methods=['GET'])
 # @login_required
 def get_food_log(user_id):
-    user_breakfast = list(db.session.query(Breakfast).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first())
 
-    print('\n\n\n\n', user_breakfast, '\n\n\n')
+    user_breakfast = list(db.session.query(Breakfast).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first())
+    user_lunch = list(db.session.query(Lunch).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first())
+    user_dinner = list(db.session.query(Dinner).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first())
+
+    breakfast = [breakfast.to_dict() for breakfast in user_breakfast]
+    lunch = [lunch.to_dict() for lunch in user_lunch]
+    dinner = [dinner.to_dict() for dinner in user_dinner]
+
     if not user_breakfast:
-        return {'food_log': 'False'}
-    # if log.to_dict()['meal'] == 'breakfast': Breakfast.query.filter_by(foodlog_id == log.to_dict()['id']
-    # return {'user_food_log': [log.to_dict() for log in user_food]}
-    return {'user_food': [ChainMap(breakfast.to_dict()) for breakfast in user_breakfast]}
+        return {'user_food_log': [{**lunch[0], **lunch[1]}, {**dinner[0], **dinner[1]}]}
+
+    if not user_lunch:
+        return {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**dinner[0], **dinner[1]}]}
+
+    if not user_dinner:
+        return {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**lunch[0], **lunch[1]}]}
+
+    return {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**lunch[0], **lunch[1]}, {**dinner[0], **dinner[1]}]}
+
 
 # Create new food log
 @food_log_routes.route('/<int:user_id>', methods=['POST'])
@@ -25,7 +38,6 @@ def get_food_log(user_id):
 def new_food_log(user_id):
     new_log = request.json
     current_log = Food_Log.query.filter_by(user_id=user_id, meal=new_log['meal']).all()
-    # print("\n\n\n\n\n",new_log, "\n\n\n\n\n\n")
 
     if not current_log:
         nfl = Food_Log(
@@ -37,8 +49,25 @@ def new_food_log(user_id):
         db.session.add(nfl)
         db.session.commit()
 
-    food_log = Food_Log.query.filter_by(user_id=user_id).all()
-    return {'user_food_log': [log.to_dict() for log in food_log]}
+    user_breakfast = list(db.session.query(Breakfast).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first())
+    user_lunch = list(db.session.query(Lunch).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first())
+    user_dinner = list(db.session.query(Dinner).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first())
+
+    breakfast = [breakfast.to_dict() for breakfast in user_breakfast]
+    lunch = [lunch.to_dict() for lunch in user_lunch]
+    dinner = [dinner.to_dict() for dinner in user_dinner]
+
+    if not user_breakfast:
+        return {'user_food_log': [{**lunch[0], **lunch[1]}, {**dinner[0], **dinner[1]}]}
+
+    if not user_lunch:
+        return {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**dinner[0], **dinner[1]}]}
+
+    if not user_dinner:
+        return {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**lunch[0], **lunch[1]}]}
+
+    return {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**lunch[0], **lunch[1]}, {**dinner[0], **dinner[1]}]}
+
 
 # Update current food log
 @food_log_routes.route('/<int:user_id>', methods=['PUT'])
@@ -53,8 +82,24 @@ def update_food_log(user_id):
         current_log.created_at = datetime.now()
         db.session.commit()
 
-    food_log = Food_Log.query.filter_by(user_id=user_id).all()
-    return {'user_food_log': [log.to_dict() for log in food_log]}
+    user_breakfast = list(db.session.query(Breakfast).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first())
+    user_lunch = list(db.session.query(Lunch).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first())
+    user_dinner = list(db.session.query(Dinner).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first())
+
+    breakfast = [breakfast.to_dict() for breakfast in user_breakfast]
+    lunch = [lunch.to_dict() for lunch in user_lunch]
+    dinner = [dinner.to_dict() for dinner in user_dinner]
+
+    if not user_breakfast:
+        return {'user_food_log': [{**lunch[0], **lunch[1]}, {**dinner[0], **dinner[1]}]}
+
+    if not user_lunch:
+        return {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**dinner[0], **dinner[1]}]}
+
+    if not user_dinner:
+        return {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**lunch[0], **lunch[1]}]}
+
+    return {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**lunch[0], **lunch[1]}, {**dinner[0], **dinner[1]}]}
 
 
 # delete food_log
@@ -79,9 +124,4 @@ def delete_food_log(user_id):
             Food_Log.query.filter_by(user_id=user_id, meal='dinner').delete()
             db.session.commit()
 
-    user_food = Food_Log.query.filter_by(user_id=user_id).all()
-    if not user_food:
-        return {'food_log': 'False'}
-    return {'user_food_log': [log.to_dict() for log in user_food]}
-
-    # return {'food-log': 'False'}
+    return {'food-log': 'False'}
