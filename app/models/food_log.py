@@ -8,7 +8,7 @@ class Food_Log(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False)
 
-    def to_id(self):
+    def to_dict(self):
         return {
             "id": self.id,
             "name": self.name,
