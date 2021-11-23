@@ -72,71 +72,79 @@ const DailyNutritionGoals = () => {
 
     return (
         <>
-            <h1>Welcome to DailyNutritionGoals Page</h1>
-            <div className="dng-form">
-                <form className="-submit" autoComplete="off">
-                    <div className="errors">
-                        {errors.map((error, ind) => (
-                        <div key={ind}>{error}</div>
-                        ))}
+            <div className="dng-main">
+                <div className="dng-macros-calc">
+                    <h2 className="macros-calc-title">Macros Calculator</h2>
+                    <div className="macros-calc-container">
+                        <h2>*Macros Calculator*</h2>
                     </div>
-                    <div className="dng-calories">
-                        <label className="dng-calories-label" htmlFor="calories">
-                            Calories
-                        </label>
-                        <input
-                            className="calories-input"
-                            name="calories"
-                            type="text"
-                            value={calories}
-                            onChange={updateCalories}
-                        />
-                    </div>
-                    <div className="dng-carbohydrates">
-                        <label className="dng-carbohydrates-label" htmlFor="carbohydrates">
-                            Carbohydrates
-                        </label>
-                        <input
-                            className="carbohydrates-input"
-                            name="carbohydrates"
-                            type="text"
-                            value={carbohydrates}
-                            onChange={updateCarbohydrates}
-                        />
-                    </div>
-                    <div className="dng-fat">
-                        <label className="dng-fat-label" htmlFor="fat">
-                            Fat
-                        </label>
-                        <input
-                            className="fat-input"
-                            name="fat"
-                            type="text"
-                            value={fat}
-                            onChange={updateFat}
-                        />
-                    </div>
-                    <div className="dng-protein">
-                        <label className="dng-protein-label" htmlFor="protein">
-                            Protein
-                        </label>
-                        <input
-                            className="protein-input"
-                            name="protein"
-                            type="text"
-                            value={protein}
-                            onChange={updateProtein}
-                        />
+                </div>
+                <div className="dng-form">
+                    <h2 className="dng-title">Daily Nutrition Goals</h2>
+                    <form className="-submit" autoComplete="off">
+                        <div className="errors">
+                            {errors.map((error, ind) => (
+                            <div key={ind}>{error}</div>
+                            ))}
+                        </div>
+                        <div className="dng-container">
+                            <label className="dng-calories-label" htmlFor="calories">
+                                Calories
+                            </label>
+                            <input
+                                className="calories-input"
+                                name="calories"
+                                type="text"
+                                value={calories}
+                                onChange={updateCalories}
+                            />
+                        </div>
+                        <div className="dng-container">
+                            <label className="dng-carbohydrates-label" htmlFor="carbohydrates">
+                                Carbohydrates (g)
+                            </label>
+                            <input
+                                className="carbohydrates-input"
+                                name="carbohydrates"
+                                type="text"
+                                value={carbohydrates}
+                                onChange={updateCarbohydrates}
+                            />
+                        </div>
+                        <div className="dng-container">
+                            <label className="dng-fat-label" htmlFor="fat">
+                                Fat (g)
+                            </label>
+                            <input
+                                className="fat-input"
+                                name="fat"
+                                type="text"
+                                value={fat}
+                                onChange={updateFat}
+                            />
+                        </div>
+                        <div className="dng-container">
+                            <label className="dng-protein-label" htmlFor="protein">
+                                Protein (g)
+                            </label>
+                            <input
+                                className="protein-input"
+                                name="protein"
+                                type="text"
+                                value={protein}
+                                onChange={updateProtein}
+                            />
+                        </div>
                         <div className="login-lower">
                             <button className="submit-btn" type="submit" onClick={handleButton}>
-                                {currentGoal?.msg !== "No Current Goals" ? "Update Goal" : "Create New Goal"}
+                                <h4>{currentGoal?.msg !== "No Current Goals" ? "Update Goal" : "Create New Goal"}</h4>
                             </button>
                             <button className="delete-btn" type="submit" onClick={handleButton}>
-                                Delete Goal
+                                <h4>Delete Goal</h4>
                             </button>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </>
     )
