@@ -1,0 +1,116 @@
+.dng-main {
+    display: flex;
+    flex-direction: row;
+    height: 700px;
+}
+
+.dng-macros-calc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+}
+
+.macros-calc-title {
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(79, 92, 102);
+}
+
+.macros-calc-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 90%;
+    height: 400px;
+    border: 1px solid rgb(223, 231, 238);
+    border-radius: 5px;
+    background-color: rgb(242, 242, 248);
+}
+
+.dng-macros-calc h2 {
+    width: 220px;
+}
+
+.dng-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+}
+
+.dng-title {
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(79, 92, 102);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 90%;
+    height: 400px;
+    border: 1px solid rgb(223, 231, 238);
+    border-radius: 5px;
+    background-color: rgb(242, 242, 248);
+}
+
+form label {
+    font-size: 22px;
+    font-weight: 700;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(79, 92, 102);
+}
+
+.dng-container {
+    display: flex;
+    flex-direction: row;
+    height: 2em;
+    width: 85%;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 3rem;
+    padding-right: 3rem;
+
+}
+
+form input {
+    background-color: rgba(0,0,0,0);
+    width: 50%;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+.login-lower {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+    height: 2rem;
+    margin-top: 0;
+
+}
+
+.login-lower button {
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+    background-color: rgba(0,0,0,0);
+    border-style: none;
+}
+
+.submit-btn h4{
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(15, 161, 10);
+}
+
+.delete-btn h4{
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(161, 8, 8);
+}
