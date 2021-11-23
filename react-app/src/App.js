@@ -10,6 +10,8 @@ import User from './components/User';
 import { authenticate } from './store/session';
 import DailyNutritionGoals from './components/Daily_Nutrition_Goals';
 import FoodLog from './components/Food_Log';
+import Navigation from './components/Splash/Navigation';
+import Splash from './components/Splash/Splash';
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -28,7 +30,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <NavBar />
+      {/* <NavBar /> */}
       <Switch>
         <Route path='/login' exact={true}>
           <LoginForm />
@@ -36,14 +38,15 @@ function App() {
         <Route path='/sign-up' exact={true}>
           <SignUpForm />
         </Route>
+        <Route path='/' exact={true} >
+          <Navigation />
+          <Splash />
+        </Route>
         <ProtectedRoute path='/users' exact={true} >
           <UsersList/>
         </ProtectedRoute>
         <ProtectedRoute path='/users/:userId' exact={true} >
           <User />
-        </ProtectedRoute>
-        <ProtectedRoute path='/' exact={true} >
-          <h1>My Home Page</h1>
         </ProtectedRoute>
         <Route path='/daily-nutrition-goals' exact={true}>
           <DailyNutritionGoals />
