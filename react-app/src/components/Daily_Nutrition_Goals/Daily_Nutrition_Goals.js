@@ -65,6 +65,10 @@ const DailyNutritionGoals = () => {
                 break;
             case "Delete Goal":
                 await dispatch(deleteUserDng(user?.id))
+                setCalories("");
+                setCarbohydrates("");
+                setFat("");
+                setProtein("");
                 setCounter(prev => prev + 1);
                 break
         }

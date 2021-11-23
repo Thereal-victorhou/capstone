@@ -49,6 +49,7 @@ function App() {
           <User />
         </ProtectedRoute>
         <Route path='/daily-nutrition-goals' exact={true}>
+          <NavBar />
           <DailyNutritionGoals />
         </Route>
         <Route path='/food-log' exact={true}>
