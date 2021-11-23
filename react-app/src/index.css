@@ -4,8 +4,9 @@ body {
     font-family: sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
     /* background-color: black; */
-    color: white;
+    /* color: white; */
   }
 
   * {
@@ -33,6 +34,8 @@ body {
 
   .lom-title {
     margin-left: 5rem;
+    font-size: 1.8rem;
+    font-weight: 700;
     color: rgb(0,102,238);
   }
 
@@ -190,62 +193,6 @@ body {
     color: rgb(0,102,238);
   }
 
-  .landing-disclosure {
-    margin-top: 30px;
-    width: 367px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 28px;
-  }
-
-  .landing-mid {
-    display: flex;
-    align-items: center;
-    height: 93px;
-    border-bottom: 1px solid black;
-    font-size: 18px;
-    justify-content: center;
-  }
-
-  .landing-lower-mid {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 30px;
-  }
-
-  .lower-mid-right {
-    width: 594px;
-  }
-
-  .landing-lower-img {
-    height: 591px;
-    width: 591px;
-    user-select: none;
-    object-fit: contain;
-    margin-right: 20px;
-  }
-
-  .lmr-header {
-    font-size: 32px;
-    font-weight: 500;
-    line-height: 40px;
-    margin-bottom: -8px;
-  }
-
-  .lmr-desc {
-    font-size: 18px;
-  }
-
-  .bottom-nav {
-    display: flex;
-    align-items: center;
-    margin-left: 200px;
-    font-size: 18px;
-  }
-
   a {
     text-decoration: none;
     color: inherit;
@@ -253,56 +200,4 @@ body {
 
   .hidden {
     display: none !important;
-  }
-
-  .loading-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    margin-top: 40vh !important;
-  }
-  .centered {
-    max-height: 20vh;
-    max-width: 20vh;
-  }
-
-  .nav-offer {
-    display: flex;
-    gap: 50px;
-  }
-
-  .lwr-1 {
-    display: flex;
-    align-items: center;
-    height: 88px;
-    margin-bottom: 25px;
-  }
-
-  .lwr-title {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
-
-  .lwr-desc {
-    font-size: 18px;
-    font-weight: 400;
-    font-style: normal;
-    font-weight: normal;
-    letter-spacing: -0.25px;
-    line-height: 28px;
-  }
-
-  .lwr-img {
-    width: 68px;
-    height: 48px;
-    margin-right: 10px;
-  }
-
-  .lwr-lwr {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
   }
