@@ -114,7 +114,7 @@ def new_food_log(user_id):
             db.session.add(nd)
 
         db.session.commit()
-
+    # Return user food_log and nutrition
     user_breakfast = db.session.query(Breakfast).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first()
     user_lunch = db.session.query(Lunch).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first()
     user_dinner = db.session.query(Dinner).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first()
@@ -166,13 +166,42 @@ def new_food_log(user_id):
 def update_food_log(user_id):
     updated_log = request.json
     current_log = Food_Log.query.filter_by(user_id=user_id, meal=updated_log['meal']).first()
-    # print("\n\n\n\n", request.json, "\n\n\n\n")
-    # print("\n\n\n\n", current_log, "\n\n\n\n")
+
     if current_log:
         current_log.name = updated_log['name'],
         current_log.created_at = datetime.now()
-        db.session.commit()
 
+        if updated_log['meal'] == 'breakfast':
+            current_breakfast = Breakfast.query.filter_by(foodlog_id=current_log.to_dict()['id']).first()
+
+            current_breakfast.calories=updated_log['calories'],
+            current_breakfast.carbohydrates=updated_log['carbohydrates'],
+            current_breakfast.fat=updated_log['fat'],
+            current_breakfast.protein=updated_log['protein'],
+            current_breakfast.daily_nutrition_goals_id=updated_log["daily_nutrition_goals_id"]
+            db.session.commit()
+
+        if updated_log['meal'] == 'lunch':
+            current_lunch = Lunch.query.filter_by(foodlog_id=current_log.to_dict()['id']).first()
+
+            current_lunch.calories=updated_log['calories'],
+            current_lunch.carbohydrates=updated_log['carbohydrates'],
+            current_lunch.fat=updated_log['fat'],
+            current_lunch.protein=updated_log['protein'],
+            current_lunch.daily_nutrition_goals_id=updated_log["daily_nutrition_goals_id"]
+            db.session.commit()
+
+        if updated_log['meal'] == 'dinner':
+            current_dinner = Dinner.query.filter_by(foodlog_id=current_log.to_dict()['id']).first()
+
+            current_dinner.calories=updated_log['calories'],
+            current_dinner.carbohydrates=updated_log['carbohydrates'],
+            current_dinner.fat=updated_log['fat'],
+            current_dinner.protein=updated_log['protein'],
+            current_dinner.daily_nutrition_goals_id=updated_log["daily_nutrition_goals_id"]
+            db.session.commit()
+
+    # Return user food_log and nutrition
     user_breakfast = db.session.query(Breakfast).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first()
     user_lunch = db.session.query(Lunch).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first()
     user_dinner = db.session.query(Dinner).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first()

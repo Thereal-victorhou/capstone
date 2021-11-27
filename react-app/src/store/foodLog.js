@@ -13,10 +13,25 @@ export const userFoodLog = (foodLogId) => async (dispatch) => {
     let foodLog = await res.json();
 
     if (!(foodLog.food_log == "False")) {
-        dispatch(getFoodLog(breakfast));
+        dispatch(getFoodLog(foodLog));
     } else {
-        breakfast = {"daily_goals": [{foodLogId: foodLogId, msg: "No Current Breakfast"}]}
-        dispatch(getFoodLog(breakfast));
+    const err = {"user_food_log": [{foodLogId: foodLogId, msg: "No Current Food Log"}]}
+        dispatch(getFoodLog(err));
     }
 }
 // Reducer
+const foodLogReducer = (state = {}, action) => {
+    let newState;
+    switch(action.type) {
+        case GET_FOOD_LOG:
+            newState = {...state}
+            action.food.user_food_log.forEach(log => {
+                newState[log.id] = log;
+            })
+            return newState;
+        default:
+            return state;
+    }
+}
+
+export default foodLogReducer;

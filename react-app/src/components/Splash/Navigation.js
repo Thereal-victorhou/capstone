@@ -7,7 +7,6 @@ const Navigation = () => {
 
   const sessionUser = useSelector((state) => state.session.user);
 
-
   return (
     <div className="combined-bar">
       <div className="navbar">
@@ -28,6 +27,13 @@ const Navigation = () => {
               My Account
             </NavLink>
           )}
+        </div>
+      </div>
+      <div className="nav-bottom">
+        <div className="links-container">
+            <NavLink to="/home" className="home-link" id="home">HOME</NavLink>
+            <NavLink to="/daily-nutrition-goals" className="home-link" id="dng">DAILY NUTRITION GOALS</NavLink>
+            <NavLink to="/food-log" className="home-link" id="foodlog">FOOD LOG</NavLink>
         </div>
       </div>
     </div>

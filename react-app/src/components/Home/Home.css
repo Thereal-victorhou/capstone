@@ -1,0 +1,76 @@
+.home-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.home-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 2.6rem;
+    width: 700px;
+    margin-top: 11rem;
+    background-color: rgb(0,112,191);
+}
+
+.home-title {
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-left: 1rem;
+}
+
+.streak-tracker {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 65px;
+    margin-right: 1rem;
+}
+
+.streak-count {
+    font-size: 32px;
+    color: white;
+}
+
+.streak-text{
+    font-size: 10px;
+    width: 3rem;
+    color: white;
+}
+
+.home-mid {
+    display: flex;
+    flex-direction: row;
+    height: 400px;
+    width: 100%;
+    background-color: orange;
+}
+
+.home-mid-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 24%;
+    background-color: brown;
+}
+
+.home-avatar {
+    background-color: grey;
+    height: 7.7rem;
+    width: 8rem;
+    margin-top: 1.2rem;
+}
+
+.home-mid-right {
+    display: flex;
+    flex-direction: column;
+    background-color: green;
+    height: 100%;
+    width: 76%;
+}
