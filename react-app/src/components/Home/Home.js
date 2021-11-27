@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import {useDispatch, useSelector} from 'react-redux';
+import { NavLink } from "react-router-dom";
 import './Home.css';
 
 const Home = () => {
@@ -21,8 +22,30 @@ const Home = () => {
                         </div>
                     </div>
                     <div className="home-mid-right">
-                        <div>
-                            
+                        <div className="calories-remaining">
+                            <p>Calories Remaining</p>
+                            <NavLink to='/daily-nutrition-goals' className="dng-link">Change</NavLink>
+                        </div>
+                        <div className="rem-cal">
+                            <p>*1730*</p>
+                            <button>Add Food</button>
+                        </div>
+                        <div className="energy-calculation">
+                            <div className="energy-top">
+                                <div className="cal-goal">
+                                    <p className="cal-dng">*DNG*</p>
+                                    <p className="cal-goal-text">GOAL</p>
+                                </div>
+                                <div className="current-food">
+                                    <p className="cur-food">*Food*</p>
+                                    <p className="cur-food-text">FOOD</p>
+                                </div>
+                            </div>
+                            <div className="energy-bottom">
+                                <div className="progress-bar-container">
+                                    <div className="progress-bar"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
