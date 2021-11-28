@@ -8,14 +8,14 @@ const getFoodLog = (food) => ({
 })
 
 // Thunk
-export const userFoodLog = (foodLogId) => async (dispatch) => {
-    const res = await fetch(`api/food-log/${foodLogId}`);
+export const userFoodLog = (userId) => async (dispatch) => {
+    const res = await fetch(`api/food-log/${userId}`);
     let foodLog = await res.json();
 
     if (!(foodLog.food_log == "False")) {
         dispatch(getFoodLog(foodLog));
     } else {
-    const err = {"user_food_log": [{foodLogId: foodLogId, msg: "No Current Food Log"}]}
+    const err = {"user_food_log": [{msg: "No Current Food Log"}]}
         dispatch(getFoodLog(err));
     }
 }

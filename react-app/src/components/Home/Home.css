@@ -12,7 +12,7 @@
     justify-content: space-between;
     height: 2.6rem;
     width: 700px;
-    margin-top: 11rem;
+    margin-top: 13rem;
     background-color: rgb(10,82,130);
 }
 
@@ -61,7 +61,7 @@
 }
 
 .home-avatar {
-    background-color: grey;
+    background-color: rgb(187, 187, 187);
     height: 7.7rem;
     width: 8rem;
     margin-top: 1.2rem;
@@ -78,6 +78,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-top: .35rem;
 }
 
 .calories-remaining p{
@@ -116,6 +117,7 @@
     padding-right: 0;
     font-weight: 500;
     height: 2.5rem;
+    margin-bottom: 1rem;
 }
 
 .energy-calculation {
@@ -171,25 +173,43 @@
     font-size: 11px;
     color: rgb(154,154,154);
     margin-top: .25rem;
-    margin-right: 1.9rem;
+    /* margin-right: 1.9rem; */
 }
 
 .energy-bottom {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     height: 100%;
     width: 100%;
+}
+
+.energy-title {
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid rgb(230,230,230);
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.energy-bottom p {
+    margin-top: 2rem;
+    color: rgb(102,102,102);
 }
 
 .progress-bar-container {
     display: flex;
     background-color: rgb(230,230,230);
-    border: 1px solid rgb(205,205,205);
-    margin-top: 3rem;
+    border-top: 1px solid rgb(205,205,205);
+    border-bottom: 1px solid rgb(205,205,205);
+    border-right: 1px solid rgb(205,205,205);
+    border-left: 1px solid rgb(205,205,205);
+    margin-top: 1rem;
     height: 2rem;
     width: 100%;
 }
 
 .progress-bar {
     height: 2rem;
-    border: 1px solid rgb(205,205,205);
+    background-color: rgb(133,196,0);
 }
