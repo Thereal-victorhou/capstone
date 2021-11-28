@@ -54,10 +54,11 @@ function App() {
           <User />
         </ProtectedRoute>
         <Route path='/daily-nutrition-goals' exact={true}>
-          <NavBar />
+          <Navigation />
           <DailyNutritionGoals />
         </Route>
         <Route path='/food-log' exact={true}>
+          <Navigation />
           <FoodLog />
         </Route>
       </Switch>

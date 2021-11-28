@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import LogoutButton from '../auth/LogoutButton';
 
 const Navigation = () => {
   const user = useSelector((state) => state.session.user);
@@ -23,9 +24,10 @@ const Navigation = () => {
               </NavLink>
             </>
           ) : (
-            <NavLink to="/home" className="signup">
-              My Account
-            </NavLink>
+            // <NavLink to="/home" className="signup">
+            //   Logout
+            // </NavLink>
+            <LogoutButton />
           )}
         </div>
       </div>

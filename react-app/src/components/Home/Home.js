@@ -10,7 +10,6 @@ const Home = () => {
     const [foodCal, setFoodCal] = useState(0);
     const user = useSelector(state => state.session.user)
     const currentGoal = useSelector(state => state.dng[user?.id])
-    console.log(currentGoal)
     const foodlog = useSelector(state => Object.values(state.foodlog));
 
     const dispatch = useDispatch();

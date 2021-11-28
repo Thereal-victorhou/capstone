@@ -112,6 +112,15 @@
     color: rgb(19, 34, 167);
   }
 
+  .logout-btn {
+    margin-top: .9rem;
+    background-color: rgb(0,0,0,0);
+    border-style: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgb(0,102,238);
+  }
+
   .nav-bottom {
     display: flex;
     align-items: center;
