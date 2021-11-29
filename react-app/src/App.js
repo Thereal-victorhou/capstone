@@ -12,6 +12,7 @@ import DailyNutritionGoals from './components/Daily_Nutrition_Goals';
 import FoodLog from './components/Food_Log';
 import Navigation from './components/Splash/Navigation';
 import Splash from './components/Splash/Splash';
+import Home from './components/Home/Home';
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -42,6 +43,10 @@ function App() {
           <Navigation />
           <Splash />
         </Route>
+        <Route path='/home' exact={true}>
+          <Navigation />
+          <Home />
+        </Route>
         <ProtectedRoute path='/users' exact={true} >
           <UsersList/>
         </ProtectedRoute>
@@ -49,9 +54,11 @@ function App() {
           <User />
         </ProtectedRoute>
         <Route path='/daily-nutrition-goals' exact={true}>
+          <Navigation />
           <DailyNutritionGoals />
         </Route>
         <Route path='/food-log' exact={true}>
+          <Navigation />
           <FoodLog />
         </Route>
       </Switch>

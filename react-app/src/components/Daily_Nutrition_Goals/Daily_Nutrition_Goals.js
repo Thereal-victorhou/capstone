@@ -22,9 +22,17 @@ const DailyNutritionGoals = () => {
 
     useEffect(() => {
         dispatch(userDng(user?.id))
-    },[dispatch, calories, carbohydrates, fat, protein, counter])
-
-    // useEffect(() => {},[calories, carbohydrates, fat, protein, counter])
+        if (currentGoal) {
+            setCalories(currentGoal.calories);
+            setCarbohydrates(currentGoal.carbohydrates);
+            setFat(currentGoal.fat);
+            setProtein(currentGoal.protein);
+        }
+    },[dispatch, currentGoal?currentGoal.calories:calories,
+        currentGoal?currentGoal.carbohydrates:carbohydrates,
+        currentGoal?currentGoal.fat:fat,
+        currentGoal?currentGoal.protein:protein]
+    )
 
     const updateCalories = (e) => {
         setCalories(e.target.value);
@@ -65,6 +73,10 @@ const DailyNutritionGoals = () => {
                 break;
             case "Delete Goal":
                 await dispatch(deleteUserDng(user?.id))
+                setCalories("");
+                setCarbohydrates("");
+                setFat("");
+                setProtein("");
                 setCounter(prev => prev + 1);
                 break
         }
@@ -73,15 +85,17 @@ const DailyNutritionGoals = () => {
     return (
         <>
             <div className="dng-main">
-                <div className="dng-macros-calc">
+                {/* <div className="dng-macros-calc">
                     <h2 className="macros-calc-title">Macros Calculator</h2>
                     <div className="macros-calc-container">
                         <h2>*Macros Calculator*</h2>
                     </div>
-                </div>
-                <div className="dng-form">
-                    <h2 className="dng-title">Daily Nutrition Goals</h2>
-                    <form className="-submit" autoComplete="off">
+                </div> */}
+                <div className="dng-form-container">
+                    <div className="dng-title">
+                        <h2> Daily Nutrition Goals</h2>
+                    </div>
+                    <form className="dng-form" autoComplete="off">
                         <div className="errors">
                             {errors.map((error, ind) => (
                             <div key={ind}>{error}</div>

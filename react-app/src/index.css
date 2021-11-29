@@ -1,12 +1,9 @@
 /* TODO Add site wide styles */
-body {
+  body {
     margin: 0;
-    font-family: sans-serif;
+    /* font-family: sans-serif;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-
-    /* background-color: black; */
-    /* color: white; */
+    -moz-osx-font-smoothing: grayscale; */
   }
 
   * {
@@ -36,7 +33,7 @@ body {
     margin-left: 5rem;
     font-size: 1.8rem;
     font-weight: 700;
-    color: rgb(0,102,238);
+    color: rgb(0,101,238)
   }
 
   .navlinks {
@@ -67,9 +64,8 @@ body {
   .landing-top {
     display: flex;
     justify-content: flex-start;
-    height: 650px;
-    border-bottom: 1px solid black;
-    padding: 5.25% 0;
+    height: 700px;
+    padding-top: 13%;
   }
 
   .nav-right {
@@ -116,14 +112,45 @@ body {
     color: rgb(19, 34, 167);
   }
 
-  .bottom-nav {
-    background-color: white;
-    height: 64px;
+  .logout-btn {
+    margin-top: .9rem;
+    background-color: rgb(0,0,0,0);
+    border-style: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgb(0,102,238);
   }
 
-  .hidden {
-    display: none !important;
+  .logout-btn:hover {
+    color: rgb(19, 34, 167);
   }
+
+  .nav-bottom {
+    display: flex;
+    align-items: center;
+    background-color: rgb(0,112,191);
+    border-bottom: 32px solid rgb(10,82,130);
+    height: 3rem;
+  }
+
+  .links-container {
+      display: flex;
+      justify-content: space-between;
+      width: 400px;
+      margin-left: 5rem;
+  }
+
+  .home-link {
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    /* margin-left: 4rem; */
+  }
+
+  /* .hidden {
+    display: none !important;
+  } */
+
   .landing-top-left {
     display: flex;
     flex-direction: column;
@@ -165,10 +192,10 @@ body {
 
   .landing-signup-btn {
     display: flex;
-    /* overflow: hidden; */
-    /* position: static; */
-    /* text-align: center; */
-    /* white-space: nowrap; */
+    overflow: hidden;
+    position: static;
+    text-align: center;
+    white-space: nowrap;
     height: 58px;
     width: 100%;
     cursor: pointer;

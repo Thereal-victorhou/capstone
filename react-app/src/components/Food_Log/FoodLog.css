@@ -1,21 +1,164 @@
 .foodlog-main {
     display: flex;
     flex-direction: row;
-    height: 100%;
+    justify-content: center;
+    height: 100vh;
     width: 100%;
-    background-color: brown;
 }
 
-.foodlog-left {
+.main-container {
     display: flex;
     flex-direction: column;
-    width: 30%;
-    background-color: rgb(108, 23, 108);
+    align-items: center;
+    width: 700px;
+    height: 560px;
+    background-color: rgb(242, 242, 248);
+    margin-top: 13rem;
+    border: 1px solid rgb(223,231,238);
 }
 
-.foodlog-right {
+.foodlog-title-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3rem;
+    width: 700px;
+    background-color: rgb(10,82,130);
+}
+
+.foodlog-title-container p {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.foodlog-top {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+
+}
+
+.foodlog-meal-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 3.5rem;
+    padding-left: 1rem;
+    background-color: rgb(223,231,238);
+}
+
+
+.foodlog-top #breakfast:hover {
+    background-color: rgb(242, 242, 248);
+}
+
+.foodlog-top #lunch:hover {
+    background-color: rgb(242, 242, 248);
+}
+
+.foodlog-top #lunch {
+    border-left: 1px solid rgb(212, 212, 212);
+    border-right: 1px solid rgb(212, 212, 212);
+}
+
+.foodlog-top #dinner:hover {
+    background-color: rgb(242, 242, 248);
+}
+
+.foodlog-top h3 {
+    color: rgb(102,102,102);
+}
+
+.foodlog-mid {
     display: flex;
     flex-direction: column;
-    width: 70%;
-    background-color: rgb(111, 27, 206);
+    align-items: center;
+    margin-top: 2rem;
+    width: 80%;
+    height: 100%;
+}
+
+.foodlog-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 550px;
+    height: 400px;
+    background-color: rgb(242, 242, 248);
+}
+
+.foodlog-form label {
+    font-size: 18px;
+    font-weight: 600;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(102,102,102);
+}
+
+.foodlog-container {
+    display: flex;
+    flex-direction: row;
+    height: 2em;
+    width: 85%;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 3rem;
+    padding-right: 3rem;
+
+}
+
+.foodlog-form input {
+    background-color: rgba(0,0,0,0);
+    font-size: 22px;
+    color: rgb(102,102,102);
+    width: 40%;
+    height: 100%;
+    text-align: center;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-bottom: 1px solid rgb(212, 212, 212);
+}
+
+.foodlog-form input:hover {
+    background-color: rgb(255, 255, 255);
+}
+
+.foodlog-lower {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+    height: 2rem;
+    margin-top: 0;
+
+}
+
+.foodlog-lower button {
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+    background-color: rgba(0,0,0,0);
+    border-style: none;
+}
+
+.foodlog-submit-btn h4{
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(15, 161, 10);
+}
+
+.foodlog-submit-btn h4:hover {
+    color:rgb(37, 209, 31);
+}
+
+.foodlog-delete-btn h4{
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(161, 8, 8);
+}
+
+.foodlog-delete-btn h4:hover {
+    color: rgb(206, 9, 9);
 }
