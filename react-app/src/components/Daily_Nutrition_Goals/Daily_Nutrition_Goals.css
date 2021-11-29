@@ -42,7 +42,7 @@
     align-items: center;
     width: 50%;
     height: 100%;
-    margin-top: 5rem;
+    margin-top: 6rem;
 }
 
 .dng-title {
@@ -76,7 +76,7 @@ form {
 }
 
 form label {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     font-family: Arial, Helvetica, sans-serif;
     color: rgb(102,102,102);
@@ -96,7 +96,7 @@ form label {
 
 form input {
     background-color: rgba(0,0,0,0);
-    font-size: 18px;
+    font-size: 22px;
     color: rgb(102,102,102);
     width: 40%;
     height: 100%;

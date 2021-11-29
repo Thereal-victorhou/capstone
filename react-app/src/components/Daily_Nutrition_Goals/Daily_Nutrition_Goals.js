@@ -28,9 +28,11 @@ const DailyNutritionGoals = () => {
             setFat(currentGoal.fat);
             setProtein(currentGoal.protein);
         }
-    },[dispatch, currentGoal?currentGoal.calories:calories, currentGoal?currentGoal.carbohydrates:carbohydrates, currentGoal?currentGoal.fat:fat, currentGoal?currentGoal.protein:protein])
-
-    // useEffect(() => {},[calories, carbohydrates, fat, protein, counter])
+    },[dispatch, currentGoal?currentGoal.calories:calories,
+        currentGoal?currentGoal.carbohydrates:carbohydrates,
+        currentGoal?currentGoal.fat:fat,
+        currentGoal?currentGoal.protein:protein]
+    )
 
     const updateCalories = (e) => {
         setCalories(e.target.value);
