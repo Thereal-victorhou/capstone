@@ -22,12 +22,12 @@ const createDng = (dng) => ({
 const updateDng = (dng) => ({
     type: UPDATE_DNG,
     dng
-})
+});
 
 const deleteDng = (dng) => ({
     type: DELETE_DNG,
     dng
-})
+});
 
 // Thunk
 // get user dng
@@ -35,7 +35,7 @@ export const userDng = (userId) => async (dispatch) => {
     const res = await fetch(`/api/dng/${userId}`);
     let dng = await res.json();
 
-    if (!(dng.daily_goals == "False")) {
+    if (!(dng.daily_goals === "False")) {
         dispatch(getUserDng(dng));
     } else {
         dng = {"daily_goals": [{user_id: userId, msg: "No Current Goals"}]}
