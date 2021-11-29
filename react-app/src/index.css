@@ -121,6 +121,10 @@
     color: rgb(0,102,238);
   }
 
+  .logout-btn:hover {
+    color: rgb(19, 34, 167);
+  }
+
   .nav-bottom {
     display: flex;
     align-items: center;

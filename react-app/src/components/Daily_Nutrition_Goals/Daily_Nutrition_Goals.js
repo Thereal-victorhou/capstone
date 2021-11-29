@@ -22,7 +22,13 @@ const DailyNutritionGoals = () => {
 
     useEffect(() => {
         dispatch(userDng(user?.id))
-    },[dispatch, calories, carbohydrates, fat, protein, counter])
+        if (currentGoal) {
+            setCalories(currentGoal.calories);
+            setCarbohydrates(currentGoal.carbohydrates);
+            setFat(currentGoal.fat);
+            setProtein(currentGoal.protein);
+        }
+    },[dispatch, currentGoal?currentGoal.calories:calories, currentGoal?currentGoal.carbohydrates:carbohydrates, currentGoal?currentGoal.fat:fat, currentGoal?currentGoal.protein:protein])
 
     // useEffect(() => {},[calories, carbohydrates, fat, protein, counter])
 
@@ -77,14 +83,16 @@ const DailyNutritionGoals = () => {
     return (
         <>
             <div className="dng-main">
-                <div className="dng-macros-calc">
+                {/* <div className="dng-macros-calc">
                     <h2 className="macros-calc-title">Macros Calculator</h2>
                     <div className="macros-calc-container">
                         <h2>*Macros Calculator*</h2>
                     </div>
-                </div>
+                </div> */}
                 <div className="dng-form">
-                    <h2 className="dng-title">Daily Nutrition Goals</h2>
+                    <div className="dng-title">
+                        <h2> Daily Nutrition Goals</h2>
+                    </div>
                     <form className="-submit" autoComplete="off">
                         <div className="errors">
                             {errors.map((error, ind) => (

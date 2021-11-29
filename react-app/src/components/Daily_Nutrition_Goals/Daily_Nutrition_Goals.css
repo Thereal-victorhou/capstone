@@ -1,6 +1,7 @@
 .dng-main {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     height: 700px;
 }
 
@@ -41,11 +42,25 @@
     align-items: center;
     width: 50%;
     height: 100%;
+    margin-top: 5rem;
 }
 
 .dng-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2.6rem;
+    width: 90.5%;
+    height: 3rem;
+    background-color: rgb(10,82,130);
     font-family: Arial, Helvetica, sans-serif;
-    color: rgb(79, 92, 102);
+    border: 1px solid rgb(223, 231, 238);
+}
+
+.dng-title h2 {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
 }
 
 form {
@@ -56,15 +71,15 @@ form {
     width: 90%;
     height: 400px;
     border: 1px solid rgb(223, 231, 238);
-    border-radius: 5px;
+
     background-color: rgb(242, 242, 248);
 }
 
 form label {
-    font-size: 22px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 600;
     font-family: Arial, Helvetica, sans-serif;
-    color: rgb(79, 92, 102);
+    color: rgb(102,102,102);
 }
 
 .dng-container {
@@ -81,10 +96,19 @@ form label {
 
 form input {
     background-color: rgba(0,0,0,0);
-    width: 50%;
+    font-size: 18px;
+    color: rgb(102,102,102);
+    width: 40%;
+    height: 100%;
+    text-align: center;
     border-top-style: none;
     border-left-style: none;
     border-right-style: none;
+    border-bottom: 1px solid rgb(212, 212, 212);
+}
+
+form input:hover {
+    background-color: rgb(255, 255, 255);
 }
 
 .login-lower {
@@ -110,7 +134,15 @@ form input {
     color: rgb(15, 161, 10);
 }
 
+.submit-btn h4:hover {
+    color:rgb(37, 209, 31);
+}
+
 .delete-btn h4{
     font-family: Arial, Helvetica, sans-serif;
     color: rgb(161, 8, 8);
+}
+
+.delete-btn h4:hover {
+    color: rgb(206, 9, 9);
 }

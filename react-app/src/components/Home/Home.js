@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import {useDispatch, useSelector} from 'react-redux';
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { userDng } from '../../store/daily_nutrition_goals';
 import { userFoodLog } from '../../store/foodLog';
 import './Home.css';
@@ -8,6 +8,7 @@ import './Home.css';
 const Home = () => {
     const [remCal, setRemCal] = useState(0)
     const [foodCal, setFoodCal] = useState(0);
+    const history = useHistory();
     const user = useSelector(state => state.session.user)
     const currentGoal = useSelector(state => state.dng[user?.id])
     const foodlog = useSelector(state => Object.values(state.foodlog));
@@ -28,11 +29,14 @@ const Home = () => {
             if (currentGoal) {
                 setRemCal(currentGoal.calories - totalCal)
                 const progressBar = document.querySelector(".progress-bar");
+                progressBar.style.width = '0%';
                 progressBar.style.width = `${(totalCal / currentGoal.calories) * 100}%`;
                 progressBar.style.borderRight = '2px solid rgb(205,205,205)';
             }
         }
     },[remCal, currentGoal, foodlog, foodCal])
+
+    const handleClick = () => history.push('/food-log');
 
     return (
         <div className="home-main">
@@ -57,7 +61,7 @@ const Home = () => {
                         </div>
                         <div className="rem-cal">
                             <p>{remCal}</p>
-                            <button>Add Food</button>
+                            <button onClick={handleClick}>Add Food</button>
                         </div>
                         <div className="energy-calculation">
                             <div className="energy-top">

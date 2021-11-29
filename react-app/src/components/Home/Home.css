@@ -1,6 +1,7 @@
 .home-main {
     display: flex;
     flex-direction: column;
+    height: 2.6rem;
     align-items: center;
     height: 100vh;
     width: 100vw;
@@ -13,6 +14,7 @@
     height: 2.6rem;
     width: 700px;
     margin-top: 13rem;
+    height: 2.6rem;
     background-color: rgb(10,82,130);
 }
 
@@ -92,6 +94,10 @@
     margin-left: 1rem;
 }
 
+.calories-remaining a:hover {
+    color: rgb(19, 34, 167);
+}
+
 .rem-cal {
     display: flex;
     flex-direction: row;
@@ -118,6 +124,10 @@
     font-weight: 500;
     height: 2.5rem;
     margin-bottom: 1rem;
+}
+
+.rem-cal button:hover {
+    color: rgb(19, 34, 167);
 }
 
 .energy-calculation {
