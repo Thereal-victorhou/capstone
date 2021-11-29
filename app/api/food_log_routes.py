@@ -254,15 +254,17 @@ def delete_food_log(user_id):
             Breakfast.query.filter_by(foodlog_id=log.to_dict()['id']).delete()
             Food_Log.query.filter_by(user_id=user_id, meal='breakfast').delete()
             db.session.commit()
+            return {'user_food_log': 'False'}
 
         if log.to_dict()['meal'] == 'lunch':
             Lunch.query.filter_by(foodlog_id=log.to_dict()['id']).delete()
             Food_Log.query.filter_by(user_id=user_id, meal='lunch').delete()
             db.session.commit()
+            return {'user_food_log': 'False'}
 
         if log.to_dict()['meal'] == 'dinner':
             Dinner.query.filter_by(foodlog_id=log.to_dict()['id']).delete()
             Food_Log.query.filter_by(user_id=user_id, meal='dinner').delete()
             db.session.commit()
+            return {'user_food_log': 'False'}
 
-    return {'user_food_log': 'False'}

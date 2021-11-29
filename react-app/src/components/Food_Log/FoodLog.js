@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { userDng } from '../../store/daily_nutrition_goals';
-import { userFoodLog, createFoodLog, updateFoodLog } from '../../store/foodLog';
+import { userFoodLog, createFoodLog, updateFoodLog, deleteFoodLog } from '../../store/foodLog';
 
 const FoodLog = () => {
 
@@ -11,15 +11,18 @@ const FoodLog = () => {
     const currentFoodLog = useSelector(state => Object.values(state.foodlog));
     const dispatch = useDispatch();
 
-    const defaultLog = currentFoodLog ? (currentFoodLog.filter(log => log.meal === "breakfast") && currentFoodLog.filter(log => log.meal === "breakfast")[0]) : "";
+    const defaultLog = currentFoodLog ?
+        (currentFoodLog.filter(log => log.meal === "breakfast") &&
+        currentFoodLog.filter(log => log.meal === "breakfast")[0]) : "";
 
     const [selectedMeal, setSelectedMeal] = useState("breakfast")
     const [errors, setErrors] = useState([]);
-    const [foodName, setFoodName] = useState(defaultLog && defaultLog.name)
-    const [calories, setCalories] = useState(defaultLog && defaultLog.calories);
-    const [carbohydrates, setCarbohydrates] = useState(defaultLog && defaultLog.carbohydrates);
-    const [fat, setFat] = useState(defaultLog && defaultLog.fat);
-    const [protein, setProtein] = useState(defaultLog && defaultLog.protein);
+    const [foodName, setFoodName] = useState(defaultLog ? defaultLog.name : "")
+    const [calories, setCalories] = useState(defaultLog ? defaultLog.calories: "");
+    const [carbohydrates, setCarbohydrates] = useState(defaultLog ? defaultLog.carbohydrates: "");
+    const [fat, setFat] = useState(defaultLog ? defaultLog.fat: "");
+    const [protein, setProtein] = useState(defaultLog ? defaultLog.protein: "");
+    const [count, setCount] = useState(0);
 
     const curLog = currentFoodLog && currentFoodLog.filter(log => log.meal === `${selectedMeal}`)[0];
 
@@ -34,9 +37,15 @@ const FoodLog = () => {
             setCarbohydrates(curLog.carbohydrates);
             setFat(curLog.fat);
             setProtein(curLog.protein);
+        } else {
+            setFoodName("");
+            setCalories("");
+            setCarbohydrates("");
+            setFat("");
+            setProtein("");
         }
 
-    },[dispatch, curLog && curLog.name,
+    },[dispatch, count, curLog && curLog.name,
         curLog && curLog.calories,
         curLog && curLog.carbohydrates,
         curLog && curLog.fat,
@@ -91,7 +100,8 @@ const FoodLog = () => {
                     "fat": parseInt(fat, 10),
                     "protein": parseInt(protein, 10),
                     "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
-                }))
+                }));
+                setCount(prev => prev + 1);
                 break;
             case "Update Item":
                 await dispatch(updateFoodLog({
@@ -103,16 +113,13 @@ const FoodLog = () => {
                     "fat": parseInt(fat, 10),
                     "protein": parseInt(protein, 10),
                     "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
-                }))
+                }));
+                setCount(prev => prev + 1);
                 break;
-            // case "Delete Goal":
-            //     await dispatch(deleteUserDng(user?.id))
-            //     setCalories("");
-            //     setCarbohydrates("");
-            //     setFat("");
-            //     setProtein("");
-            //     setCounter(prev => prev + 1);
-            //     break
+            case "Delete Item":
+                await dispatch(deleteFoodLog(user?.id));
+                setCount(prev => prev + 1);
+                break
         }
     }
 

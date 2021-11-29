@@ -23,18 +23,13 @@ const changeFoodLog = (food) => ({
     food
 });
 
-const eraseFoodLog = (food) => ({
-    type: DELETE_FOOD_LOG,
-    food
-})
-
 // Thunk
 // Get user foodlog
 export const userFoodLog = (userId) => async (dispatch) => {
     const res = await fetch(`api/food-log/${userId}`);
     let foodLog = await res.json();
 
-    if (!(foodLog.food_log == "False")) {
+    if (!(foodLog.user_food_log === "False")) {
         dispatch(getFoodLog(foodLog));
     } else {
     const err = {"user_food_log": [{msg: "No Current Food Log"}]}
@@ -76,11 +71,28 @@ export const updateFoodLog = (ufl) => async (dispatch) => {
     }
 }
 
+// Delete food log
+export const deleteFoodLog = (userId => async (dispatch) => {
+    await fetch(`/api/food-log/${userId}`,{
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+    })
+    const remaining = await fetch(`/api/food-log/${userId}`);
+    let foodLog = await remaining.json();
+
+    if (!(foodLog.user_food_log === "False")) {
+        dispatch(getFoodLog(foodLog));
+    } else {
+    const err = {"user_food_log": [{msg: "No Current Food Log"}]}
+        dispatch(getFoodLog(err));
+    }
+});
+
 // Reducer
 const foodLogReducer = (state = {}, action) => {
     let newState;
     switch(action.type) {
-        case GET_FOOD_LOG || CREATE_FOOD_LOG:
+        case GET_FOOD_LOG || CREATE_FOOD_LOG || UPDATE_FOOD_LOG:
             newState = {...state}
             action.food.user_food_log.forEach(log => {
                 newState[log.id] = log;
