@@ -91,11 +91,11 @@ const DailyNutritionGoals = () => {
                         <h2>*Macros Calculator*</h2>
                     </div>
                 </div> */}
-                <div className="dng-form">
+                <div className="dng-form-container">
                     <div className="dng-title">
                         <h2> Daily Nutrition Goals</h2>
                     </div>
-                    <form className="-submit" autoComplete="off">
+                    <form className="dng-form" autoComplete="off">
                         <div className="errors">
                             {errors.map((error, ind) => (
                             <div key={ind}>{error}</div>

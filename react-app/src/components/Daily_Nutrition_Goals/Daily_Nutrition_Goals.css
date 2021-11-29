@@ -35,7 +35,7 @@
     width: 220px;
 }
 
-.dng-form {
+.dng-form-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -63,7 +63,7 @@
     font-weight: 500;
 }
 
-form {
+.dng-form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -75,7 +75,7 @@ form {
     background-color: rgb(242, 242, 248);
 }
 
-form label {
+.dng-form label {
     font-size: 18px;
     font-weight: 600;
     font-family: Arial, Helvetica, sans-serif;
@@ -94,7 +94,7 @@ form label {
 
 }
 
-form input {
+.dng-form input {
     background-color: rgba(0,0,0,0);
     font-size: 22px;
     color: rgb(102,102,102);
@@ -107,7 +107,7 @@ form input {
     border-bottom: 1px solid rgb(212, 212, 212);
 }
 
-form input:hover {
+.dng-form input:hover {
     background-color: rgb(255, 255, 255);
 }
 
