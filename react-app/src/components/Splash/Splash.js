@@ -6,7 +6,7 @@ const Splash = () => {
 
   return (
     <div className="landing"
-        style={{ backgroundImage:`url(http://hfhealthyliving.org/wp-content/uploads/2017/01/heart_healthy_post.jpg)`,
+        style={{ backgroundImage:`url(https://i.imgur.com/MTf7tIJ.jpg)`,
                 backgroundSize: 'cover' }}
     >
       <div className="landing-top">

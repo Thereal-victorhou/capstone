@@ -33,9 +33,9 @@ const Navigation = () => {
       </div>
       <div className="nav-bottom">
         <div className="links-container">
-            <NavLink to="/home" className="home-link" id="home">HOME</NavLink>
-            <NavLink to="/daily-nutrition-goals" className="home-link" id="dng">DAILY NUTRITION GOALS</NavLink>
-            <NavLink to="/food-log" className="home-link" id="foodlog">FOOD LOG</NavLink>
+            <NavLink to={user ? "/home": "/login"} className="home-link" id="home">HOME</NavLink>
+            <NavLink to={user ? "/daily-nutrition-goals": "/login"} className="home-link" id="dng">DAILY NUTRITION GOALS</NavLink>
+            <NavLink to={user ? "/food-log": "login"} className="home-link" id="foodlog">FOOD LOG</NavLink>
         </div>
       </div>
     </div>
