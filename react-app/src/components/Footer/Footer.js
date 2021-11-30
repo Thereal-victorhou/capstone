@@ -15,7 +15,7 @@ const Footer = () => {
                   />
                 </a>
                 <p>!© 2021 LeanOnMe. All Rights Reserved.</p>
-                <a className="linkedin" href="https://github.com/Thereal-victorhou/lean-on-me/wiki" target="_blank">
+                <a className="linkedin" href="https://github.com/Thereal-victorhou/lean-on-me" target="_blank">
                   <img
                     className="linkedin-img"
                     src="https://cdn.dribbble.com/users/6569/screenshots/16742885/media/361dccdf11984b210043e69cb871fc93.png?compress=1&resize=400x300"
