@@ -31,7 +31,7 @@ const DailyNutritionGoals = () => {
     },[dispatch, currentGoal?currentGoal.calories:calories,
         currentGoal?currentGoal.carbohydrates:carbohydrates,
         currentGoal?currentGoal.fat:fat,
-        currentGoal?currentGoal.protein:protein]
+        currentGoal?currentGoal.protein:protein, counter]
     )
 
     useEffect(() => {
@@ -92,7 +92,7 @@ const DailyNutritionGoals = () => {
                     errArr.pop()
                     setErrors(errArr)
                 }
-                
+
             } else if (!protein) {
                 errArr.push("Please fill out Protein field")
                 setErrors(errArr);
@@ -101,7 +101,7 @@ const DailyNutritionGoals = () => {
         }
 
         // setErrors(errArr);
-    },[calories, carbohydrates, fat, protein])
+    },[calories, carbohydrates, fat, protein, counter])
 
     const updateCalories = (e) => {
         setCalories(e.target.value);
@@ -156,16 +156,28 @@ const DailyNutritionGoals = () => {
                 }
                 break;
 
-            case "Delete Goal":
-                await dispatch(deleteUserDng(user?.id))
-                setCalories("");
-                setCarbohydrates("");
-                setFat("");
-                setProtein("");
-                setCounter(prev => prev + 1);
-                alert("Daily Nutrition Goal has been deleted.")
-                break
+            // case "Delete Goal":
+            //     await dispatch(deleteUserDng(user?.id))
+            //     setCalories("");
+            //     setCarbohydrates("");
+            //     setFat("");
+            //     setProtein("");
+            //     setCounter(prev => prev + 1);
+            //     alert("Daily Nutrition Goal has been deleted.")
+            //     setCounter(prev => prev + 1);
+            //     break
         }
+    }
+
+    const handleDelete = async (e) => {
+        e.preventDefault();
+        await dispatch(deleteUserDng(user?.id))
+        // setCalories("");
+        // setCarbohydrates("");
+        // setFat("");
+        // setProtein("");
+        setCounter(prev => prev + 1);
+        alert("Food item has been deleted.")
     }
 
     return (
@@ -237,9 +249,9 @@ const DailyNutritionGoals = () => {
                         </div>
                         <div className="login-lower">
                             <button className="submit-btn" type="submit" onClick={handleButton}>
-                                <h4>{currentGoal?.msg !== "No Current Goals" ? "Update Goal" : "Create New Goal"}</h4>
+                                <h4>{currentGoal ? "Update Goal" : "Create New Goal"}</h4>
                             </button>
-                            <button className="delete-btn" type="submit" onClick={handleButton}>
+                            <button className="delete-btn" type="submit" onClick={handleDelete}>
                                 <h4>Delete Goal</h4>
                             </button>
                         </div>
