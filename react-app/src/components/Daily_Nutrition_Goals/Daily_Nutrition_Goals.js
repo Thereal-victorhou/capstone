@@ -41,8 +41,11 @@ const DailyNutritionGoals = () => {
                 if (!(/^[0-9]+$/.test(calories))) {
                     errArr.push("Calories must be a number")
                     setErrors(errArr);
-
+                } else {
+                    errArr.pop()
+                    setErrors(errArr)
                 }
+
             } else if (!calories) {
                 errArr.push("Please fill out Calories field")
                 setErrors(errArr);
@@ -54,7 +57,11 @@ const DailyNutritionGoals = () => {
                     errArr.push("Carbohydrates must be a number")
                     setErrors(errArr);
 
+                } else {
+                    errArr.pop()
+                    setErrors(errArr)
                 }
+
             } else if (!carbohydrates) {
                 errArr.push("Please fill out Carbohydrates field")
                 setErrors(errArr);
@@ -66,6 +73,9 @@ const DailyNutritionGoals = () => {
                     errArr.push("Fat must be a number")
                     setErrors(errArr);
 
+                } else {
+                    errArr.pop()
+                    setErrors(errArr)
                 }
             } else if (!fat) {
                 errArr.push("Please fill out Fat field")
@@ -78,7 +88,11 @@ const DailyNutritionGoals = () => {
                     errArr.push("Protein must be a number")
                     setErrors(errArr);
 
+                } else {
+                    errArr.pop()
+                    setErrors(errArr)
                 }
+                
             } else if (!protein) {
                 errArr.push("Please fill out Protein field")
                 setErrors(errArr);
