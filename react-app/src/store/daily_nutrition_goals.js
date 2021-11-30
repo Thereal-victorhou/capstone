@@ -37,9 +37,6 @@ export const userDng = (userId) => async (dispatch) => {
 
     if (!(dng.daily_goals === "False")) {
         dispatch(getUserDng(dng));
-    } else {
-        dng = {"daily_goals": [{user_id: userId, msg: "No Current Goals"}]}
-        dispatch(getUserDng(dng))
     }
 }
 // create new dng
@@ -78,9 +75,6 @@ export const updateCurrentDng = (modifiedDng) => async (dispatch) => {
     // console.log(dng)
     if (dng) {
         dispatch(updateDng(dng));
-    } else {
-        dng = {"daily_goals": [{user_id: user_id, msg: "No Current Goals"}]}
-        dispatch(updateDng(dng))
     }
 }
 // delete dng
@@ -90,7 +84,6 @@ export const deleteUserDng = (userId) => async (dispatch) => {
         headers: { 'Content-Type': 'application/json' }
     })
     let msg = await res.json();
-    console.log(msg)
     dispatch(deleteDng(msg))
 }
 // Reducer

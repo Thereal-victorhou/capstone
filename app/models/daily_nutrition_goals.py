@@ -21,7 +21,7 @@ class Daily_Nutrition_Goals(db.Model):
             "created_at": self.created_at
         }
 
-    breakfast = db.relationship("Breakfast", back_populates="daily_nutrition_goals")
-    lunch = db.relationship("Lunch", back_populates="daily_nutrition_goals")
-    dinner = db.relationship("Dinner", back_populates="daily_nutrition_goals")
+    breakfast = db.relationship("Breakfast", back_populates="daily_nutrition_goals", cascade="all, delete")
+    lunch = db.relationship("Lunch", back_populates="daily_nutrition_goals", cascade="all, delete")
+    dinner = db.relationship("Dinner", back_populates="daily_nutrition_goals", cascade="all, delete")
     user = db.relationship("User", back_populates="daily_nutrition_goals")

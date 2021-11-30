@@ -26,38 +26,12 @@ const FoodLog = () => {
     const [count, setCount] = useState(0);
 
     const [curLog, setCurFoodLog] = useState({})
-    // const curLog = currentFoodLog && Object.values(currentFoodLog).filter(log => log.meal === `${selectedMeal}`)[0];
 
     useEffect(() => {
         const filtered = Object.values(currentFoodLog)?.filter(log => log.meal === `${selectedMeal}`)[0];
-        // console.log(filtered)
         setCurFoodLog(filtered);
-        // if (curLog) {
-        //     console.log(curLog)
-        //     setFoodName(curLog.name);
-        //     setCalories(curLog.calories);
-        //     setCarbohydrates(curLog.carbohydrates);
-        //     setFat(curLog.fat);
-        //     setProtein(curLog.protein);
-        //     console.log('after', curLog)
 
-        // } else {
-        //     setFoodName("");
-        //     setCalories("");
-        //     setCarbohydrates("");
-        //     setFat("");
-        //     setProtein("");
-        // }
-
-    },[count, currentFoodLog, selectedMeal]
-        // curLog && curLog.name,
-        // curLog && curLog.calories,
-        // curLog && curLog.carbohydrates,
-        // curLog && curLog.fat,
-        // curLog && curLog.protein,
-        // foodName, calories, carbohydrates, fat, protein]
-
-    )
+    },[count, currentFoodLog, selectedMeal])
 
     useEffect(() =>  {
         if (curLog) {
@@ -83,6 +57,48 @@ const FoodLog = () => {
         dispatch(userFoodLog(user?.id))
 
     },[dispatch, selectedMeal])
+
+    useEffect(() => {
+        let errArr = []
+        if (currentGoal) {
+            if (!foodName) {
+                errArr.push("Please fill out Name field")
+            }
+            if (calories.length > 0) {
+                if (!(/^[0-9]+$/.test(calories))) {
+                    errArr.push("Calories must be a number")
+                }
+            } else if (!calories) {
+                errArr.push("Please fill out Calories field")
+            }
+
+            if (carbohydrates.length > 0) {
+                if (!(/^[0-9]+$/.test(carbohydrates))) {
+                    errArr.push("Carbohydrates must be a number")
+                }
+            } else if (!carbohydrates) {
+                errArr.push("Please fill out Carbohydrates field")
+            }
+
+            if (fat.length > 0) {
+                if (!(/^[0-9]+$/.test(fat))) {
+                    errArr.push("Fat must be a number")
+                }
+            } else if (!fat) {
+                errArr.push("Please fill out Fat field")
+            }
+
+            if (protein.length > 0) {
+                if (!(/^[0-9]+$/.test(protein))) {
+                    errArr.push("Protein must be a number")
+                }
+            } else if (!protein) {
+                errArr.push("Please fill out Protein field")
+            }
+        }
+
+        setErrors(errArr);
+    },[foodName, calories, carbohydrates, fat, protein])
 
     const updateFoodName = (e) => {
         setFoodName(e.target.value);
@@ -133,7 +149,6 @@ const FoodLog = () => {
                     "protein": parseInt(protein, 10),
                     "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
                 }));
-                // setCount(prev => prev + 1);
                 break;
             case "Update Item":
                 await dispatch(updateFoodLog({
@@ -146,18 +161,7 @@ const FoodLog = () => {
                     "protein": parseInt(protein, 10),
                     "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
                 }));
-                // setCount(prev => prev + 1);
                 break;
-            // case "Delete Item":
-            //     await dispatch(deleteFoodLog({"user_id": user?.id, "meal": selectedMeal}))
-            //     setSelectedMeal(null);
-            //     // setFoodName("");
-            //     // setCalories("");
-            //     // setCarbohydrates("");
-            //     // setFat("");
-            //     // setProtein("");
-            //     // setCount(prev => prev + 1);
-            //     break
         }
     }
 
@@ -185,6 +189,11 @@ const FoodLog = () => {
                     <div className="foodlog-mid">
                         <div className="foodlog-nutrition">
                             <form className="foodlog-form">
+                                <div className="errors">
+                                    {errors.map((error, ind) => (
+                                    <div key={ind}>{error}</div>
+                                    ))}
+                                </div>
                                 <div className="foodlog-container">
                                     <label className="foodlog-calories" htmlFor="food-name">Food Name</label>
                                     <input
