@@ -19,7 +19,7 @@ const Navigation = () => {
                 Log In
               </NavLink>
               <p className="link-divider">|</p>
-              <NavLink to="/signup" className="signup">
+              <NavLink to="/sign-up" className="signup">
                 Sign Up
               </NavLink>
             </>
