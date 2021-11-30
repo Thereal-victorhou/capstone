@@ -38,6 +38,7 @@ function App() {
           <LoginForm />
         </Route>
         <Route path='/sign-up' exact={true}>
+          <Navigation />
           <SignUpForm />
         </Route>
         <Route path='/' exact={true} >

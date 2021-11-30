@@ -36,7 +36,7 @@
     font-size: 2.9rem;
     font-weight: 900;
     line-height: 60px;
-    color: rgb(10,82,130);
+    color: rgb(0,112,191);
   }
 
   .email-label,
@@ -44,6 +44,7 @@
     margin-bottom: 15px;
     font-size: 16px;
     font-weight: 600;
+    color: rgb(50, 50, 50);
   }
 
   .login-input {
@@ -60,7 +61,7 @@
   }
 
   .login-input:focus {
-    outline: rgb(119, 126, 196) solid 0.5px;
+    outline: rgb(10,82,130) solid 0.5px;
   }
 
   .login-btn {
@@ -71,7 +72,7 @@
     font-weight: 600;
     cursor: pointer;
     margin-right: 30px;
-    color: rgb(0,102,238);
+    color: rgb(0,112,191);
   }
 
   .login-btn:hover {
@@ -96,8 +97,12 @@
     gap: 5px;
   }
 
+  .login-redirect p {
+    color: rgb(50, 50, 50);
+  }
+
   .signup-link {
-    color: rgb(0,102,238);
+    color: rgb(0,112,191);
     font-weight: 600;
   }
 

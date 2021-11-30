@@ -22,7 +22,7 @@ const Splash = () => {
           <div className="landing-signup">
             <div className="landing-signup-left">
               {!user ? (
-                <NavLink to="/signup" className="landing-signup-btn">
+                <NavLink to="/sign-up" className="landing-signup-btn">
                   START FOR FREE
                 </NavLink>
               ) : (

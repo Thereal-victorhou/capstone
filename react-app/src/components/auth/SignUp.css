@@ -1,0 +1,167 @@
+.signup-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: black;
+  }
+
+  .signup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 600px;
+    height: 650px;
+    margin-top: 16rem;
+    background-color: rgba(211, 211, 211, 0.96);
+  }
+
+  .signup-container input {
+    width: 420px;
+    height: 36px;
+    background-color: #f5f8fa;
+    outline: none;
+    border: none;
+    border-radius: 4px;
+    padding: 0 10px;
+  }
+
+  .signup-container input:focus {
+    outline: rgb(10,82,130) solid 0.5px;
+  }
+
+  .signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 450px;
+  }
+
+  .signup-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .signup-text p {
+    font-family: "Capsule Sans Display", system-ui, -apple-system,
+      BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 2.9rem;
+    font-weight: 900;
+    line-height: 60px;
+    color: rgb(0,112,191);
+
+    width: 81%;
+  }
+
+  .signup-label {
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 2;
+    margin-bottom: 15px;
+    width: 450px;
+    color: rgb(50, 50, 50);
+  }
+
+  .signup-submit {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .signup-button {
+    width: 150px;
+    height: 48px;
+    border-radius: 4px;
+    border: none;
+    background-color: rgb(0,112,191);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .signup-button:hover {
+    background-color: rgb(10,82,130);
+    color: white;
+  }
+
+  .signup-btn-login {
+    padding: 5px 5px;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 48px;
+  }
+
+  .signup-btn-login p {
+    margin: 0;
+  }
+
+  .signup-login {
+    margin-top: 5px;
+    color: rgb(0,112,191);
+    font-weight: 700;
+  }
+
+  .signup-login:hover {
+    color: rgb(10,82,130);
+  }
+
+  .signup-bottom-disclaimer {
+    margin-top: 6rem;
+  }
+
+  .signup-disclaimer p{
+    font-size: 13px;
+    font-weight: 450;
+    color: rgb(180, 189, 194);
+  }
+
+  .signup-disclaimer a{
+    font-size: 13px;
+    font-weight: 600;
+    color: rgb(62, 67, 112);
+  }
+
+  .signup-form p{
+    margin-left: 1.3rem;
+    margin-bottom: .3em;
+  }
+
+  .signup-form a{
+    margin-left: 1.3rem;
+  }
+
+  .signup-right {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(245,248,250);
+    width: 100%;
+    padding-top: 9.5rem;
+  }
+
+  .signup-right-background {
+    height: 100vh;
+    width: 40%;
+  }
+
+  .signup-right-container {
+    width: 320px;
+    margin-left: 3rem;
+    margin-right: 5rem;
+    margin-right: 5vw;
+  }
+
+  .signup-right h4 {
+    font-size: 15px;
+    margin-top: 2.8em;
+    margin-bottom: 0;
+  }
+
+  .signup-right p {
+    font-size: 15px;
+    font-weight: 400;
+  }
