@@ -82,6 +82,11 @@
     color: rgb(102,102,102);
 }
 
+.each-error {
+    font-weight: 500;
+    color: rgb(161, 8, 8);
+}
+
 .dng-container {
     display: flex;
     flex-direction: row;
