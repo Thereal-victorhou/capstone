@@ -36,37 +36,38 @@ const DailyNutritionGoals = () => {
 
     useEffect(() => {
         let errArr = []
-
-        if (calories.length > 0) {
-            if (!(/^[0-9]+$/.test(calories))) {
-                errArr.push("Calories must be a number")
+        if (currentGoal) {
+            if (calories.length > 0) {
+                if (!(/^[0-9]+$/.test(calories))) {
+                    errArr.push("Calories must be a number")
+                }
+            } else if (!calories) {
+                errArr.push("Please fill out Calories field")
             }
-        } else if (!calories) {
-            errArr.push("Please fill out Calories field")
-        }
 
-        if (carbohydrates.length > 0) {
-            if (!(/^[0-9]+$/.test(carbohydrates))) {
-                errArr.push("Carbohydrates must be a number")
+            if (carbohydrates.length > 0) {
+                if (!(/^[0-9]+$/.test(carbohydrates))) {
+                    errArr.push("Carbohydrates must be a number")
+                }
+            } else if (!carbohydrates) {
+                errArr.push("Please fill out Carbohydrates field")
             }
-        } else if (!carbohydrates) {
-            errArr.push("Please fill out Carbohydrates field")
-        }
 
-        if (fat.length > 0) {
-            if (!(/^[0-9]+$/.test(fat))) {
-                errArr.push("Fat must be a number")
+            if (fat.length > 0) {
+                if (!(/^[0-9]+$/.test(fat))) {
+                    errArr.push("Fat must be a number")
+                }
+            } else if (!fat) {
+                errArr.push("Please fill out Fat field")
             }
-        } else if (!fat) {
-            errArr.push("Please fill out Fat field")
-        }
 
-        if (protein.length > 0) {
-            if (!(/^[0-9]+$/.test(protein))) {
-                errArr.push("Protein must be a number")
+            if (protein.length > 0) {
+                if (!(/^[0-9]+$/.test(protein))) {
+                    errArr.push("Protein must be a number")
+                }
+            } else if (!protein) {
+                errArr.push("Please fill out Protein field")
             }
-        } else if (!protein) {
-            errArr.push("Please fill out Protein field")
         }
 
         setErrors(errArr);

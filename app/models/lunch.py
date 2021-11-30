@@ -9,7 +9,7 @@ class Lunch(db.Model):
     fat = db.Column(db.Integer, nullable=False)
     protein = db.Column(db.Integer, nullable=False)
     foodlog_id = db.Column(db.Integer, db.ForeignKey("food_log.id"), nullable=False)
-    daily_nutrition_goals_id = db.Column(db.Integer, db.ForeignKey("daily_nutrition_goals.id"), nullable=False)
+    daily_nutrition_goals_id = db.Column(db.Integer, db.ForeignKey("daily_nutrition_goals.id", ondelete='CASCADE'), nullable=False)
 
     def to_dict(self):
         return {

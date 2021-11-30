@@ -72,4 +72,5 @@ def delete_dng(user_id):
     Daily_Nutrition_Goals.query.filter_by(user_id=user_id).delete()
     db.session.commit()
 
-    return {'daily_goals': {"userId": user_id, "msg": "User does not currently have a Daily Nutrition Goal"}}
+    # return {'daily_goals': {"userId": user_id, "msg": "User does not currently have a Daily Nutrition Goal"}}
+    return get_goals(user_id)
