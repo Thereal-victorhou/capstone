@@ -1,30 +1,28 @@
-# Flask React Project
-
 # LeanOnMe 
 
 ## LeanOnMe at a glance
 
-LeanOnMe is a fullstack app for people who are looking for help with tracking their macros as they go through their fitness journey. 
+LeanOnMe is a fullstack app for people who are looking for help with tracking their macros as they go through their fitness journey. LeanOnMe allows users to create daily nutritional goals as well as keep track of each meal they have throughout the day.
 
 ## Getting started
 
 1. Clone this repository (only this branch)
 
    ```bash
-   git clone https://github.com/appacademy-starters/python-project-starter.git
+   git clone https://github.com/Thereal-victorhou/lean-on-me.git
    ```
 
-2. Install dependencies
+2. Install dependencies into the root of the project
 
-      ```bash
-      pipenv install --dev -r dev-requirements.txt && pipenv install -r requirements.txt
+      ```pipenv install
       ```
-
-3. Create a **.env** file based on the example with proper settings for your
+3. Install dependencies for the front end in the react app folder
+      ```npm install```
+4. Create a **.env** file based on the example with proper settings for your
    development environment
-4. Setup your PostgreSQL user, password and database and make sure it matches your **.env** file
+5. Setup your PostgreSQL user, password and database and make sure it matches your **.env** file
 
-5. Get into your pipenv, migrate your database, seed your database, and run your flask app
+6. Get into your pipenv, migrate your database, seed your database, and run your flask app
 
    ```bash
    pipenv shell
@@ -42,7 +40,7 @@ LeanOnMe is a fullstack app for people who are looking for help with tracking th
    flask run
    ```
 
-6. To run the React App in development, checkout the [README](./react-app/README.md) inside the `react-app` directory.
+7. To run the React App in development, checkout the [README](./react-app/README.md) inside the `react-app` directory.
 
 ***
 *IMPORTANT!*
@@ -57,5 +55,6 @@ LeanOnMe is a fullstack app for people who are looking for help with tracking th
    psycopg2-binary MUST remain a dev dependency because you can't install it on apline-linux.
    There is a layer in the Dockerfile that will install psycopg2 (not binary) for us.
 ***
+
 
 
