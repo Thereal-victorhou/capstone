@@ -3,7 +3,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 91.9999vh;
+    width: 100vw;
     color: black;
   }
 
@@ -13,7 +14,7 @@
     align-items: center;
     width: 600px;
     height: 650px;
-    margin-top: 16rem;
+    margin-top: 12rem;
     background-color: rgba(211, 211, 211, 0.96);
   }
 

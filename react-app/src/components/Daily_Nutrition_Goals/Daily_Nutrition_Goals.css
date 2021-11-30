@@ -2,7 +2,8 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    height: 700px;
+    height: 91.9999vh;
+    width: 100vw;
 }
 
 .dng-macros-calc {
@@ -42,7 +43,6 @@
     align-items: center;
     width: 50%;
     height: 100%;
-    margin-top: 6rem;
 }
 
 .dng-title {
