@@ -19,7 +19,7 @@ const DailyNutritionGoals = () => {
     const [protein, setProtein] = useState(currentGoal ? currentGoal?.protein : "");
     const [counter, setCounter] = useState(0);
 
-
+    // console.log("error ==================", errors)
     useEffect(() => {
         dispatch(userDng(user?.id))
         if (currentGoal) {
@@ -33,6 +33,44 @@ const DailyNutritionGoals = () => {
         currentGoal?currentGoal.fat:fat,
         currentGoal?currentGoal.protein:protein]
     )
+
+    useEffect(() => {
+        let errArr = []
+
+        if (calories.length > 0) {
+            if (!(/^[0-9]+$/.test(calories))) {
+                errArr.push("Calories must be a number")
+            }
+        } else if (!calories) {
+            errArr.push("Please fill out Calories field")
+        }
+
+        if (carbohydrates.length > 0) {
+            if (!(/^[0-9]+$/.test(carbohydrates))) {
+                errArr.push("Carbohydrates must be a number")
+            }
+        } else if (!carbohydrates) {
+            errArr.push("Please fill out Carbohydrates field")
+        }
+
+        if (fat.length > 0) {
+            if (!(/^[0-9]+$/.test(fat))) {
+                errArr.push("Fat must be a number")
+            }
+        } else if (!fat) {
+            errArr.push("Please fill out Fat field")
+        }
+
+        if (protein.length > 0) {
+            if (!(/^[0-9]+$/.test(protein))) {
+                errArr.push("Protein must be a number")
+            }
+        } else if (!protein) {
+            errArr.push("Please fill out Protein field")
+        }
+
+        setErrors(errArr);
+    },[calories, carbohydrates, fat, protein])
 
     const updateCalories = (e) => {
         setCalories(e.target.value);
@@ -52,25 +90,35 @@ const DailyNutritionGoals = () => {
 
         switch (e.target.innerText) {
             case "Create New Goal":
-                await dispatch(createNewDng({
-                    "calories": parseInt(calories, 10),
-                    "carbohydrates": parseInt(carbohydrates, 10),
-                    "fat": parseInt(fat, 10),
-                    "protein": parseInt(protein, 10),
-                    "user_id": parseInt(user?.id, 10)
-                }))
-                setCounter(prev => prev + 1);
+                if (!errors) {
+                    await dispatch(createNewDng({
+                        "calories": parseInt(calories, 10),
+                        "carbohydrates": parseInt(carbohydrates, 10),
+                        "fat": parseInt(fat, 10),
+                        "protein": parseInt(protein, 10),
+                        "user_id": parseInt(user?.id, 10)
+                    }))
+                    setCounter(prev => prev + 1);
+                } else {
+                    alert("Please complete Daily Nutrition Goals");
+                }
                 break;
+
             case "Update Goal":
-                await dispatch(updateCurrentDng({
-                    "calories": parseInt(calories, 10),
-                    "carbohydrates": parseInt(carbohydrates, 10),
-                    "fat": parseInt(fat, 10),
-                    "protein": parseInt(protein, 10),
-                    "user_id": parseInt(user?.id, 10)
-                }))
-                setCounter(prev => prev + 1);
+                if (!errors) {
+                    await dispatch(updateCurrentDng({
+                        "calories": parseInt(calories, 10),
+                        "carbohydrates": parseInt(carbohydrates, 10),
+                        "fat": parseInt(fat, 10),
+                        "protein": parseInt(protein, 10),
+                        "user_id": parseInt(user?.id, 10)
+                    }))
+                    setCounter(prev => prev + 1);
+                } else {
+                    alert("Please complete Daily Nutrition Goals");
+                }
                 break;
+
             case "Delete Goal":
                 await dispatch(deleteUserDng(user?.id))
                 setCalories("");
