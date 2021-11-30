@@ -37,40 +37,56 @@ const DailyNutritionGoals = () => {
     useEffect(() => {
         let errArr = []
         if (currentGoal) {
-            if (calories.length > 0) {
+            if (calories && calories.length > 0) {
                 if (!(/^[0-9]+$/.test(calories))) {
                     errArr.push("Calories must be a number")
+                    setErrors(errArr);
+
                 }
             } else if (!calories) {
                 errArr.push("Please fill out Calories field")
+                setErrors(errArr);
+
             }
 
-            if (carbohydrates.length > 0) {
+            if (carbohydrates && carbohydrates.length > 0) {
                 if (!(/^[0-9]+$/.test(carbohydrates))) {
                     errArr.push("Carbohydrates must be a number")
+                    setErrors(errArr);
+
                 }
             } else if (!carbohydrates) {
                 errArr.push("Please fill out Carbohydrates field")
+                setErrors(errArr);
+
             }
 
-            if (fat.length > 0) {
+            if (fat && fat.length > 0) {
                 if (!(/^[0-9]+$/.test(fat))) {
                     errArr.push("Fat must be a number")
+                    setErrors(errArr);
+
                 }
             } else if (!fat) {
                 errArr.push("Please fill out Fat field")
+                setErrors(errArr);
+
             }
 
-            if (protein.length > 0) {
+            if (protein && protein.length > 0) {
                 if (!(/^[0-9]+$/.test(protein))) {
                     errArr.push("Protein must be a number")
+                    setErrors(errArr);
+
                 }
             } else if (!protein) {
                 errArr.push("Please fill out Protein field")
+                setErrors(errArr);
+
             }
         }
 
-        setErrors(errArr);
+        // setErrors(errArr);
     },[calories, carbohydrates, fat, protein])
 
     const updateCalories = (e) => {
@@ -91,7 +107,8 @@ const DailyNutritionGoals = () => {
 
         switch (e.target.innerText) {
             case "Create New Goal":
-                if (!errors) {
+                console.log(errors)
+                if (!errors.length) {
                     await dispatch(createNewDng({
                         "calories": parseInt(calories, 10),
                         "carbohydrates": parseInt(carbohydrates, 10),
@@ -100,13 +117,16 @@ const DailyNutritionGoals = () => {
                         "user_id": parseInt(user?.id, 10)
                     }))
                     setCounter(prev => prev + 1);
+                    alert("New Daily Nutrition Goal has been created.");
+                    break;
                 } else {
                     alert("Please complete Daily Nutrition Goals");
                 }
                 break;
 
             case "Update Goal":
-                if (!errors) {
+                console.log(errors)
+                if (!errors.length) {
                     await dispatch(updateCurrentDng({
                         "calories": parseInt(calories, 10),
                         "carbohydrates": parseInt(carbohydrates, 10),
@@ -114,7 +134,9 @@ const DailyNutritionGoals = () => {
                         "protein": parseInt(protein, 10),
                         "user_id": parseInt(user?.id, 10)
                     }))
+                    alert("Exist Daily Nutrition Goal has been updated.")
                     setCounter(prev => prev + 1);
+                    break;
                 } else {
                     alert("Please complete Daily Nutrition Goals");
                 }
@@ -127,6 +149,7 @@ const DailyNutritionGoals = () => {
                 setFat("");
                 setProtein("");
                 setCounter(prev => prev + 1);
+                alert("Daily Nutrition Goal has been deleted.")
                 break
         }
     }
@@ -147,7 +170,7 @@ const DailyNutritionGoals = () => {
                     <form className="dng-form" autoComplete="off">
                         <div className="errors">
                             {errors.map((error, ind) => (
-                            <div key={ind}>{error}</div>
+                            <div className="each-error" key={ind}>{error}</div>
                             ))}
                         </div>
                         <div className="dng-container">
