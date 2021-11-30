@@ -82,7 +82,7 @@ const LoginForm = () => {
         </form>
         <div className="login-redirect">
           <p>New to LeanOnMe? </p>{" "}
-          <NavLink className="signup-link" to="/signup">Create an account</NavLink>
+          <NavLink className="signup-link" to="/sign-up">Create an account</NavLink>
         </div>
       </div>
     </div>
