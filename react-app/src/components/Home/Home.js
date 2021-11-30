@@ -60,17 +60,17 @@ const Home = () => {
                             <NavLink to='/daily-nutrition-goals' className="dng-link">Change</NavLink>
                         </div>
                         <div className="rem-cal">
-                            <p>{remCal}</p>
+                            <p>{remCal ? remCal : 0}</p>
                             <button onClick={handleClick}>Add Food</button>
                         </div>
                         <div className="energy-calculation">
                             <div className="energy-top">
                                 <div className="cal-goal">
-                                    <p className="cal-dng">{currentGoal && currentGoal?.calories}</p>
+                                    <p className="cal-dng">{currentGoal ? currentGoal?.calories: 0}</p>
                                     <p className="cal-goal-text">GOAL</p>
                                 </div>
                                 <div className="current-food">
-                                    <p className="cur-food">{foodCal}</p>
+                                    <p className="cur-food">{foodCal ? foodCal : 0}</p>
                                     <p className="cur-food-text">FOOD</p>
                                 </div>
                             </div>
