@@ -6,8 +6,6 @@ import LogoutButton from '../auth/LogoutButton';
 const Navigation = () => {
   const user = useSelector((state) => state.session.user);
 
-  const sessionUser = useSelector((state) => state.session.user);
-
   return (
     <div className="combined-bar">
       <div className="navbar">
@@ -27,7 +25,10 @@ const Navigation = () => {
             // <NavLink to="/home" className="signup">
             //   Logout
             // </NavLink>
-            <LogoutButton />
+            <div className="nav-greeting-container">
+              <p className="nav-greeting">{user?.username}</p>
+              <LogoutButton />
+            </div>
           )}
         </div>
       </div>

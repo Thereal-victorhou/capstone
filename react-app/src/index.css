@@ -56,25 +56,13 @@
     cursor: pointer;
   }
 
-  .landing {
-    color: black !important;
-    background-color: white !important;
-  }
-
-  .landing-top {
-    display: flex;
-    justify-content: flex-start;
-    height: 700px;
-    padding-top: 13%;
-  }
-
   .nav-right {
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-left: auto;
     margin-right: 20px;
-    width: 140px;
+    width: 160px;
     justify-content: space-evenly;
 
   }
@@ -110,6 +98,20 @@
 
   .signup:hover {
     color: rgb(19, 34, 167);
+  }
+
+  .nav-greeting-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;;
+
+  }
+
+  .nav-greeting {
+    font-size: 16px;
+    font-weight: 500;
+    width: 100%;
+    border-right: 1px solid rgb(0,102,238);
   }
 
   .logout-btn {
@@ -150,6 +152,14 @@
   /* .hidden {
     display: none !important;
   } */
+
+  .landing {
+    display: flex;
+    align-items: center;
+    color: black;
+    height: 91.9999vh;
+    width: 100vw;
+  }
 
   .landing-top-left {
     display: flex;
