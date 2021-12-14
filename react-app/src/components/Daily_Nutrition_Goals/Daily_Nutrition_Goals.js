@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { userDng } from '../../store/daily_nutrition_goals';
 import { createNewDng } from '../../store/daily_nutrition_goals';
 import { updateCurrentDng } from "../../store/daily_nutrition_goals";
@@ -11,6 +12,7 @@ const DailyNutritionGoals = () => {
     const currentGoal = useSelector(state => state.dng[user?.id])
 
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const [errors, setErrors] = useState([]);
     const [calories, setCalories] = useState(currentGoal ? currentGoal?.calories : "");
@@ -171,13 +173,13 @@ const DailyNutritionGoals = () => {
 
     const handleDelete = async (e) => {
         e.preventDefault();
-        await dispatch(deleteUserDng(user?.id))
-        // setCalories("");
-        // setCarbohydrates("");
-        // setFat("");
-        // setProtein("");
-        setCounter(prev => prev + 1);
-        alert("Food item has been deleted.")
+        setCalories("");
+        setCarbohydrates("");
+        setFat("");
+        setProtein("");
+        alert("Food item has been deleted.");
+        await dispatch(deleteUserDng(user?.id));
+        history.push('/home');
     }
 
     return (
