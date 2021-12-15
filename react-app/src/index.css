@@ -149,6 +149,15 @@
     /* margin-left: 4rem; */
   }
 
+  .home-link-btn {
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    background-color:rgb(0,112,191);
+    border-style: none;
+    margin: 0;
+  }
+
   /* .hidden {
     display: none !important;
   } */

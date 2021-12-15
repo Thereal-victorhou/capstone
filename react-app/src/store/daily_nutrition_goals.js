@@ -84,18 +84,22 @@ export const deleteUserDng = (userId) => async (dispatch) => {
         headers: { 'Content-Type': 'application/json' }
     })
     let msg = await res.json();
+    console.log(msg);
     dispatch(deleteDng(msg))
 }
 // Reducer
 const dngReducer = (state = {}, action) => {
     let newState;
     switch(action.type) {
-        case GET_USER_DNG || CREATE_DNG || UPDATE_DNG || DELETE_DNG:
+        case GET_USER_DNG || CREATE_DNG || UPDATE_DNG:
             newState = {...state}
             action.dng.daily_goals.forEach(goal => {
                 newState[goal.user_id] = goal
             });
             return newState;
+        case DELETE_DNG:
+            return {};
+
         default:
             return state;
     }

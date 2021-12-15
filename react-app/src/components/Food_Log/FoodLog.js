@@ -163,34 +163,41 @@ const FoodLog = () => {
     const handleButton = async (e) => {
         e.preventDefault()
 
-        switch (e.target.innerText) {
-            case "Add New Item":
-                await dispatch(createFoodLog({
-                    "name": foodName,
-                    "meal": selectedMeal,
-                    "user_id": parseInt(user?.id, 10),
-                    "calories": parseInt(calories, 10),
-                    "carbohydrates": parseInt(carbohydrates, 10),
-                    "fat": parseInt(fat, 10),
-                    "protein": parseInt(protein, 10),
-                    "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
-                }));
-                alert("New food item has been added.")
-                break;
-            case "Update Item":
-                await dispatch(updateFoodLog({
-                    "name": foodName,
-                    "meal": selectedMeal,
-                    "user_id": parseInt(user?.id, 10),
-                    "calories": parseInt(calories, 10),
-                    "carbohydrates": parseInt(carbohydrates, 10),
-                    "fat": parseInt(fat, 10),
-                    "protein": parseInt(protein, 10),
-                    "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
-                }));
-                alert("Existing food item has been updated.")
-                break;
+        if (currentGoal) {
+            switch (e.target.innerText) {
+                case "Add New Item":
+                    await dispatch(createFoodLog({
+                        "name": foodName,
+                        "meal": selectedMeal,
+                        "user_id": parseInt(user?.id, 10),
+                        "calories": parseInt(calories, 10),
+                        "carbohydrates": parseInt(carbohydrates, 10),
+                        "fat": parseInt(fat, 10),
+                        "protein": parseInt(protein, 10),
+                        "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
+                    }));
+                    alert("New food item has been added.")
+                    break;
+                case "Update Item":
+                    await dispatch(updateFoodLog({
+                        "name": foodName,
+                        "meal": selectedMeal,
+                        "user_id": parseInt(user?.id, 10),
+                        "calories": parseInt(calories, 10),
+                        "carbohydrates": parseInt(carbohydrates, 10),
+                        "fat": parseInt(fat, 10),
+                        "protein": parseInt(protein, 10),
+                        "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
+                    }));
+                    alert("Existing food item has been updated.")
+                    break;
+            }
+
+        } else {
+            alert("A Daily Nutrition Goal must be created first.")
+            
         }
+
     }
 
 

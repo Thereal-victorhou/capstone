@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { userDng } from '../../store/daily_nutrition_goals';
 import { createNewDng } from '../../store/daily_nutrition_goals';
 import { updateCurrentDng } from "../../store/daily_nutrition_goals";
@@ -11,6 +12,7 @@ const DailyNutritionGoals = () => {
     const currentGoal = useSelector(state => state.dng[user?.id])
 
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const [errors, setErrors] = useState([]);
     const [calories, setCalories] = useState(currentGoal ? currentGoal?.calories : "");
@@ -36,72 +38,70 @@ const DailyNutritionGoals = () => {
 
     useEffect(() => {
         let errArr = []
-        if (currentGoal) {
-            if (calories && calories.length > 0) {
-                if (!(/^[0-9]+$/.test(calories))) {
-                    errArr.push("Calories must be a number")
-                    setErrors(errArr);
-                } else {
-                    errArr.pop()
-                    setErrors(errArr)
-                }
 
-            } else if (!calories) {
-                errArr.push("Please fill out Calories field")
+        if (calories && calories.length > 0) {
+            if (!(/^[0-9]+$/.test(calories))) {
+                errArr.push("Calories must be a number")
                 setErrors(errArr);
-
+            } else {
+                errArr.pop()
+                setErrors(errArr)
             }
 
-            if (carbohydrates && carbohydrates.length > 0) {
-                if (!(/^[0-9]+$/.test(carbohydrates))) {
-                    errArr.push("Carbohydrates must be a number")
-                    setErrors(errArr);
+        } else if (!calories) {
+            errArr.push("Please fill out Calories field")
+            setErrors(errArr);
 
-                } else {
-                    errArr.pop()
-                    setErrors(errArr)
-                }
-
-            } else if (!carbohydrates) {
-                errArr.push("Please fill out Carbohydrates field")
-                setErrors(errArr);
-
-            }
-
-            if (fat && fat.length > 0) {
-                if (!(/^[0-9]+$/.test(fat))) {
-                    errArr.push("Fat must be a number")
-                    setErrors(errArr);
-
-                } else {
-                    errArr.pop()
-                    setErrors(errArr)
-                }
-            } else if (!fat) {
-                errArr.push("Please fill out Fat field")
-                setErrors(errArr);
-
-            }
-
-            if (protein && protein.length > 0) {
-                if (!(/^[0-9]+$/.test(protein))) {
-                    errArr.push("Protein must be a number")
-                    setErrors(errArr);
-
-                } else {
-                    errArr.pop()
-                    setErrors(errArr)
-                }
-
-            } else if (!protein) {
-                errArr.push("Please fill out Protein field")
-                setErrors(errArr);
-
-            }
         }
 
-        // setErrors(errArr);
-    },[calories, carbohydrates, fat, protein, counter])
+        if (carbohydrates && carbohydrates.length > 0) {
+            if (!(/^[0-9]+$/.test(carbohydrates))) {
+                errArr.push("Carbohydrates must be a number")
+                setErrors(errArr);
+
+            } else {
+                errArr.pop()
+                setErrors(errArr)
+            }
+
+        } else if (!carbohydrates) {
+            errArr.push("Please fill out Carbohydrates field")
+            setErrors(errArr);
+
+        }
+
+        if (fat && fat.length > 0) {
+            if (!(/^[0-9]+$/.test(fat))) {
+                errArr.push("Fat must be a number")
+                setErrors(errArr);
+
+            } else {
+                errArr.pop()
+                setErrors(errArr)
+            }
+        } else if (!fat) {
+            errArr.push("Please fill out Fat field")
+            setErrors(errArr);
+
+        }
+
+        if (protein && protein.length > 0) {
+            if (!(/^[0-9]+$/.test(protein))) {
+                errArr.push("Protein must be a number")
+                setErrors(errArr);
+
+            } else {
+                errArr.pop()
+                setErrors(errArr)
+            }
+
+        } else if (!protein) {
+            errArr.push("Please fill out Protein field")
+            setErrors(errArr);
+
+        }
+
+    },[calories, carbohydrates, fat, protein])
 
     const updateCalories = (e) => {
         setCalories(e.target.value);
@@ -169,15 +169,17 @@ const DailyNutritionGoals = () => {
         }
     }
 
-    const handleDelete = async (e) => {
+    const handleDelete = async(e) => {
         e.preventDefault();
-        await dispatch(deleteUserDng(user?.id))
-        // setCalories("");
-        // setCarbohydrates("");
-        // setFat("");
-        // setProtein("");
-        setCounter(prev => prev + 1);
-        alert("Food item has been deleted.")
+
+        if (currentGoal) {
+            await dispatch(deleteUserDng(user?.id));
+            alert("Food item has been deleted.");
+            history.push('/home');
+
+        } else {
+            alert("Cannot delete Daily Nutrition Goal because it does not exist.")
+        }
     }
 
     return (
