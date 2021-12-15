@@ -35,7 +35,7 @@ export const userDng = (userId) => async (dispatch) => {
     const res = await fetch(`/api/dng/${userId}`);
     let dng = await res.json();
 
-    if (!(dng.daily_goals === "False")) {
+    if (dng.daily_goals) {
         dispatch(getUserDng(dng));
     }
 }
@@ -84,7 +84,6 @@ export const deleteUserDng = (userId) => async (dispatch) => {
         headers: { 'Content-Type': 'application/json' }
     })
     let msg = await res.json();
-    console.log(msg);
     dispatch(deleteDng(msg))
 }
 // Reducer
@@ -99,7 +98,6 @@ const dngReducer = (state = {}, action) => {
             return newState;
         case DELETE_DNG:
             return {};
-
         default:
             return state;
     }

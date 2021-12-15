@@ -36,7 +36,15 @@ const Home = () => {
         }
     },[remCal, currentGoal, foodlog, foodCal])
 
-    const handleClick = () => history.push('/food-log');
+    const handleClick = (e) => {
+        e.preventDefault();
+
+        if (currentGoal) {
+            history.push('/food-log')
+        } else {
+            alert('Please create a Daily Nutrition Goal before adding food items')
+        }
+    };
 
     return (
         <div className="home-main">
