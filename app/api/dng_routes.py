@@ -12,7 +12,7 @@ dng_routes = Blueprint('daily-nutrition-goals', __name__)
 def get_goals(user_id):
     goals = Daily_Nutrition_Goals.query.filter_by(user_id=user_id).all()
     if not goals:
-        return {"daily_goals": "False"}
+        return {}
     return {'daily_goals': [goal.to_dict() for goal in goals]}
 
 # Update dng for current user
