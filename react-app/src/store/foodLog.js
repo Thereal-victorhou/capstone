@@ -40,6 +40,7 @@ export const userFoodLog = (userId) => async (dispatch) => {
 // Create new foodlog
 export const createFoodLog = (nfl) => async (dispatch) => {
     const { user_id } = nfl;
+    console.log("inside create thunk==========", nfl);
     const res = await fetch(`api/food-log/${user_id}`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -73,7 +74,6 @@ export const updateFoodLog = (ufl) => async (dispatch) => {
 
 // Delete food log
 export const deleteFoodLog = ({user_id, meal}) => async (dispatch) => {
-    console.log("userId==========", user_id);
     const res = await fetch(`/api/food-log/${user_id}`,{
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
