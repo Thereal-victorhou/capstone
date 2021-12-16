@@ -22,6 +22,10 @@ const changeFoodLog = (food) => ({
     type: UPDATE_FOOD_LOG,
     food
 });
+const deletefl = (food) => ({
+    type: DELETE_FOOD_LOG,
+    food
+})
 
 // Thunk
 // Get user foodlog
@@ -40,7 +44,6 @@ export const userFoodLog = (userId) => async (dispatch) => {
 // Create new foodlog
 export const createFoodLog = (nfl) => async (dispatch) => {
     const { user_id } = nfl;
-    console.log("inside create thunk==========", nfl);
     const res = await fetch(`api/food-log/${user_id}`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -74,21 +77,29 @@ export const updateFoodLog = (ufl) => async (dispatch) => {
 
 // Delete food log
 export const deleteFoodLog = ({user_id, meal}) => async (dispatch) => {
+    console.log("before delete dispatch")
     const res = await fetch(`/api/food-log/${user_id}`,{
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({meal: meal})
-    })
+    });
     const remaining = await res.json();
-    dispatch(getFoodLog(remaining))
+    console.log("inside delete thunk==========", remaining);
+    dispatch(deletefl(remaining))
 };
 
 // Reducer
 const foodLogReducer = (state = {}, action) => {
     let newState;
     switch(action.type) {
-        case GET_FOOD_LOG || CREATE_FOOD_LOG || UPDATE_FOOD_LOG || DELETE_FOOD_LOG:
+        case GET_FOOD_LOG || CREATE_FOOD_LOG || UPDATE_FOOD_LOG:
             newState = {...state}
+            action.food.user_food_log.forEach(log => {
+                newState[log.id] = log;
+            })
+            return newState;
+        case DELETE_FOOD_LOG:
+            newState = {}
             action.food.user_food_log.forEach(log => {
                 newState[log.id] = log;
             })

@@ -17,6 +17,7 @@ def get_food_log(user_id):
     user_dinner = db.session.query(Dinner).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first()
 
     if not user_breakfast and not user_lunch and not user_dinner:
+        # print({'user_food_log': 'False'})
         return {'user_food_log': 'False'}
 
     # breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
@@ -25,35 +26,42 @@ def get_food_log(user_id):
 
     if not user_lunch and not user_dinner:
         breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
+        # print("\n\n\n\n", {"user_food_log": [{**breakfast[0], **breakfast[1]}]}, "\n\n\n\n")
         return {'user_food_log': [{**breakfast[0], **breakfast[1]}]}
 
     if not user_dinner and not user_breakfast:
         lunch = [lunch.to_dict() for lunch in list(user_lunch)]
+        # print("\n\n\n\n", {'user_food_log': [{**lunch[0], **lunch[1]}]}, "\n\n\n\n")
         return {'user_food_log': [{**lunch[0], **lunch[1]}]}
 
     if not user_breakfast and not user_lunch:
         dinner = [dinner.to_dict() for dinner in list(user_dinner)]
+        # print("\n\n\n\n", {'user_food_log': [{**dinner[0], **dinner[1]}]}, "\n\n\n\n")
         return {'user_food_log': [{**dinner[0], **dinner[1]}]}
 
     if not user_breakfast:
         lunch = [lunch.to_dict() for lunch in list(user_lunch)]
         dinner = [dinner.to_dict() for dinner in list(user_dinner)]
+        # print("\n\n\n\n", {'user_food_log': [{**lunch[0], **lunch[1]}, {**dinner[0], **dinner[1]}]}, "\n\n\n\n")
         return {'user_food_log': [{**lunch[0], **lunch[1]}, {**dinner[0], **dinner[1]}]}
 
     if not user_lunch:
         breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
         dinner = [dinner.to_dict() for dinner in list(user_dinner)]
+        # print("\n\n\n\n", {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**dinner[0], **dinner[1]}]}, "\n\n\n\n")
         return {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**dinner[0], **dinner[1]}]}
 
     if not user_dinner:
         breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
         lunch = [lunch.to_dict() for lunch in list(user_lunch)]
+        # print("\n\n\n\n", {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**lunch[0], **lunch[1]}]}, "\n\n\n\n")
         return {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**lunch[0], **lunch[1]}]}
 
     breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
     lunch = [lunch.to_dict() for lunch in list(user_lunch)]
     dinner = [dinner.to_dict() for dinner in list(user_dinner)]
 
+    # print("\n\n\n\n", {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**lunch[0], **lunch[1]}, {**dinner[0], **dinner[1]}]}, "\n\n\n\n")
     return {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**lunch[0], **lunch[1]}, {**dinner[0], **dinner[1]}]}
 
 
@@ -184,6 +192,7 @@ def delete_food_log(user_id):
             Lunch.query.filter_by(foodlog_id=log.to_dict()['id']).delete()
             Food_Log.query.filter_by(user_id=user_id, meal='lunch').delete()
             db.session.commit()
+            get_food_log(user_id)
             return get_food_log(user_id)
 
         if log.to_dict()['meal'] == 'dinner':

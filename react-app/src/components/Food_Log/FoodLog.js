@@ -207,6 +207,7 @@ const FoodLog = () => {
         e.preventDefault();
         await dispatch(deleteFoodLog({"user_id": user?.id, "meal": selectedMeal}))
         alert("Food item has been deleted.")
+        history.push('/home')
     }
 
     return (
