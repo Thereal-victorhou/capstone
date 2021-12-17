@@ -7,6 +7,9 @@ const UPDATE_FOOD_LOG = "foodlog/UPDATE_FOOD_LOG";
 
 const DELETE_FOOD_LOG = "foodlog/DELETE_FOOD_LOG";
 
+const DELETE_ALL_LOGS = "foodlog/DELETE_ALL_LOGS";
+
+
 // Action
 const getFoodLog = (food) => ({
     type: GET_FOOD_LOG,
@@ -25,6 +28,10 @@ const changeFoodLog = (food) => ({
 const deletefl = (food) => ({
     type: DELETE_FOOD_LOG,
     food
+})
+
+const deleteAll = (food) => ({
+    type: DELETE_ALL_LOGS
 })
 
 // Thunk
@@ -84,8 +91,20 @@ export const deleteFoodLog = ({user_id, meal}) => async (dispatch) => {
         body: JSON.stringify({meal: meal})
     });
     const remaining = await res.json();
-    console.log("inside delete thunk==========", remaining);
+    // console.log("inside delete thunk==========", remaining);
     dispatch(deletefl(remaining))
+};
+
+// Delete all food logs
+export const deleteAllFoodLog = (user_id) => async (dispatch) => {
+    console.log("inside delete all=========", typeof user_id)
+    const res = await fetch(`/api/food-log/all/${user_id}`,{
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+    });
+    const remaining = await res.json();
+    // console.log("inside delete thunk==========", remaining);
+    dispatch(deleteAllFoodLog(remaining))
 };
 
 // Reducer
@@ -104,6 +123,9 @@ const foodLogReducer = (state = {}, action) => {
                 newState[log.id] = log;
             })
             return newState;
+
+        case DELETE_ALL_LOGS:
+            return {};
         default:
             return state;
     }

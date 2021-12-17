@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import db, Daily_Nutrition_Goals
+from app.models import db, Daily_Nutrition_Goals, Food_Log, Breakfast, Lunch, Dinner
 from datetime import datetime
 
 # dng == daily nutrition goals
@@ -69,6 +69,24 @@ def create_goals():
 @dng_routes.route('/<int:user_id>', methods=['DELETE'])
 @login_required
 def delete_dng(user_id):
+    dng_id = Daily_Nutrition_Goals.query.filter_by(user_id=user_id).first().to_dict()['id']
+    # breakfast = Breakfast.query.filter_by(daily_nutrition_goals_id=dng_id).first().to_dict()
+    food_log = Food_Log.query.filter_by(user_id=user_id).all()
+    # print("\n\n\n\n\n", [log.to_dict() for log in food_log], "\n\n\n\n\n")
+
+    # for log in food_log:
+    #     if log.to_dict()['meal'] == 'breakfast':
+    #         Breakfast.query.filter_by(daily_nutrition_goals_id=dng_id).delete()
+    #         Food_Log.query.filter_by(user_id=user_id, meal='breakfast').delete()
+
+    #     if log.to_dict()['meal'] == 'lunch':
+    #         Lunch.query.filter_by(daily_nutrition_goals_id=dng_id).delete()
+    #         Food_Log.query.filter_by(user_id=user_id, meal='lunch').delete()
+
+    #     if log.to_dict()['meal'] == 'dinner':
+    #         Dinner.query.filter_by(daily_nutrition_goals_id=dng_id).delete()
+    #         Food_Log.query.filter_by(user_id=user_id, meal='dinner').delete()
+
     Daily_Nutrition_Goals.query.filter_by(user_id=user_id).delete()
     db.session.commit()
 
