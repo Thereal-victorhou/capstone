@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { userDng } from '../../store/daily_nutrition_goals';
-import { createNewDng } from '../../store/daily_nutrition_goals';
-import { updateCurrentDng } from "../../store/daily_nutrition_goals";
-import { deleteUserDng } from "../../store/daily_nutrition_goals";
+import { userDng, createNewDng, updateCurrentDng, deleteUserDng } from '../../store/daily_nutrition_goals';
+import { deleteAllFoodLog } from '../../store/foodLog';
 
 const DailyNutritionGoals = () => {
 
@@ -173,9 +171,11 @@ const DailyNutritionGoals = () => {
         e.preventDefault();
 
         if (currentGoal) {
+            await dispatch(deleteAllFoodLog(user?.id));
             await dispatch(deleteUserDng(user?.id));
             alert("Food item has been deleted.");
             history.push('/home');
+
 
         } else {
             alert("Cannot delete Daily Nutrition Goal because it does not exist.")

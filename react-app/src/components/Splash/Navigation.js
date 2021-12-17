@@ -1,16 +1,20 @@
 import { useEffect, useState, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { NavLink, useHistory} from "react-router-dom";
 import LogoutButton from '../auth/LogoutButton';
+import { userFoodLog } from '../../store/foodLog';
+
 
 const Navigation = () => {
     const user = useSelector((state) => state.session.user);
     const currentGoal = useSelector(state => state.dng[user?.id]);
     const history = useHistory();
+    const dispatch = useDispatch();
 
-    const handleClick = (e) => {
+    const handleClick = async (e) => {
         e.preventDefault();
         if (!currentGoal) {
+            await dispatch(userFoodLog(user?.id));
             alert('Please create a Daily Nutrition Goal before adding a new food.')
         } else {
             history.push('/food-log')
