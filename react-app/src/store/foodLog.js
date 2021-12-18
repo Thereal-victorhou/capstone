@@ -84,7 +84,6 @@ export const updateFoodLog = (ufl) => async (dispatch) => {
 
 // Delete food log
 export const deleteFoodLog = ({user_id, meal}) => async (dispatch) => {
-    console.log("before delete dispatch")
     const res = await fetch(`/api/food-log/${user_id}`,{
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
@@ -104,7 +103,7 @@ export const deleteAllFoodLog = (user_id) => async (dispatch) => {
     });
     const remaining = await res.json();
     // console.log("inside delete thunk==========", remaining);
-    dispatch(deleteAllFoodLog(remaining))
+    dispatch(deleteAll(remaining))
 };
 
 // Reducer

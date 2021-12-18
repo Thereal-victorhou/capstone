@@ -130,6 +130,7 @@ const DailyNutritionGoals = () => {
                     }))
                     setCounter(prev => prev + 1);
                     alert("New Daily Nutrition Goal has been created.");
+                    history.push('/home');
                     break;
                 } else {
                     alert("Please complete Daily Nutrition Goals");
@@ -148,6 +149,7 @@ const DailyNutritionGoals = () => {
                     }))
                     alert("Exist Daily Nutrition Goal has been updated.")
                     setCounter(prev => prev + 1);
+                    history.push('/home');
                     break;
                 } else {
                     alert("Please complete Daily Nutrition Goals");
@@ -171,11 +173,13 @@ const DailyNutritionGoals = () => {
         e.preventDefault();
 
         if (currentGoal) {
+            console.log("before dispatches")
             await dispatch(deleteAllFoodLog(user?.id));
+            console.log("in between dispatches")
             await dispatch(deleteUserDng(user?.id));
+            console.log("after dispatches")
             alert("Food item has been deleted.");
             history.push('/home');
-
 
         } else {
             alert("Cannot delete Daily Nutrition Goal because it does not exist.")
