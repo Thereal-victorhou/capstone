@@ -43,7 +43,7 @@ export const userFoodLog = (userId) => async (dispatch) => {
     if (!(foodLog.user_food_log === "False")) {
         dispatch(getFoodLog(foodLog));
     } else {
-    const err = {"user_food_log": [{msg: "No Current Food Log"}]}
+    const err = {"user_food_log": [{}]}
         dispatch(getFoodLog(err));
     }
 }
@@ -60,7 +60,7 @@ export const createFoodLog = (nfl) => async (dispatch) => {
     if (!(log.user_food_log === 'False')){
         dispatch(newFoodLog(log))
     } else {
-        log = {"user_food_log": [{msg: "No Current Food Log"}]}
+        log = {"user_food_log": [{}]}
         dispatch(newFoodLog(log))
     }
 }
@@ -77,7 +77,7 @@ export const updateFoodLog = (ufl) => async (dispatch) => {
     if (!(log.user_food_log === 'False')) {
         dispatch(changeFoodLog(log))
     } else {
-        log = {"user_food_log": [{msg: "No Current Food Log"}]}
+        log = {"user_food_log": [{}]}
         dispatch(changeFoodLog(log))
     }
 }
@@ -89,14 +89,19 @@ export const deleteFoodLog = ({user_id, meal}) => async (dispatch) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({meal: meal})
     });
-    const remaining = await res.json();
-    // console.log("inside delete thunk==========", remaining);
-    dispatch(deletefl(remaining))
+    let remaining = await res.json();
+    console.log("inside delete thunk==========", remaining);
+    if (!(remaining.user_food_log === 'False')) {
+        dispatch(deletefl(remaining))
+    } else {
+        remaining = {"user_food_log": [{}]}
+        dispatch(deletefl(remaining))
+    }
 };
 
 // Delete all food logs
 export const deleteAllFoodLog = (user_id) => async (dispatch) => {
-    console.log("inside delete all=========", typeof user_id)
+    // console.log("inside delete all=========", typeof user_id)
     const res = await fetch(`/api/food-log/all/${user_id}`,{
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' }
