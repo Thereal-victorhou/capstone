@@ -34,69 +34,114 @@ const DailyNutritionGoals = () => {
         currentGoal?currentGoal.protein:protein, counter]
     )
 
+    // Validations
     useEffect(() => {
-        let errArr = []
+        let errArr = [];
+        let typeArr = [];
 
         if (calories && calories.length > 0) {
             if (!(/^[0-9]+$/.test(calories))) {
-                errArr.push("Calories must be a number")
+                errArr.push({msg: "Calories must be a number", type: "calories"})
                 setErrors(errArr);
+                console.log("errArr====================>",errArr)
+
             } else {
-                errArr.pop()
+                errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'calories'), 1))
                 setErrors(errArr)
+                console.log("errArr====================>",errArr)
+
             }
 
         } else if (!calories) {
-            errArr.push("Please fill out Calories field")
+            errArr.push({msg: "Please fill out Calories field"})
             setErrors(errArr);
+            console.log("errArr====================>",errArr)
 
         }
 
         if (carbohydrates && carbohydrates.length > 0) {
             if (!(/^[0-9]+$/.test(carbohydrates))) {
-                errArr.push("Carbohydrates must be a number")
+                errArr.push({msg: "Carbohydrates must be a number", type: "carbohydrates"})
                 setErrors(errArr);
+                typeArr.push("carbohydrates")
+                console.log("errArr====================>",errArr)
+
+            } else if(calories && (carbohydrates*4 > calories)) {
+                errArr.push({msg: "Carbohydrates cannot exceed calories", type: "carbohydrates"})
+                setErrors(errArr);
+                console.log("errArr====================>",errArr)
 
             } else {
-                errArr.pop()
+                errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'carbohydrates'), 1))
                 setErrors(errArr)
+                console.log("errArr====================>",errArr)
             }
 
         } else if (!carbohydrates) {
-            errArr.push("Please fill out Carbohydrates field")
+            errArr.push({msg: "Please fill out Carbohydrates field"})
             setErrors(errArr);
+            console.log("errArr====================>",errArr)
 
         }
 
         if (fat && fat.length > 0) {
             if (!(/^[0-9]+$/.test(fat))) {
-                errArr.push("Fat must be a number")
+                errArr.push({msg: "Fat must be a number", type: "fat"})
                 setErrors(errArr);
+                console.log("errArr====================>",errArr)
+
+            } else if (calories && (fat*9 > calories)) {
+                    errArr.push({msg: "Fat cannot exceed calories", type: "fat"})
+                    setErrors(errArr);
+                    console.log("errArr====================>",errArr)
 
             } else {
-                errArr.pop()
+                // errArr.pop()
+                errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'fat'), 1))
                 setErrors(errArr)
+                console.log("errArr====================>",errArr)
             }
+
         } else if (!fat) {
-            errArr.push("Please fill out Fat field")
+            errArr.push({msg: "Please fill out Fat field"})
             setErrors(errArr);
+            console.log("errArr====================>",errArr)
 
         }
 
         if (protein && protein.length > 0) {
             if (!(/^[0-9]+$/.test(protein))) {
-                errArr.push("Protein must be a number")
+                errArr.push({msg: "Protein must be a number", type: "protein"})
                 setErrors(errArr);
+                console.log("errArr====================>",errArr)
+
+            } else if(calories && (protein*4 > calories)) {
+                errArr.push({msg: `Protein cannot exceed calories`, type: "protein"})
+                setErrors(errArr);
+                console.log("errArr====================>",errArr)
+
 
             } else {
-                errArr.pop()
+                errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'protein'), 1))
                 setErrors(errArr)
+                console.log("errArr====================>",errArr)
             }
 
         } else if (!protein) {
-            errArr.push("Please fill out Protein field")
+            errArr.push({msg: "Please fill out Protein field"})
             setErrors(errArr);
+            console.log("errArr====================>",errArr)
 
+        }
+
+        if (calories && carbohydrates && fat && protein) {
+            if ((carbohydrates*4 + fat*9 + protein*4) > calories){
+                errArr.push({msg: `Sumn of macros cannot exceed calories`, type: "total"})
+            } else {
+                errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'total'), 1))
+                setErrors(errArr)
+                console.log("errArr====================>",errArr)
+            }
         }
 
     },[calories, carbohydrates, fat, protein])
@@ -173,11 +218,11 @@ const DailyNutritionGoals = () => {
         e.preventDefault();
 
         if (currentGoal) {
-            console.log("before dispatches")
+            // console.log("before dispatches")
             await dispatch(deleteAllFoodLog(user?.id));
-            console.log("in between dispatches")
+            // console.log("in between dispatches")
             await dispatch(deleteUserDng(user?.id));
-            console.log("after dispatches")
+            // console.log("after dispatches")
             alert("Food item has been deleted.");
             history.push('/home');
 
@@ -202,7 +247,7 @@ const DailyNutritionGoals = () => {
                     <form className="dng-form" autoComplete="off">
                         <div className="errors">
                             {errors.map((error, ind) => (
-                            <div className="each-error" key={ind}>{error}</div>
+                            <div className="each-error" key={ind}>{error.msg}</div>
                             ))}
                         </div>
                         <div className="dng-container">
