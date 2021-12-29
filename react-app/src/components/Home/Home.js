@@ -15,15 +15,14 @@ const Home = () => {
     const user = useSelector(state => state.session.user)
     const currentGoal = useSelector(state => state.dng[user?.id])
     const foodlog = useSelector(state => Object.values(state.foodlog));
-    if (foodlog) {
-        console.log("foodlog=======", foodlog)
-    }
+
     const dispatch = useDispatch();
 
-    useEffect( async() => {
+    useEffect(() => {
         dispatch(userDng(user?.id));
         dispatch(userFoodLog(user?.id));
-    }, [])
+    }, [dispatch, counter])
+
 
     useEffect(() => {
         if (foodlog) {

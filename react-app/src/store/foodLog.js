@@ -42,10 +42,11 @@ export const userFoodLog = (userId) => async (dispatch) => {
 
     if (!(foodLog.user_food_log === "False")) {
         dispatch(getFoodLog(foodLog));
-    } else {
-    const err = {"user_food_log": [{}]}
-        dispatch(getFoodLog(err));
     }
+    // else {
+    // const err = {"user_food_log": [{}]}
+    //     dispatch(getFoodLog(err));
+    // }
 }
 
 // Create new foodlog
@@ -57,12 +58,14 @@ export const createFoodLog = (nfl) => async (dispatch) => {
         body: JSON.stringify(nfl)
     })
     let log = await res.json();
+    console.log("create thunk =================", log)
     if (!(log.user_food_log === 'False')){
         dispatch(newFoodLog(log))
-    } else {
-        log = {"user_food_log": [{}]}
-        dispatch(newFoodLog(log))
     }
+    // else {
+    //     log = {"user_food_log": [{}]}
+    //     dispatch(newFoodLog(log))
+    // }
 }
 
 // Update new foodlog
@@ -76,10 +79,11 @@ export const updateFoodLog = (ufl) => async (dispatch) => {
     let log = await res.json();
     if (!(log.user_food_log === 'False')) {
         dispatch(changeFoodLog(log))
-    } else {
-        log = {"user_food_log": [{}]}
-        dispatch(changeFoodLog(log))
     }
+    // else {
+    //     log = {"user_food_log": [{}]}
+    //     dispatch(changeFoodLog(log))
+    // }
 }
 
 // Delete food log
@@ -91,12 +95,7 @@ export const deleteFoodLog = ({user_id, meal}) => async (dispatch) => {
     });
     let remaining = await res.json();
     console.log("inside delete thunk==========", remaining);
-    if (!(remaining.user_food_log === 'False')) {
-        dispatch(deletefl(remaining))
-    } else {
-        remaining = {"user_food_log": [{}]}
-        dispatch(deletefl(remaining))
-    }
+    dispatch(deletefl(remaining));
 };
 
 // Delete all food logs
@@ -115,7 +114,25 @@ export const deleteAllFoodLog = (user_id) => async (dispatch) => {
 const foodLogReducer = (state = {}, action) => {
     let newState;
     switch(action.type) {
-        case GET_FOOD_LOG || CREATE_FOOD_LOG || UPDATE_FOOD_LOG:
+        case GET_FOOD_LOG:
+            if (action.food.user_food_log === "False") {
+                return state;
+            }
+            newState = {...state}
+            action.food.user_food_log.forEach(log => {
+                newState[log.id] = log;
+            })
+            return newState;
+
+        case CREATE_FOOD_LOG:
+            newState = {...state}
+            console.log(action.food)
+            action.food.user_food_log.forEach(log => {
+                newState[log.id] = log;
+                newState[log.id] = {...newState[log.id]}
+            })
+            return newState;
+        case UPDATE_FOOD_LOG:
             newState = {...state}
             action.food.user_food_log.forEach(log => {
                 newState[log.id] = log;
@@ -123,10 +140,14 @@ const foodLogReducer = (state = {}, action) => {
             return newState;
 
         case DELETE_FOOD_LOG:
-            newState = {}
-            action.food.user_food_log.forEach(log => {
-                newState[log.id] = log;
-            })
+            newState = {...state}
+            console.log("xxxxx======", action)
+            delete newState[action.food.user_food_log]
+            // action.food.user_food_log.forEach(log => {
+            //     // delete newState[log.id];
+            //     console.log("===============", log)
+            // })
+
             return newState;
 
         case DELETE_ALL_LOGS:
