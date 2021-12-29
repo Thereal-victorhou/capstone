@@ -121,6 +121,7 @@ const foodLogReducer = (state = {}, action) => {
                 newState[log.id] = log;
             })
             return newState;
+
         case DELETE_FOOD_LOG:
             newState = {}
             action.food.user_food_log.forEach(log => {
