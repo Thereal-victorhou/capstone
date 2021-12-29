@@ -183,10 +183,17 @@ def delete_food_log(user_id):
     # db.session.commit()
     for log in food_log:
         if log.to_dict()['meal'] == 'breakfast':
+            bfast = Breakfast.query.filter_by(foodlog_id=log.to_dict()['id'])
+            print("\n\n\n\n", {"obj": bf.to_dict() for bf in bfast}, "\n\n\n\n")
+            bfastInfo = {"obj": bf.to_dict() for bf in bfast}
+            foodlog_id = bfastInfo['obj']['foodlog_id']
+            # print("\n\n\n\n", bfastId, "\n\n\n\n")
             Breakfast.query.filter_by(foodlog_id=log.to_dict()['id']).delete()
             Food_Log.query.filter_by(user_id=user_id, meal='breakfast').delete()
+            # print(" \n\n\n\n After Delete", bfastId, "\n\n\n\n")
+
             db.session.commit()
-            return get_food_log(user_id)
+            return {"user_food_log": foodlog_id}
 
         if log.to_dict()['meal'] == 'lunch':
             Lunch.query.filter_by(foodlog_id=log.to_dict()['id']).delete()
