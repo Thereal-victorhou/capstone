@@ -1,3 +1,5 @@
+
+import React from 'react';
 import { useState, useEffect } from "react";
 import {useDispatch, useSelector} from 'react-redux';
 import { NavLink, useHistory } from "react-router-dom";
@@ -8,33 +10,46 @@ import './Home.css';
 const Home = () => {
     const [remCal, setRemCal] = useState(0)
     const [foodCal, setFoodCal] = useState(0);
+    const [counter, setCounter] = useState(0);
     const history = useHistory();
     const user = useSelector(state => state.session.user)
     const currentGoal = useSelector(state => state.dng[user?.id])
     const foodlog = useSelector(state => Object.values(state.foodlog));
-
+    if (foodlog) {
+        console.log("foodlog=======", foodlog)
+    }
     const dispatch = useDispatch();
 
-    useEffect(() => {
+    useEffect( async() => {
         dispatch(userDng(user?.id));
         dispatch(userFoodLog(user?.id));
     }, [])
 
     useEffect(() => {
         if (foodlog) {
+            // let emptyObj = foodlog[1];
+            // console.log(emptyObj)
+            // if (emptyObj === null) {
+            //     setFoodCal(foodlog[0]?.calories)
+            // }
             const calArr = [];
             foodlog.forEach(log => calArr.push(log.calories));
             const totalCal = calArr.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
             setFoodCal(totalCal)
+
             if (currentGoal) {
-                setRemCal(currentGoal.calories - totalCal)
+                if (!totalCal) {
+                    setRemCal(currentGoal.calories)
+                } else {
+                    setRemCal(currentGoal.calories - totalCal)
+                }
                 const progressBar = document.querySelector(".progress-bar");
                 progressBar.style.width = '0%';
                 progressBar.style.width = `${(totalCal / currentGoal.calories) * 100}%`;
                 progressBar.style.borderRight = '2px solid rgb(205,205,205)';
             }
         }
-    },[remCal, currentGoal, foodlog, foodCal])
+    },[remCal, currentGoal, foodlog, foodCal, counter])
 
     const handleClick = (e) => {
         e.preventDefault();
