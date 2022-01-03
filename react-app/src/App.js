@@ -33,26 +33,19 @@ function App() {
   return (
     <BrowserRouter>
       {/* <NavBar /> */}
+      <Navigation />
       <Switch>
         <Route path='/login' exact={true}>
-          <Navigation />
           <LoginForm />
-          <Footer />
         </Route>
         <Route path='/sign-up' exact={true}>
-          <Navigation />
           <SignUpForm />
-          <Footer />
         </Route>
         <Route path='/' exact={true} >
-          <Navigation />
           <Splash />
-          <Footer />
         </Route>
         <Route path='/home' exact={true}>
-          <Navigation />
           <Home />
-          <Footer />
         </Route>
         <ProtectedRoute path='/users' exact={true} >
           <UsersList/>
@@ -61,16 +54,13 @@ function App() {
           <User />
         </ProtectedRoute>
         <Route path='/daily-nutrition-goals' exact={true}>
-          <Navigation />
           <DailyNutritionGoals />
-          <Footer />
         </Route>
         <Route path='/food-log' exact={true}>
-          <Navigation />
           <FoodLog />
-          <Footer />
         </Route>
       </Switch>
+      <Footer />
     </BrowserRouter>
   );
 }

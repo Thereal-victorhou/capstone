@@ -25,6 +25,13 @@ const FoodLog = () => {
     const [carbohydrates, setCarbohydrates] = useState(defaultLog ? defaultLog.carbohydrates: "");
     const [fat, setFat] = useState(defaultLog ? defaultLog.fat: "");
     const [protein, setProtein] = useState(defaultLog ? defaultLog.protein: "");
+
+    const [nameBool, setNameBool] = useState(false);
+    const [calBool, setCalBool] = useState(false);
+    const [carbBool, setCarbBool] = useState(false);
+    const [fatBool, setFatBool] = useState(false);
+    const [proBool, setProBool] = useState(false);
+
     const [count, setCount] = useState(0);
 
     const [curLog, setCurFoodLog] = useState({})
@@ -62,85 +69,176 @@ const FoodLog = () => {
 
     useEffect(() => {
         let errArr = []
-        if (!foodName) {
-            console.log("inside foodName")
-            errArr.push("Please fill out Name field")
+
+        if (nameBool && !foodName) {
+            errArr.push({msg: "Please fill out Name field", type: 'foodName'})
             setErrors(errArr);
         } else {
-            errArr.pop()
+            errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'foodName'), 1))
             setErrors(errArr)
         }
-        if (calories && calories.length > 0) {
-            if (!(/^[0-9]+$/.test(calories))) {
-                errArr.push("Calories must be a number")
-                setErrors(errArr);
-            } else {
-                errArr.pop()
-                setErrors(errArr);
-            }
-        } else if (!calories) {
-            errArr.push("Please fill out Calories field")
+
+        if (calBool && !calories) {
+            errArr.push({msg: "Please fill out Calories field"})
             setErrors(errArr);
+            // console.log("errArr====================>",errArr)
         }
 
-        if (carbohydrates && carbohydrates.length > 0) {
-            if (!(/^[0-9]+$/.test(carbohydrates))) {
-                errArr.push("Carbohydrates must be a number")
+
+        if (carbBool) {
+            if (carbohydrates && carbohydrates.length > 0) {
+                if(calories && (carbohydrates*4 > calories)) {
+                    errArr.push({msg: "Carbohydrates cannot exceed calories", type: "carbohydrates"})
+                    setErrors(errArr);
+                    console.log("errArr====================>",errArr)
+
+                } else {
+                    errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'carbohydrates'), 1))
+                    setErrors(errArr)
+                    console.log("errArr====================>",errArr)
+                }
+
+            } else if (!carbohydrates) {
+                errArr.push({msg: "Please fill out Carbohydrates field"})
                 setErrors(errArr);
-            } else {
-                errArr.pop()
-                setErrors(errArr);
+                console.log("errArr====================>",errArr)
+
             }
-        } else if (!carbohydrates) {
-            errArr.push("Please fill out Carbohydrates field")
-            setErrors(errArr);
         }
 
-        if (fat && fat.length > 0) {
-            if (!(/^[0-9]+$/.test(fat))) {
-                errArr.push("Fat must be a number")
+        if (fatBool) {
+            // console.log("hello from fat")
+            // console.log(fat.length)
+            if (fat && fat.length > 0) {
+                if (calories && (fat*9 > calories)) {
+                        errArr.push({msg: "Fat cannot exceed calories", type: "fat"})
+                        setErrors(errArr);
+                        console.log("errArr====================>",errArr)
+
+                }
+                else {
+                    // errArr.pop()
+                    errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'fat'), 1))
+                    setErrors(errArr)
+                    console.log("errArr====================>",errArr)
+                }
+
+            } else if (!fat) {
+                errArr.push({msg: "Please fill out Fat field"})
                 setErrors(errArr);
-            } else {
-                errArr.pop()
-                setErrors(errArr);
+                console.log("errArr====================>",errArr)
+
             }
-        } else if (!fat) {
-            errArr.push("Please fill out Fat field")
-            setErrors(errArr);
         }
 
-        if (protein && protein.length > 0) {
-            if (!(/^[0-9]+$/.test(protein))) {
-                errArr.push("Protein must be a number")
+        if (proBool) {
+            if (protein && protein.length > 0) {
+                if(calories && (protein*4 > calories)) {
+                    errArr.push({msg: `Protein cannot exceed calories`, type: "protein"})
+                    setErrors(errArr);
+                    console.log("errArr====================>",errArr)
+
+
+                } else {
+                    errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'protein'), 1))
+                    setErrors(errArr)
+                    console.log("errArr====================>",errArr)
+                }
+
+            } else if (!protein) {
+                errArr.push({msg: "Please fill out Protein field"})
                 setErrors(errArr);
-            } else {
-                errArr.pop()
-                setErrors(errArr);
+                console.log("errArr====================>",errArr)
+
             }
-        } else if (!protein) {
-            errArr.push("Please fill out Protein field")
-            setErrors(errArr);
         }
-        // setErrors(errArr);
 
 
-    },[foodName, calories, carbohydrates, fat, protein])
+        if (calories && carbohydrates && fat && protein) {
+            if ((carbohydrates*4 + fat*9 + protein*4) > calories){
+                errArr.push({msg: `Sumn of macros cannot exceed calories`, type: "total"})
+            } else {
+                errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'total'), 1))
+                setErrors(errArr)
+                console.log("errArr====================>",errArr)
+            }
+        }
+
+
+    },[foodName, calories, carbohydrates, fat, protein, nameBool, calBool, carbBool, fatBool, proBool])
+
+    const handleBool = (e) => {
+        e.preventDefault();
+
+        switch(e.target.name) {
+            case 'food-name':
+                setCarbBool(false);
+                setFatBool(false);
+                setProBool(false);
+                setCalBool(false);
+                setNameBool(true);
+
+            case 'calories':
+                setNameBool(false);
+                setCarbBool(false);
+                setFatBool(false);
+                setProBool(false);
+                setCalBool(true);
+                // console.log("Hello from calories.")
+                break;
+
+            case 'carbohydrates':
+                setNameBool(false);
+                setFatBool(false);
+                setProBool(false);
+                setCalBool(false);
+                setCarbBool(true);
+                // console.log("inside carbs")
+                break;
+
+            case 'fat':
+                setNameBool(false);
+                setProBool(false);
+                setCalBool(false);
+                setCarbBool(false);
+                setFatBool(true);
+                // console.log("inside fat")
+                break;
+
+            case 'protein':
+                setNameBool(false);
+                setCalBool(false);
+                setCarbBool(false);
+                setFatBool(false);
+                setProBool(true);
+                console.log("inside protein")
+                break;
+        }
+    }
 
     const updateFoodName = (e) => {
         setFoodName(e.target.value);
     }
 
     const updateCalories = (e) => {
-        setCalories(e.target.value);
+        if (e.target.value === '' || (/^[0-9]+$/.test(e.target.value))) {
+            setCalories(e.target.value);
+        }
     }
     const updateCarbohydrates = (e) => {
-        setCarbohydrates(e.target.value);
+        if (e.target.value === '' || (/^[0-9]+$/.test(e.target.value))) {
+            setCarbohydrates(e.target.value);
+        }
     }
     const updateFat = (e) => {
-        setFat(e.target.value);
+        if (e.target.value === '' || (/^[0-9]+$/.test(e.target.value))) {
+            setFat(e.target.value);
+        }
     }
     const updateProtein = (e) => {
-        setProtein(e.target.value);
+        if (e.target.value === '' || (/^[0-9]+$/.test(e.target.value))) {
+            setProtein(e.target.value);
+        }
     }
 
     const handleClick = (e) => {{
@@ -166,33 +264,44 @@ const FoodLog = () => {
         if (currentGoal) {
             switch (e.target.innerText) {
                 case "Add New Item":
-                    await dispatch(createFoodLog({
-                        "name": foodName,
-                        "meal": selectedMeal,
-                        "user_id": parseInt(user?.id, 10),
-                        "calories": parseInt(calories, 10),
-                        "carbohydrates": parseInt(carbohydrates, 10),
-                        "fat": parseInt(fat, 10),
-                        "protein": parseInt(protein, 10),
-                        "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
-                    }));
-                    alert("New food item has been added.")
-                    history.push('/home')
-                    break;
+                    if (!errors.length && calories && carbohydrates && fat && protein) {
+                        await dispatch(createFoodLog({
+                            "name": foodName,
+                            "meal": selectedMeal,
+                            "user_id": parseInt(user?.id, 10),
+                            "calories": parseInt(calories, 10),
+                            "carbohydrates": parseInt(carbohydrates, 10),
+                            "fat": parseInt(fat, 10),
+                            "protein": parseInt(protein, 10),
+                            "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
+                        }));
+                        alert("New food item has been added.")
+                        history.push('/home')
+                        break;
+                    } else {
+                        alert(`Please complete ${selectedMeal} entry before adding item.` );
+                        break;
+                    }
+
                 case "Update Item":
-                    await dispatch(updateFoodLog({
-                        "name": foodName,
-                        "meal": selectedMeal,
-                        "user_id": parseInt(user?.id, 10),
-                        "calories": parseInt(calories, 10),
-                        "carbohydrates": parseInt(carbohydrates, 10),
-                        "fat": parseInt(fat, 10),
-                        "protein": parseInt(protein, 10),
-                        "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
-                    }));
-                    alert("Existing food item has been updated.")
-                    history.push('/home')
-                    break;
+                    if (!errors.length && calories && carbohydrates && fat && protein) {
+                        await dispatch(updateFoodLog({
+                            "name": foodName,
+                            "meal": selectedMeal,
+                            "user_id": parseInt(user?.id, 10),
+                            "calories": parseInt(calories, 10),
+                            "carbohydrates": parseInt(carbohydrates, 10),
+                            "fat": parseInt(fat, 10),
+                            "protein": parseInt(protein, 10),
+                            "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
+                        }));
+                        alert("Existing food item has been updated.")
+                        history.push('/home')
+                        break;
+                    } else {
+                        alert(`Please complete ${selectedMeal} entry before updating item.` );
+                        break;
+                    }
             }
 
         } else {
@@ -233,7 +342,7 @@ const FoodLog = () => {
                             <form className="foodlog-form">
                                 <div className="errors">
                                     {errors.map((error, ind) => (
-                                    <div className="each-error" key={ind}>{error}</div>
+                                    <div className="each-error" key={ind}>{error.msg}</div>
                                     ))}
                                 </div>
                                 <div className="foodlog-container">
@@ -244,6 +353,8 @@ const FoodLog = () => {
                                         type="text"
                                         value={foodName}
                                         onChange={updateFoodName}
+                                        onClick={handleBool}
+                                        maxLength="20"
                                     />
                                 </div>
                                 <div className="foodlog-container">
@@ -254,6 +365,8 @@ const FoodLog = () => {
                                         type="text"
                                         value={calories}
                                         onChange={updateCalories}
+                                        onClick={handleBool}
+                                        maxLength="4"
                                     />
                                 </div>
                                 <div className="foodlog-container">
@@ -264,6 +377,8 @@ const FoodLog = () => {
                                         type="text"
                                         value={carbohydrates}
                                         onChange={updateCarbohydrates}
+                                        onClick={handleBool}
+                                        maxLength="3"
                                     />
                                 </div>
                                 <div className="foodlog-container">
@@ -274,6 +389,8 @@ const FoodLog = () => {
                                         type="text"
                                         value={fat}
                                         onChange={updateFat}
+                                        onClick={handleBool}
+                                        maxLength="3"
                                     />
                                 </div>
                                 <div className="foodlog-container">
@@ -284,6 +401,8 @@ const FoodLog = () => {
                                         type="text"
                                         value={protein}
                                         onChange={updateProtein}
+                                        onClick={handleBool}
+                                        maxLength="3"
                                     />
                                 </div>
                                 <div className="foodlog-lower">
