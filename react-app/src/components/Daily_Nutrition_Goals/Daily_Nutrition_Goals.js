@@ -17,6 +17,12 @@ const DailyNutritionGoals = () => {
     const [carbohydrates, setCarbohydrates] = useState(currentGoal ? currentGoal?.carbohydrates : "");
     const [fat, setFat] = useState(currentGoal ? currentGoal?.fat : "");
     const [protein, setProtein] = useState(currentGoal ? currentGoal?.protein : "");
+
+    const [calBool, setCalBool] = useState(false);
+    const [carbBool, setCarbBool] = useState(false);
+    const [fatBool, setFatBool] = useState(false);
+    const [proBool, setProBool] = useState(false);
+
     const [counter, setCounter] = useState(0);
 
     // console.log("error ==================", errors)
@@ -37,102 +43,81 @@ const DailyNutritionGoals = () => {
     // Validations
     useEffect(() => {
         let errArr = [];
-        let typeArr = [];
 
-        if (calories && calories.length > 0) {
-            if (!(/^[0-9]+$/.test(calories))) {
-                errArr.push({msg: "Calories must be a number", type: "calories"})
-                setErrors(errArr);
-                console.log("errArr====================>",errArr)
-
-            } else {
-                errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'calories'), 1))
-                setErrors(errArr)
-                console.log("errArr====================>",errArr)
-
-            }
-
-        } else if (!calories) {
+        if (calBool && !calories) {
             errArr.push({msg: "Please fill out Calories field"})
             setErrors(errArr);
-            console.log("errArr====================>",errArr)
-
+            // console.log("errArr====================>",errArr)
         }
 
-        if (carbohydrates && carbohydrates.length > 0) {
-            if (!(/^[0-9]+$/.test(carbohydrates))) {
-                errArr.push({msg: "Carbohydrates must be a number", type: "carbohydrates"})
-                setErrors(errArr);
-                typeArr.push("carbohydrates")
-                console.log("errArr====================>",errArr)
-
-            } else if(calories && (carbohydrates*4 > calories)) {
-                errArr.push({msg: "Carbohydrates cannot exceed calories", type: "carbohydrates"})
-                setErrors(errArr);
-                console.log("errArr====================>",errArr)
-
-            } else {
-                errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'carbohydrates'), 1))
-                setErrors(errArr)
-                console.log("errArr====================>",errArr)
-            }
-
-        } else if (!carbohydrates) {
-            errArr.push({msg: "Please fill out Carbohydrates field"})
-            setErrors(errArr);
-            console.log("errArr====================>",errArr)
-
-        }
-
-        if (fat && fat.length > 0) {
-            if (!(/^[0-9]+$/.test(fat))) {
-                errArr.push({msg: "Fat must be a number", type: "fat"})
-                setErrors(errArr);
-                console.log("errArr====================>",errArr)
-
-            } else if (calories && (fat*9 > calories)) {
-                    errArr.push({msg: "Fat cannot exceed calories", type: "fat"})
+        if (carbBool) {
+            if (carbohydrates && carbohydrates.length > 0) {
+                if(calories && (carbohydrates*4 > calories)) {
+                    errArr.push({msg: "Carbohydrates cannot exceed calories", type: "carbohydrates"})
                     setErrors(errArr);
                     console.log("errArr====================>",errArr)
 
-            } else {
-                // errArr.pop()
-                errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'fat'), 1))
-                setErrors(errArr)
-                console.log("errArr====================>",errArr)
-            }
+                } else {
+                    errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'carbohydrates'), 1))
+                    setErrors(errArr)
+                    console.log("errArr====================>",errArr)
+                }
 
-        } else if (!fat) {
-            errArr.push({msg: "Please fill out Fat field"})
-            setErrors(errArr);
-            console.log("errArr====================>",errArr)
-
-        }
-
-        if (protein && protein.length > 0) {
-            if (!(/^[0-9]+$/.test(protein))) {
-                errArr.push({msg: "Protein must be a number", type: "protein"})
+            } else if (!carbohydrates) {
+                errArr.push({msg: "Please fill out Carbohydrates field"})
                 setErrors(errArr);
                 console.log("errArr====================>",errArr)
 
-            } else if(calories && (protein*4 > calories)) {
-                errArr.push({msg: `Protein cannot exceed calories`, type: "protein"})
+            }
+        }
+
+        if (fatBool) {
+            // console.log("hello from fat")
+            // console.log(fat.length)
+            if (fat && fat.length > 0) {
+                if (calories && (fat*9 > calories)) {
+                        errArr.push({msg: "Fat cannot exceed calories", type: "fat"})
+                        setErrors(errArr);
+                        console.log("errArr====================>",errArr)
+
+                }
+                else {
+                    // errArr.pop()
+                    errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'fat'), 1))
+                    setErrors(errArr)
+                    console.log("errArr====================>",errArr)
+                }
+
+            } else if (!fat) {
+                errArr.push({msg: "Please fill out Fat field"})
                 setErrors(errArr);
                 console.log("errArr====================>",errArr)
 
-
-            } else {
-                errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'protein'), 1))
-                setErrors(errArr)
-                console.log("errArr====================>",errArr)
             }
-
-        } else if (!protein) {
-            errArr.push({msg: "Please fill out Protein field"})
-            setErrors(errArr);
-            console.log("errArr====================>",errArr)
-
         }
+
+        if (proBool) {
+            if (protein && protein.length > 0) {
+                if(calories && (protein*4 > calories)) {
+                    errArr.push({msg: `Protein cannot exceed calories`, type: "protein"})
+                    setErrors(errArr);
+                    console.log("errArr====================>",errArr)
+
+
+                } else {
+                    errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'protein'), 1))
+                    setErrors(errArr)
+                    console.log("errArr====================>",errArr)
+                }
+
+            } else if (!protein) {
+                errArr.push({msg: "Please fill out Protein field"})
+                setErrors(errArr);
+                console.log("errArr====================>",errArr)
+
+            }
+        }
+
 
         if (calories && carbohydrates && fat && protein) {
             if ((carbohydrates*4 + fat*9 + protein*4) > calories){
@@ -144,19 +129,65 @@ const DailyNutritionGoals = () => {
             }
         }
 
-    },[calories, carbohydrates, fat, protein])
+    },[calories, carbohydrates, fat, protein, calBool, carbBool, fatBool, proBool])
+
+    const handleClick = (e) => {
+        e.preventDefault();
+
+        switch(e.target.name) {
+            case 'calories':
+                setCarbBool(false);
+                setFatBool(false);
+                setProBool(false);
+                setCalBool(true);
+                // console.log("Hello from calories.")
+                break;
+
+            case 'carbohydrates':
+                setFatBool(false);
+                setProBool(false);
+                setCalBool(false);
+                setCarbBool(true);
+                // console.log("inside carbs")
+                break;
+
+            case 'fat':
+                setProBool(false);
+                setCalBool(false);
+                setCarbBool(false);
+                setFatBool(true);
+                // console.log("inside fat")
+                break;
+
+            case 'protein':
+                setCalBool(false);
+                setCarbBool(false);
+                setFatBool(false);
+                setProBool(true);
+                console.log("inside protein")
+                break;
+        }
+    }
 
     const updateCalories = (e) => {
-        setCalories(e.target.value);
+        if (e.target.value === '' || (/^[0-9]+$/.test(e.target.value))) {
+            setCalories(e.target.value);
+        }
     }
     const updateCarbohydrates = (e) => {
-        setCarbohydrates(e.target.value);
+        if (e.target.value === '' || (/^[0-9]+$/.test(e.target.value))) {
+            setCarbohydrates(e.target.value);
+        }
     }
     const updateFat = (e) => {
-        setFat(e.target.value);
+        if (e.target.value === '' || (/^[0-9]+$/.test(e.target.value))) {
+            setFat(e.target.value);
+        }
     }
     const updateProtein = (e) => {
-        setProtein(e.target.value);
+        if (e.target.value === '' || (/^[0-9]+$/.test(e.target.value))) {
+            setProtein(e.target.value);
+        }
     }
 
     const handleButton = async (e) => {
@@ -164,8 +195,8 @@ const DailyNutritionGoals = () => {
 
         switch (e.target.innerText) {
             case "Create New Goal":
-                console.log(errors)
-                if (!errors.length) {
+                // console.log(errors)
+                if (!errors.length && calories && carbohydrates && fat && protein) {
                     await dispatch(createNewDng({
                         "calories": parseInt(calories, 10),
                         "carbohydrates": parseInt(carbohydrates, 10),
@@ -184,7 +215,7 @@ const DailyNutritionGoals = () => {
 
             case "Update Goal":
                 console.log(errors)
-                if (!errors.length) {
+                if (!errors.length && calories && carbohydrates && fat && protein) {
                     await dispatch(updateCurrentDng({
                         "calories": parseInt(calories, 10),
                         "carbohydrates": parseInt(carbohydrates, 10),
@@ -255,11 +286,14 @@ const DailyNutritionGoals = () => {
                                 Calories
                             </label>
                             <input
+                                required
                                 className="calories-input"
                                 name="calories"
                                 type="text"
                                 value={calories}
                                 onChange={updateCalories}
+                                onClick={handleClick}
+                                maxLength="4"
                             />
                         </div>
                         <div className="dng-container">
@@ -267,11 +301,14 @@ const DailyNutritionGoals = () => {
                                 Carbohydrates (g)
                             </label>
                             <input
+                                required
                                 className="carbohydrates-input"
                                 name="carbohydrates"
                                 type="text"
                                 value={carbohydrates}
                                 onChange={updateCarbohydrates}
+                                onClick={handleClick}
+                                maxLength="4"
                             />
                         </div>
                         <div className="dng-container">
@@ -279,11 +316,14 @@ const DailyNutritionGoals = () => {
                                 Fat (g)
                             </label>
                             <input
+                                required
                                 className="fat-input"
                                 name="fat"
                                 type="text"
                                 value={fat}
                                 onChange={updateFat}
+                                onClick={handleClick}
+                                maxLength="4"
                             />
                         </div>
                         <div className="dng-container">
@@ -291,11 +331,14 @@ const DailyNutritionGoals = () => {
                                 Protein (g)
                             </label>
                             <input
+                                required
                                 className="protein-input"
                                 name="protein"
                                 type="text"
                                 value={protein}
                                 onChange={updateProtein}
+                                onClick={handleClick}
+                                maxLength="4"
                             />
                         </div>
                         <div className="login-lower">
