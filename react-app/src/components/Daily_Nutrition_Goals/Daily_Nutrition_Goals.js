@@ -308,7 +308,7 @@ const DailyNutritionGoals = () => {
                                 value={carbohydrates}
                                 onChange={updateCarbohydrates}
                                 onClick={handleClick}
-                                maxLength="4"
+                                maxLength="3"
                             />
                         </div>
                         <div className="dng-container">
@@ -323,7 +323,7 @@ const DailyNutritionGoals = () => {
                                 value={fat}
                                 onChange={updateFat}
                                 onClick={handleClick}
-                                maxLength="4"
+                                maxLength="3"
                             />
                         </div>
                         <div className="dng-container">
@@ -338,7 +338,7 @@ const DailyNutritionGoals = () => {
                                 value={protein}
                                 onChange={updateProtein}
                                 onClick={handleClick}
-                                maxLength="4"
+                                maxLength="3"
                             />
                         </div>
                         <div className="login-lower">

@@ -8,20 +8,23 @@ import { userFoodLog } from '../../store/foodLog';
 import './Home.css';
 
 const Home = () => {
-    const [remCal, setRemCal] = useState(0)
-    const [foodCal, setFoodCal] = useState(0);
-    const [counter, setCounter] = useState(0);
-    const history = useHistory();
     const user = useSelector(state => state.session.user)
     const currentGoal = useSelector(state => state.dng[user?.id])
     const foodlog = useSelector(state => Object.values(state.foodlog));
 
+    const [remCal, setRemCal] = useState(0)
+    const [foodCal, setFoodCal] = useState(0);
+    const [carbohydrates, setCarbohydrates] = useState(0);
+    const [fat, setFat] = useState(0);
+    const [protein, setProtein] = useState(0);
+
+    const history = useHistory();
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(userDng(user?.id));
         dispatch(userFoodLog(user?.id));
-    }, [dispatch, counter])
+    }, [dispatch])
 
 
     useEffect(() => {
@@ -32,9 +35,32 @@ const Home = () => {
             //     setFoodCal(foodlog[0]?.calories)
             // }
             const calArr = [];
+            const carbArr = [];
+            const fatArr = [];
+            const proArr = [];
+
+            // Find total calories
             foodlog.forEach(log => calArr.push(log.calories));
             const totalCal = calArr.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
             setFoodCal(totalCal)
+
+            // Find total carbs
+            foodlog.forEach(log => carbArr.push(log.carbohydrates));
+            const totalCarbs = carbArr.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+            setCarbohydrates(totalCarbs)
+            console.log(totalCarbs)
+
+            // Find total fats
+            foodlog.forEach(log => fatArr.push(log.fat));
+            const totalFat = fatArr.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+            setFat(totalFat)
+            console.log(totalFat)
+
+            // Find total protein
+            foodlog.forEach(log => proArr.push(log.protein));
+            const totalProtein = proArr.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+            setProtein(totalProtein)
+            console.log(totalProtein)
 
             if (currentGoal) {
                 if (!totalCal) {
@@ -46,9 +72,11 @@ const Home = () => {
                 progressBar.style.width = '0%';
                 progressBar.style.width = `${(totalCal / currentGoal.calories) * 100}%`;
                 progressBar.style.borderRight = '2px solid rgb(205,205,205)';
+
+
             }
         }
-    },[remCal, currentGoal, foodlog, foodCal, counter])
+    },[remCal, currentGoal, foodlog, foodCal])
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -59,6 +87,11 @@ const Home = () => {
             alert('Please create a Daily Nutrition Goal before adding food items')
         }
     };
+
+    // Rounding Helper Function
+    const precisionTwo = (num) => {
+        return +(Math.round(num + "e+2") + "e-2")
+    }
 
     return (
         <div className="home-main">
@@ -102,6 +135,20 @@ const Home = () => {
                                 </div>
                                 <div className="progress-bar-container">
                                     <div className="progress-bar"></div>
+                                </div>
+                                <div className="macros-container">
+                                    <p>Daily Macros %</p>
+                                    <div className="macros-breakdown">
+                                        <div>
+                                            <p>Carbs: {currentGoal ? precisionTwo((carbohydrates*4/currentGoal.calories) * 100) : 0}%</p>
+                                        </div>
+                                        <div>
+                                            <p>Fats: {currentGoal ? precisionTwo((fat*9/currentGoal.calories) * 100) : 0}%</p>
+                                        </div>
+                                        <div>
+                                            <p>Protein: {currentGoal ? precisionTwo((protein*4/currentGoal.calories) * 100) : 0}%</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

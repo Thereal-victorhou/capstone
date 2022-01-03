@@ -13,7 +13,7 @@
     justify-content: space-between;
     height: 2.6rem;
     width: 700px;
-    margin-top: 10rem;
+    /* margin-top: 10rem; */
     background-color: rgb(10,82,130);
 
 }
@@ -48,7 +48,7 @@
 .home-mid {
     display: flex;
     flex-direction: row;
-    height: 360px;
+    height: 500px;
     width: 100%;
     background-color: rgb(246,246,246);
 }
@@ -222,4 +222,28 @@
 .progress-bar {
     height: 2rem;
     background-color: rgb(133,196,0);
+}
+
+.macros-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 0;
+    height: 7.7rem;
+    width: 100%;
+}
+
+.macros-container p {
+    margin-top: 0;
+}
+
+.macros-breakdown {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: 3rem;
+    width: 100%;
 }
