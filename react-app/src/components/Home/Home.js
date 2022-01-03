@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import { NavLink, useHistory } from "react-router-dom";
 import { userDng } from '../../store/daily_nutrition_goals';
 import { userFoodLog } from '../../store/foodLog';
+import Navigation from '../Splash/Navigation';
 import './Home.css';
 
 const Home = () => {
@@ -20,6 +21,11 @@ const Home = () => {
 
     const history = useHistory();
     const dispatch = useDispatch();
+
+    // Rounding Helper Function
+    const precisionTwo = (num) => {
+        return +(Math.round(num + "e+2") + "e-2")
+    }
 
     useEffect(() => {
         dispatch(userDng(user?.id));
@@ -68,10 +74,18 @@ const Home = () => {
                 } else {
                     setRemCal(currentGoal.calories - totalCal)
                 }
-                const progressBar = document.querySelector(".progress-bar");
-                progressBar.style.width = '0%';
-                progressBar.style.width = `${(totalCal / currentGoal.calories) * 100}%`;
-                progressBar.style.borderRight = '2px solid rgb(205,205,205)';
+                const carbBar = document.querySelector(".carb-bar");
+                carbBar.style.width = '0%';
+                carbBar.style.width = `${precisionTwo((carbohydrates*4/currentGoal.calories) * 100)}%`;
+
+                const fatBar = document.querySelector(".fat-bar");
+                fatBar.style.width = "0%";
+                fatBar.style.width = `${precisionTwo((fat*4/currentGoal.calories) * 100)}%`;
+
+                const proBar = document.querySelector(".protein-bar");
+                proBar.style.width = "0%";
+                proBar.style.width = `${precisionTwo((protein*4/currentGoal.calories) * 100)}%`;
+                proBar.style.borderRight = '2px solid rgb(205,205,205)';
 
 
             }
@@ -87,11 +101,6 @@ const Home = () => {
             alert('Please create a Daily Nutrition Goal before adding food items')
         }
     };
-
-    // Rounding Helper Function
-    const precisionTwo = (num) => {
-        return +(Math.round(num + "e+2") + "e-2")
-    }
 
     return (
         <div className="home-main">
@@ -134,18 +143,23 @@ const Home = () => {
                                     <p>Today's Progress</p>
                                 </div>
                                 <div className="progress-bar-container">
-                                    <div className="progress-bar"></div>
+                                    <div className="carb-bar"></div>
+                                    <div className="fat-bar"></div>
+                                    <div className="protein-bar"></div>
                                 </div>
                                 <div className="macros-container">
                                     <p>Daily Macros %</p>
                                     <div className="macros-breakdown">
-                                        <div>
+                                        <div className="carb-box-container">
+                                            <div className="carb-box"></div>
                                             <p>Carbs: {currentGoal ? precisionTwo((carbohydrates*4/currentGoal.calories) * 100) : 0}%</p>
                                         </div>
-                                        <div>
+                                        <div className="fat-box-container">
+                                            <div className="fat-box"></div>
                                             <p>Fats: {currentGoal ? precisionTwo((fat*9/currentGoal.calories) * 100) : 0}%</p>
                                         </div>
-                                        <div>
+                                        <div className="pro-box-container">
+                                            <div className="pro-box"></div>
                                             <p>Protein: {currentGoal ? precisionTwo((protein*4/currentGoal.calories) * 100) : 0}%</p>
                                         </div>
                                     </div>
