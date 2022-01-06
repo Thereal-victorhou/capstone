@@ -55,18 +55,18 @@ const DailyNutritionGoals = () => {
                 if(calories && (carbohydrates*4 > calories)) {
                     errArr.push({msg: "Carbohydrates cannot exceed calories", type: "carbohydrates"})
                     setErrors(errArr);
-                    console.log("errArr====================>",errArr)
+                    // console.log("errArr====================>",errArr)
 
                 } else {
                     errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'carbohydrates'), 1))
                     setErrors(errArr)
-                    console.log("errArr====================>",errArr)
+                    // console.log("errArr====================>",errArr)
                 }
 
             } else if (!carbohydrates) {
                 errArr.push({msg: "Please fill out Carbohydrates field"})
                 setErrors(errArr);
-                console.log("errArr====================>",errArr)
+                // console.log("errArr====================>",errArr)
 
             }
         }
