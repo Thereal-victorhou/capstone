@@ -325,6 +325,7 @@ const FoodLog = () => {
                 <div className="main-container">
                     <div className="foodlog-title-container">
                         <p>Food Log</p>
+                        {console.log(defaultLog)}
                     </div>
                     <div className="foodlog-top">
                         <div className={selectedMeal === "breakfast" ? "foodlog-selected-container": "foodlog-meal-container"} id="breakfast" name="breakfast" onClick={handleClick}>

@@ -9,15 +9,17 @@ import Navigation from '../Splash/Navigation';
 import './Home.css';
 
 const Home = () => {
-    const user = useSelector(state => state.session.user)
-    const currentGoal = useSelector(state => state.dng[user?.id])
+    const user = useSelector(state => state.session.user);
+    const currentGoal = useSelector(state => state.dng[user?.id]);
     const foodlog = useSelector(state => Object.values(state.foodlog));
 
-    const [remCal, setRemCal] = useState(0)
+    const [remCal, setRemCal] = useState(0);
     const [foodCal, setFoodCal] = useState(0);
     const [carbohydrates, setCarbohydrates] = useState(0);
     const [fat, setFat] = useState(0);
     const [protein, setProtein] = useState(0);
+
+    const [carbProg, setCarbProg] = useState(0);
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -25,6 +27,19 @@ const Home = () => {
     // Rounding Helper Function
     const precisionTwo = (num) => {
         return +(Math.round(num + "e+2") + "e-2")
+    }
+
+    const valueTransform = async (num) => {
+        let currNum = 0;
+        console.log("num=======", num)
+        while (currNum <= num) {
+            return new Promise((resolve, reject) => {
+                setCarbProg(currNum)
+                setTimeout(() => {
+                    resolve(currNum + 0.01);
+                }, 1);
+            }).then(res => res);
+        }
     }
 
     useEffect(() => {
@@ -74,20 +89,74 @@ const Home = () => {
                 } else {
                     setRemCal(currentGoal.calories - totalCal)
                 }
+
+                // Animation helper
+                const progressAnimation = (progress) => {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            resolve(progress + 0.1);
+                        }, 12);
+                    }).then(res => res);
+                };
+
                 const carbBar = document.querySelector(".carb-bar");
                 carbBar.style.width = '0%';
-                carbBar.style.width = `${precisionTwo((carbohydrates*4/currentGoal.calories) * 100)}%`;
+                if (carbohydrates) {
+                    const carbPercent = precisionTwo((carbohydrates*4/currentGoal.calories) * 100);
+
+                    (async () => {
+
+                        let progress = 0;
+                        while (progress < carbPercent + 0.1) {
+
+                        carbBar.style.width = `${progress}%`;
+                        progress = await progressAnimation(progress);
+                        }
+
+                    })()
+                }
+                // carbBar.style.width = `${precisionTwo((carbohydrates*4/currentGoal.calories) * 100)}%`;
+
 
                 const fatBar = document.querySelector(".fat-bar");
                 fatBar.style.width = "0%";
-                fatBar.style.width = `${precisionTwo((fat*4/currentGoal.calories) * 100)}%`;
+                if (fat) {
+                    const fatPercent = precisionTwo((fat*4/currentGoal.calories) * 100);
+
+                    (async () => {
+
+                        let progress = 0;
+                        while (progress < fatPercent + 0.1) {
+
+                        fatBar.style.width = `${progress}%`;
+                        progress = await progressAnimation(progress);
+
+                        }
+
+                    })()
+
+                }
+                // fatBar.style.width = `${precisionTwo((fat*4/currentGoal.calories) * 100)}%`;
 
                 const proBar = document.querySelector(".protein-bar");
                 proBar.style.width = "0%";
-                proBar.style.width = `${precisionTwo((protein*4/currentGoal.calories) * 100)}%`;
+                if (protein) {
+                    const proPercent = precisionTwo((protein*4/currentGoal.calories) * 100);
+
+                    (async () => {
+
+                        let progress = 0;
+                        while (progress < proPercent + 0.01) {
+
+                        proBar.style.width = `${progress}%`;
+                        progress = await progressAnimation(progress);
+
+                        }
+
+                    })()
+                }
+                // proBar.style.width = `${precisionTwo((protein*4/currentGoal.calories) * 100)}%`;
                 proBar.style.borderRight = '2px solid rgb(205,205,205)';
-
-
             }
         }
     },[remCal, currentGoal, foodlog, foodCal])
