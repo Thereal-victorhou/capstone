@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
 import { userDng } from '../../store/daily_nutrition_goals';
 import { userFoodLog, createFoodLog, updateFoodLog, deleteFoodLog } from '../../store/foodLog';
-import FoodLogModal from '../FoodLogModal/FoodLogModal';
 
-const FoodLog = () => {
+const AddFood = ({ selectedMeal }) => {
 
     const user = useSelector(state => state.session.user)
     const currentGoal = useSelector(state => state.dng[user?.id])
@@ -19,7 +18,6 @@ const FoodLog = () => {
         Object.values(currentFoodLog).filter(log => log.meal === "breakfast") &&
         Object.values(currentFoodLog).filter(log => log.meal === "breakfast")[0] : "";
 
-    const [selectedMeal, setSelectedMeal] = useState(defaultLog ? "breakfast" : "")
     const [errors, setErrors] = useState([]);
     const [foodName, setFoodName] = useState(defaultLog ? defaultLog.name : "")
     const [calories, setCalories] = useState(defaultLog ? defaultLog.calories: "");
@@ -61,12 +59,6 @@ const FoodLog = () => {
             setProtein("");
         }
     }, [curLog])
-
-    useEffect(() =>  {
-        dispatch(userDng(user?.id))
-        dispatch(userFoodLog(user?.id))
-
-    },[dispatch, selectedMeal])
 
     useEffect(() => {
         let errArr = []
@@ -242,23 +234,6 @@ const FoodLog = () => {
         }
     }
 
-    const handleClick = (e) => {{
-        e.preventDefault();
-
-        switch (e.target.getAttribute('name')) {
-            case 'breakfast':
-                setSelectedMeal('breakfast')
-                break
-            case 'lunch':
-                setSelectedMeal('lunch')
-
-                break
-            case 'dinner':
-                setSelectedMeal('dinner')
-                break
-        }
-    }};
-
     const handleButton = async (e) => {
         e.preventDefault()
 
@@ -312,117 +287,83 @@ const FoodLog = () => {
 
     }
 
-
-    const handleDelete = async (e) => {
-        e.preventDefault();
-        await dispatch(deleteFoodLog({"user_id": user?.id, "meal": selectedMeal}))
-        alert("Food item has been deleted.")
-        history.push('/home')
-    }
-
     return (
         <>
-            <div className="foodlog-main">
-                <div className="main-container">
-                    <div className="foodlog-title-container">
-                        <p>Food Log</p>
-                        {/* {console.log(defaultLog)} */}
-                    </div>
-                    <div className="foodlog-top">
-                        <div className={selectedMeal === "breakfast" ? "foodlog-selected-container": "foodlog-meal-container"} id="breakfast" name="breakfast" onClick={handleClick}>
-                            <h3 name="breakfast">Breakfast</h3>
-                        </div>
-                        <div className={selectedMeal === "lunch" ? "foodlog-selected-container": "foodlog-meal-container"} id="lunch" name="lunch" onClick={handleClick}>
-                            <h3 name="lunch">Lunch</h3>
-                        </div>
-                        <div className={selectedMeal === "dinner" ? "foodlog-selected-container": "foodlog-meal-container"} id="dinner" name="dinner" onClick={handleClick}>
-                            <h3 name="dinner">Dinner</h3>
-                        </div>
-                    </div>
-                    <div className="foodlog-mid">
-                        <div className="foodlog-nutrition">
-                            <FoodLogModal selectedMeal={selectedMeal}/>
-                            {/* <form className="foodlog-form">
-                                <div className="errors">
-                                    {errors.map((error, ind) => (
-                                    <div className="each-error" key={ind}>{error.msg}</div>
-                                    ))}
-                                </div>
-                                <div className="foodlog-container">
-                                    <label className="foodlog-calories" htmlFor="food-name">Food Name</label>
-                                    <input
-                                        className="food-name-input"
-                                        name="food-name"
-                                        type="text"
-                                        value={foodName}
-                                        onChange={updateFoodName}
-                                        onClick={handleBool}
-                                        maxLength="20"
-                                    />
-                                </div>
-                                <div className="foodlog-container">
-                                    <label className="foodlog-calories" htmlFor="calories">Calories</label>
-                                    <input
-                                        className="calories-input"
-                                        name="calories"
-                                        type="text"
-                                        value={calories}
-                                        onChange={updateCalories}
-                                        onClick={handleBool}
-                                        maxLength="4"
-                                    />
-                                </div>
-                                <div className="foodlog-container">
-                                    <label className="-carbohydrates-label" htmlFor="carbohydrates">Carbohydrates</label>
-                                    <input
-                                        className="carbohydrates-input"
-                                        name="carbohydrates"
-                                        type="text"
-                                        value={carbohydrates}
-                                        onChange={updateCarbohydrates}
-                                        onClick={handleBool}
-                                        maxLength="3"
-                                    />
-                                </div>
-                                <div className="foodlog-container">
-                                    <label className="dng-fat-label" htmlFor="fat">Fat</label>
-                                    <input
-                                        className="fat-input"
-                                        name="fat"
-                                        type="text"
-                                        value={fat}
-                                        onChange={updateFat}
-                                        onClick={handleBool}
-                                        maxLength="3"
-                                    />
-                                </div>
-                                <div className="foodlog-container">
-                                    <label className="dng-protein-label" htmlFor="protein">Protein</label>
-                                    <input
-                                        className="protein-input"
-                                        name="protein"
-                                        type="text"
-                                        value={protein}
-                                        onChange={updateProtein}
-                                        onClick={handleBool}
-                                        maxLength="3"
-                                    />
-                                </div>
-                                <div className="foodlog-lower">
-                                    <button className="foodlog-submit-btn" type="submit" onClick={handleButton}>
-                                        <h4>{curLog ? "Update Item" : "Add New Item"}</h4>
-                                    </button>
-                                    <button className="foodlog-delete-btn" type="submit" onClick={handleDelete}>
-                                        <h4>Delete Item</h4>
-                                    </button>
-                                </div>
-                            </form> */}
-                        </div>
-                    </div>
+            <h1>Hello from Add Food Modal</h1>
+            <form className="foodlog-form">
+                <div className="errors">
+                    {errors.map((error, ind) => (
+                    <div className="each-error" key={ind}>{error.msg}</div>
+                    ))}
                 </div>
-            </div>
+                <div className="foodlog-container">
+                    <label className="foodlog-calories" htmlFor="food-name">Food Name</label>
+                    <input
+                        className="food-name-input"
+                        name="food-name"
+                        type="text"
+                        value={foodName}
+                        onChange={updateFoodName}
+                        onClick={handleBool}
+                        maxLength="20"
+                    />
+                </div>
+                <div className="foodlog-container">
+                    <label className="foodlog-calories" htmlFor="calories">Calories</label>
+                    <input
+                        className="calories-input"
+                        name="calories"
+                        type="text"
+                        value={calories}
+                        onChange={updateCalories}
+                        onClick={handleBool}
+                        maxLength="4"
+                    />
+                </div>
+                <div className="foodlog-container">
+                    <label className="-carbohydrates-label" htmlFor="carbohydrates">Carbohydrates</label>
+                    <input
+                        className="carbohydrates-input"
+                        name="carbohydrates"
+                        type="text"
+                        value={carbohydrates}
+                        onChange={updateCarbohydrates}
+                        onClick={handleBool}
+                        maxLength="3"
+                    />
+                </div>
+                <div className="foodlog-container">
+                    <label className="dng-fat-label" htmlFor="fat">Fat</label>
+                    <input
+                        className="fat-input"
+                        name="fat"
+                        type="text"
+                        value={fat}
+                        onChange={updateFat}
+                        onClick={handleBool}
+                        maxLength="3"
+                    />
+                </div>
+                <div className="foodlog-container">
+                    <label className="dng-protein-label" htmlFor="protein">Protein</label>
+                    <input
+                        className="protein-input"
+                        name="protein"
+                        type="text"
+                        value={protein}
+                        onChange={updateProtein}
+                        onClick={handleBool}
+                        maxLength="3"
+                    />
+                </div>
+                <div className="foodlog-lower">
+                    <button className="foodlog-submit-btn" type="submit" onClick={handleButton}>
+                        <h4>{curLog ? "Update Item" : "Add New Item"}</h4>
+                    </button>
+                </div>
+            </form>
         </>
     )
 }
 
-export default FoodLog;
+export default AddFood;
