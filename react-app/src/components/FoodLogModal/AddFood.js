@@ -3,14 +3,16 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { userDng } from '../../store/daily_nutrition_goals';
 import { userFoodLog, createFoodLog, updateFoodLog, deleteFoodLog } from '../../store/foodLog';
+import { searchForFoodItem } from '../../store/search';
+import { specificFoodItem } from "../../store/search";
 
 const AddFood = ({ selectedMeal }) => {
 
     const user = useSelector(state => state.session.user)
     const currentGoal = useSelector(state => state.dng[user?.id])
-
     const currentFoodLog = useSelector(state => state.foodlog);
-    // console.log("currentFoodLog", currentFoodLog)
+    const currentSearchResults = useSelector(state => Object.values(state.search));
+
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -31,7 +33,7 @@ const AddFood = ({ selectedMeal }) => {
     const [fatBool, setFatBool] = useState(false);
     const [proBool, setProBool] = useState(false);
 
-    const [count, setCount] = useState(0);
+    const [search, setSearch] = useState("");
 
     const [curLog, setCurFoodLog] = useState({})
 
@@ -39,7 +41,7 @@ const AddFood = ({ selectedMeal }) => {
         const filtered = Object.values(currentFoodLog)?.filter(log => log.meal === `${selectedMeal}`)[0];
         setCurFoodLog(filtered);
 
-    },[count, currentFoodLog, selectedMeal])
+    },[currentFoodLog, selectedMeal])
 
     useEffect(() =>  {
         if (curLog) {
@@ -60,6 +62,7 @@ const AddFood = ({ selectedMeal }) => {
         }
     }, [curLog])
 
+    // Input Validations
     useEffect(() => {
         let errArr = []
 
@@ -83,19 +86,18 @@ const AddFood = ({ selectedMeal }) => {
                 if(calories && (carbohydrates*4 > calories)) {
                     errArr.push({msg: "Carbohydrates cannot exceed calories", type: "carbohydrates"})
                     setErrors(errArr);
-                    console.log("errArr====================>",errArr)
+                    // console.log("errArr====================>",errArr)
 
                 } else {
                     errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'carbohydrates'), 1))
                     setErrors(errArr)
-                    console.log("errArr====================>",errArr)
+                    // console.log("errArr====================>",errArr)
                 }
 
             } else if (!carbohydrates) {
                 errArr.push({msg: "Please fill out Carbohydrates field"})
                 setErrors(errArr);
-                console.log("errArr====================>",errArr)
-
+                // console.log("errArr====================>",errArr)
             }
         }
 
@@ -106,21 +108,20 @@ const AddFood = ({ selectedMeal }) => {
                 if (calories && (fat*9 > calories)) {
                         errArr.push({msg: "Fat cannot exceed calories", type: "fat"})
                         setErrors(errArr);
-                        console.log("errArr====================>",errArr)
+                        // console.log("errArr====================>",errArr)
 
                 }
                 else {
                     // errArr.pop()
                     errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'fat'), 1))
                     setErrors(errArr)
-                    console.log("errArr====================>",errArr)
+                    // console.log("errArr====================>",errArr)
                 }
 
             } else if (!fat) {
                 errArr.push({msg: "Please fill out Fat field"})
                 setErrors(errArr);
-                console.log("errArr====================>",errArr)
-
+                // console.log("errArr====================>",errArr)
             }
         }
 
@@ -129,19 +130,19 @@ const AddFood = ({ selectedMeal }) => {
                 if(calories && (protein*4 > calories)) {
                     errArr.push({msg: `Protein cannot exceed calories`, type: "protein"})
                     setErrors(errArr);
-                    console.log("errArr====================>",errArr)
+                    // console.log("errArr====================>",errArr)
 
 
                 } else {
                     errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'protein'), 1))
                     setErrors(errArr)
-                    console.log("errArr====================>",errArr)
+                    // console.log("errArr====================>",errArr)
                 }
 
             } else if (!protein) {
                 errArr.push({msg: "Please fill out Protein field"})
                 setErrors(errArr);
-                console.log("errArr====================>",errArr)
+                // console.log("errArr====================>",errArr)
 
             }
         }
@@ -153,12 +154,18 @@ const AddFood = ({ selectedMeal }) => {
             } else {
                 errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'total'), 1))
                 setErrors(errArr)
-                console.log("errArr====================>",errArr)
+                // console.log("errArr====================>",errArr)
             }
         }
-
-
     },[foodName, calories, carbohydrates, fat, protein, nameBool, calBool, carbBool, fatBool, proBool])
+
+    // Live search
+    useEffect(() => {
+        if (search.length > 0) {
+            dispatch(searchForFoodItem(search))
+        }
+    }, [search])
+
 
     const handleBool = (e) => {
         e.preventDefault();
@@ -287,81 +294,99 @@ const AddFood = ({ selectedMeal }) => {
 
     }
 
+    const searchForSpecificItem = async(e) => {
+        e.preventDefault();
+        console.log(e.target.innerText)
+        // dispatch(specificFoodItem(value))
+    }
+
     return (
         <>
-            <h1>Hello from Add Food Modal</h1>
-            <form className="foodlog-form">
-                <div className="errors">
-                    {errors.map((error, ind) => (
-                    <div className="each-error" key={ind}>{error.msg}</div>
-                    ))}
+            <h1>New Item</h1>
+            <div className="foodlog-modal-main">
+                <div className="search-container">
+                    <input className="search-bar" placeholder="Search for food..." value={search} onChange={(e) => setSearch(e.target.value)}></input>
+                    {/* <button className='testing-search' onClick={searchForItem}>search</button> */}
+                    <div className="search-results">
+                        {search.length > 0 && currentSearchResults?.length > 0 && currentSearchResults?.map((res) => (
+                            <div className="result-box" key={currentSearchResults?.indexOf(res)} value={res?.food_name} onClick={searchForSpecificItem}>{res?.food_name}</div>
+                            )
+                            )}
+                    </div>
                 </div>
-                <div className="foodlog-container">
-                    <label className="foodlog-calories" htmlFor="food-name">Food Name</label>
-                    <input
-                        className="food-name-input"
-                        name="food-name"
-                        type="text"
-                        value={foodName}
-                        onChange={updateFoodName}
-                        onClick={handleBool}
-                        maxLength="20"
-                    />
-                </div>
-                <div className="foodlog-container">
-                    <label className="foodlog-calories" htmlFor="calories">Calories</label>
-                    <input
-                        className="calories-input"
-                        name="calories"
-                        type="text"
-                        value={calories}
-                        onChange={updateCalories}
-                        onClick={handleBool}
-                        maxLength="4"
-                    />
-                </div>
-                <div className="foodlog-container">
-                    <label className="-carbohydrates-label" htmlFor="carbohydrates">Carbohydrates</label>
-                    <input
-                        className="carbohydrates-input"
-                        name="carbohydrates"
-                        type="text"
-                        value={carbohydrates}
-                        onChange={updateCarbohydrates}
-                        onClick={handleBool}
-                        maxLength="3"
-                    />
-                </div>
-                <div className="foodlog-container">
-                    <label className="dng-fat-label" htmlFor="fat">Fat</label>
-                    <input
-                        className="fat-input"
-                        name="fat"
-                        type="text"
-                        value={fat}
-                        onChange={updateFat}
-                        onClick={handleBool}
-                        maxLength="3"
-                    />
-                </div>
-                <div className="foodlog-container">
-                    <label className="dng-protein-label" htmlFor="protein">Protein</label>
-                    <input
-                        className="protein-input"
-                        name="protein"
-                        type="text"
-                        value={protein}
-                        onChange={updateProtein}
-                        onClick={handleBool}
-                        maxLength="3"
-                    />
-                </div>
-                <div className="foodlog-lower">
-                    <button className="foodlog-submit-btn" type="submit" onClick={handleButton}>
-                        <h4>{curLog ? "Update Item" : "Add New Item"}</h4>
-                    </button>
-                </div>
-            </form>
+                <form className="foodlog-form">
+                    <div className="errors">
+                        {errors.map((error, ind) => (
+                        <div className="each-error" key={ind}>{error.msg}</div>
+                        ))}
+                    </div>
+                    <div className="foodlog-container">
+                        <label className="foodlog-calories" htmlFor="food-name">Food Name</label>
+                        <input
+                            className="food-name-input"
+                            name="food-name"
+                            type="text"
+                            value={foodName}
+                            onChange={updateFoodName}
+                            onClick={handleBool}
+                            maxLength="20"
+                        />
+                    </div>
+                    <div className="foodlog-container">
+                        <label className="foodlog-calories" htmlFor="calories">Calories</label>
+                        <input
+                            className="calories-input"
+                            name="calories"
+                            type="text"
+                            value={calories}
+                            onChange={updateCalories}
+                            onClick={handleBool}
+                            maxLength="4"
+                        />
+                    </div>
+                    <div className="foodlog-container">
+                        <label className="-carbohydrates-label" htmlFor="carbohydrates">Carbohydrates</label>
+                        <input
+                            className="carbohydrates-input"
+                            name="carbohydrates"
+                            type="text"
+                            value={carbohydrates}
+                            onChange={updateCarbohydrates}
+                            onClick={handleBool}
+                            maxLength="3"
+                        />
+                    </div>
+                    <div className="foodlog-container">
+                        <label className="dng-fat-label" htmlFor="fat">Fat</label>
+                        <input
+                            className="fat-input"
+                            name="fat"
+                            type="text"
+                            value={fat}
+                            onChange={updateFat}
+                            onClick={handleBool}
+                            maxLength="3"
+                        />
+                    </div>
+                    <div className="foodlog-container">
+                        <label className="dng-protein-label" htmlFor="protein">Protein</label>
+                        <input
+                            className="protein-input"
+                            name="protein"
+                            type="text"
+                            value={protein}
+                            onChange={updateProtein}
+                            onClick={handleBool}
+                            maxLength="3"
+                        />
+                    </div>
+                    <div className="foodlog-lower">
+                        <button className="foodlog-submit-btn" type="submit" onClick={handleButton}>
+                            <h4>{curLog ? "Update Item" : "Add New Item"}</h4>
+                        </button>
+                    </div>
+                </form>
+            </div>
         </>
     )
 }

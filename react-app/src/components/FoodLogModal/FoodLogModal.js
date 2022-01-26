@@ -8,16 +8,20 @@ const FoodLogModal = ({ selectedMeal }) => {
 
   return (
     <>
-      <button className="add_food_button" onClick={() => setShowModal(true)}>
-        <h4 type="button" className="add_food_button_text">
-          Add New Food
-        </h4>
-      </button>
-      {modal && (
-        <Modal onClose={() => setShowModal(false)}>
-            <AddFood selectedMeal={selectedMeal}/>
-        </Modal>
-      )}
+      {selectedMeal ?
+        (<button className="add_food_button" onClick={() => setShowModal(true)}>
+            <h4 type="button" className="add_food_button_text">
+            Add New Food
+            </h4>
+        </button>) :
+        (<h3>Please Select A Meal Time</h3>)
+      }
+        {modal && (
+            <Modal onClose={() => setShowModal(false)}>
+                <AddFood selectedMeal={selectedMeal}/>
+            </Modal>
+        )}
+
     </>
   );
 };
