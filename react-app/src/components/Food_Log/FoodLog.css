@@ -92,6 +92,37 @@
     height: 100%;
 }
 
+.foodlog-modal-main {
+    display: flex;
+    flex-direction: row;
+}
+
+.search-container {
+    margin-right: 2rem;
+    margin-left: 2rem;
+}
+
+.search-bar {
+    height: 20px;
+    width: 200px;
+}
+
+.search-results {
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.result-box {
+    height: 50px;
+    width: 100%;
+    border-bottom: 1px solid grey;
+    background-color: rgb(228, 228, 238);
+}
+
 .foodlog-form {
     display: flex;
     flex-direction: column;

@@ -3,11 +3,13 @@ import thunk from 'redux-thunk';
 import session from './session'
 import dng from './daily_nutrition_goals';
 import foodlog from './foodLog';
+import search from './search';
 
 const rootReducer = combineReducers({
   session,
   dng,
   foodlog,
+  search
 });
 
 

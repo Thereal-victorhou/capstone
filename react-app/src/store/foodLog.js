@@ -58,7 +58,7 @@ export const createFoodLog = (nfl) => async (dispatch) => {
         body: JSON.stringify(nfl)
     })
     let log = await res.json();
-    console.log("create thunk =================", log)
+    // console.log("create thunk =================", log)
     if (!(log.user_food_log === 'False')){
         dispatch(newFoodLog(log))
     }
