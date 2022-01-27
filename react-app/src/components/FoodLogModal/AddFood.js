@@ -16,16 +16,12 @@ const AddFood = ({ selectedMeal }) => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const defaultLog = currentFoodLog ?
-        Object.values(currentFoodLog).filter(log => log.meal === "breakfast") &&
-        Object.values(currentFoodLog).filter(log => log.meal === "breakfast")[0] : "";
-
     const [errors, setErrors] = useState([]);
-    const [foodName, setFoodName] = useState(defaultLog ? defaultLog.name : "")
-    const [calories, setCalories] = useState(defaultLog ? defaultLog.calories: "");
-    const [carbohydrates, setCarbohydrates] = useState(defaultLog ? defaultLog.carbohydrates: "");
-    const [fat, setFat] = useState(defaultLog ? defaultLog.fat: "");
-    const [protein, setProtein] = useState(defaultLog ? defaultLog.protein: "");
+    const [foodName, setFoodName] = useState("")
+    const [calories, setCalories] = useState("");
+    const [carbohydrates, setCarbohydrates] = useState("");
+    const [fat, setFat] = useState("");
+    const [protein, setProtein] = useState("");
 
     const [nameBool, setNameBool] = useState(false);
     const [calBool, setCalBool] = useState(false);
@@ -35,23 +31,24 @@ const AddFood = ({ selectedMeal }) => {
 
     const [search, setSearch] = useState("");
 
-    const [curLog, setCurFoodLog] = useState({})
+    // const [curLog, setCurFoodLog] = useState({})
 
-    useEffect(() => {
-        const filtered = Object.values(currentFoodLog)?.filter(log => log.meal === `${selectedMeal}`)[0];
-        setCurFoodLog(filtered);
+    // useEffect(() => {
+    //     const filtered = Object.values(currentFoodLog)?.filter(log => log.meal === `${selectedMeal}`)[0];
+    //     setCurFoodLog(filtered);
 
-    },[currentFoodLog, selectedMeal])
+    // },[currentFoodLog, selectedMeal])
 
     useEffect(() =>  {
-        if (curLog) {
-            // console.log(curLog)
-            setFoodName(curLog.name);
-            setCalories(curLog.calories);
-            setCarbohydrates(curLog.carbohydrates);
-            setFat(curLog.fat);
-            setProtein(curLog.protein);
-            // console.log('after', curLog)
+        if (currentSearchResults && currentSearchResults.length > 20) {
+            // console.log("Inside current UseEffect")
+            // console.log('=========', currentSearchResults[currentSearchResults.length-1])
+            const currentlySelected = currentSearchResults[currentSearchResults.length-1]
+            setFoodName(currentlySelected.food);
+            setCalories(currentlySelected.calories);
+            setCarbohydrates(currentlySelected.carbohydrates);
+            setFat(currentlySelected.fat);
+            setProtein(currentlySelected.protein);
 
         } else {
             setFoodName("");
@@ -60,7 +57,7 @@ const AddFood = ({ selectedMeal }) => {
             setFat("");
             setProtein("");
         }
-    }, [curLog])
+    }, [currentSearchResults])
 
     // Input Validations
     useEffect(() => {
@@ -296,8 +293,13 @@ const AddFood = ({ selectedMeal }) => {
 
     const searchForSpecificItem = async(e) => {
         e.preventDefault();
-        console.log(e.target.innerText)
-        dispatch(specificFoodItem(e.target.innerText))
+        await dispatch(specificFoodItem(e.target.innerText))
+        // console.log(currentSearchResults && currentSearchResults)
+        // setFoodName(currentSearchResults.selected?.name);
+        // setCalories(currentSearchResults.selected?.calories);
+        // setCarbohydrates(currentSearchResults.selected?.carbohydrates);
+        // setFat(currentSearchResults.selected?.fat);
+        // setProtein(currentSearchResults.selected?.protein);
     }
 
     return (
@@ -377,12 +379,12 @@ const AddFood = ({ selectedMeal }) => {
                             value={protein}
                             onChange={updateProtein}
                             onClick={handleBool}
-                            maxLength="3"
+                            maxLength="5"
                         />
                     </div>
                     <div className="foodlog-lower">
                         <button className="foodlog-submit-btn" type="submit" onClick={handleButton}>
-                            <h4>{curLog ? "Update Item" : "Add New Item"}</h4>
+                            <h4>Add New Item</h4>
                         </button>
                     </div>
                 </form>
