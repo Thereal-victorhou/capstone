@@ -297,7 +297,7 @@ const AddFood = ({ selectedMeal }) => {
     const searchForSpecificItem = async(e) => {
         e.preventDefault();
         console.log(e.target.innerText)
-        // dispatch(specificFoodItem(value))
+        dispatch(specificFoodItem(e.target.innerText))
     }
 
     return (
