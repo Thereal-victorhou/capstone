@@ -123,6 +123,11 @@
     background-color: rgb(228, 228, 238);
 }
 
+.result-box:hover {
+    background-color: white;
+    text-shadow: 2px, 2px;
+}
+
 .foodlog-form {
     display: flex;
     flex-direction: column;

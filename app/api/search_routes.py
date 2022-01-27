@@ -17,10 +17,13 @@ def specific_item(user_id):
     res = requests.post(api_url, headers=headers, data=json.dumps(body))
     result = res.json()
     nutrients = result['foods'][0]
-    # print('n\n\n\n\n\n', result, '\n\n\n\n\n\n')
-    # print(result['foods'][0]['nf_calories'])
+    print('n\n\n\n\n\n', result, '\n\n\n\n\n\n')
+    # print(result['foods'][0]['nf_dietary_fiber'] == None)
     # print(result['foods'][0]['nf_total_carbohydrate'])
     # print(result['foods'][0]['nf_total_fat'])
     # print(result['foods'][0]['nf_protein'])
-    carbohydrates = nutrients['nf_total_carbohydrate'] - nutrients['nf_dietary_fiber']
-    return {"food": nutrients['food_name'], "calories": nutrients['nf_calories'], "carbohydrates": carbohydrates, "fat": nutrients['nf_total_fat'], "protein": nutrients["nf_protein"]}
+    if nutrients['nf_dietary_fiber'] == None:
+        return {"food": nutrients['food_name'], "calories": nutrients['nf_calories'], "carbohydrates": nutrients['nf_total_carbohydrate'], "fat": nutrients['nf_total_fat'], "protein": nutrients["nf_protein"]}
+    else:
+        carbohydrates = nutrients['nf_total_carbohydrate'] - nutrients['nf_dietary_fiber']
+        return {"food": nutrients['food_name'], "calories": nutrients['nf_calories'], "carbohydrates": carbohydrates, "fat": nutrients['nf_total_fat'], "protein": nutrients["nf_protein"]}
