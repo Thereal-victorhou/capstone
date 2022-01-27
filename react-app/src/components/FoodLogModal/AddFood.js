@@ -267,7 +267,6 @@ const AddFood = ({ selectedMeal }) => {
 
         } else {
             alert("A Daily Nutrition Goal must be created first.")
-
         }
 
     }

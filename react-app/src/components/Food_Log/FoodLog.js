@@ -259,58 +259,58 @@ const FoodLog = () => {
         }
     }};
 
-    const handleButton = async (e) => {
-        e.preventDefault()
+    // const handleButton = async (e) => {
+    //     e.preventDefault()
 
-        if (currentGoal) {
-            switch (e.target.innerText) {
-                case "Add New Item":
-                    if (!errors.length && calories && carbohydrates && fat && protein) {
-                        await dispatch(createFoodLog({
-                            "name": foodName,
-                            "meal": selectedMeal,
-                            "user_id": parseInt(user?.id, 10),
-                            "calories": parseInt(calories, 10),
-                            "carbohydrates": parseInt(carbohydrates, 10),
-                            "fat": parseInt(fat, 10),
-                            "protein": parseInt(protein, 10),
-                            "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
-                        }));
-                        alert("New food item has been added.")
-                        history.push('/home')
-                        break;
-                    } else {
-                        alert(`Please complete ${selectedMeal} entry before adding item.` );
-                        break;
-                    }
+    //     if (currentGoal) {
+    //         switch (e.target.innerText) {
+    //             case "Add New Item":
+    //                 if (!errors.length && calories && carbohydrates && fat && protein) {
+    //                     await dispatch(createFoodLog({
+    //                         "name": foodName,
+    //                         "meal": selectedMeal,
+    //                         "user_id": parseInt(user?.id, 10),
+    //                         "calories": parseInt(calories, 10),
+    //                         "carbohydrates": parseInt(carbohydrates, 10),
+    //                         "fat": parseInt(fat, 10),
+    //                         "protein": parseInt(protein, 10),
+    //                         "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
+    //                     }));
+    //                     alert("New food item has been added.")
+    //                     history.push('/home')
+    //                     break;
+    //                 } else {
+    //                     alert(`Please complete ${selectedMeal} entry before adding item.` );
+    //                     break;
+    //                 }
 
-                case "Update Item":
-                    if (!errors.length && calories && carbohydrates && fat && protein) {
-                        await dispatch(updateFoodLog({
-                            "name": foodName,
-                            "meal": selectedMeal,
-                            "user_id": parseInt(user?.id, 10),
-                            "calories": parseInt(calories, 10),
-                            "carbohydrates": parseInt(carbohydrates, 10),
-                            "fat": parseInt(fat, 10),
-                            "protein": parseInt(protein, 10),
-                            "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
-                        }));
-                        alert("Existing food item has been updated.")
-                        history.push('/home')
-                        break;
-                    } else {
-                        alert(`Please complete ${selectedMeal} entry before updating item.` );
-                        break;
-                    }
-            }
+    //             case "Update Item":
+    //                 if (!errors.length && calories && carbohydrates && fat && protein) {
+    //                     await dispatch(updateFoodLog({
+    //                         "name": foodName,
+    //                         "meal": selectedMeal,
+    //                         "user_id": parseInt(user?.id, 10),
+    //                         "calories": parseInt(calories, 10),
+    //                         "carbohydrates": parseInt(carbohydrates, 10),
+    //                         "fat": parseInt(fat, 10),
+    //                         "protein": parseInt(protein, 10),
+    //                         "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
+    //                     }));
+    //                     alert("Existing food item has been updated.")
+    //                     history.push('/home')
+    //                     break;
+    //                 } else {
+    //                     alert(`Please complete ${selectedMeal} entry before updating item.` );
+    //                     break;
+    //                 }
+    //         }
 
-        } else {
-            alert("A Daily Nutrition Goal must be created first.")
+    //     } else {
+    //         alert("A Daily Nutrition Goal must be created first.")
 
-        }
+    //     }
 
-    }
+    // }
 
 
     const handleDelete = async (e) => {

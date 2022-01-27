@@ -70,58 +70,58 @@ def get_food_log(user_id):
 # @login_required
 def new_food_log(user_id):
     new_log = request.json
-    current_log = Food_Log.query.filter_by(user_id=user_id, meal=new_log['meal']).first()
+    # current_log = Food_Log.query.filter_by(user_id=user_id, meal=new_log['meal']).first()
 
     print("\n\n\n\n new_log ============", new_log, "\n\n\n\n")
-    print("\n\n\n\n current_log ============", current_log, "\n\n\n\n")
+    # print("\n\n\n\n current_log ============", current_log, "\n\n\n\n")
 
 
-    if not current_log:
-        nfl = Food_Log(
-            name=new_log['name'],
-            meal=new_log['meal'],
-            user_id=new_log['user_id'],
-            created_at=datetime.now())
+    # if not current_log:
+    nfl = Food_Log(
+        name=new_log['name'],
+        meal=new_log['meal'],
+        user_id=new_log['user_id'],
+        created_at=datetime.now())
 
-        db.session.add(nfl)
-        # Find id of the new food_log entry to satisfy foreign key constaint in secondary table
-        log = Food_Log.query.filter_by(user_id=user_id, meal=new_log['meal']).first()
-        print("\n\n\n\n log=============", log, "\n\n\n\n")
+    db.session.add(nfl)
+    # Find id of the new food_log entry to satisfy foreign key constaint in secondary table
+    log = Food_Log.query.filter_by(user_id=user_id, meal=new_log['meal']).first()
+    print("\n\n\n\n log=============", log, "\n\n\n\n")
 
-        if new_log['meal'] == 'breakfast':
-            nb = Breakfast(
-                calories=new_log['calories'],
-                carbohydrates=new_log['carbohydrates'],
-                fat=new_log['fat'],
-                protein=new_log['protein'],
-                foodlog_id=log.to_dict()['id'],
-                daily_nutrition_goals_id=new_log["daily_nutrition_goals_id"])
+    if new_log['meal'] == 'breakfast':
+        nb = Breakfast(
+            calories=new_log['calories'],
+            carbohydrates=new_log['carbohydrates'],
+            fat=new_log['fat'],
+            protein=new_log['protein'],
+            foodlog_id=log.to_dict()['id'],
+            daily_nutrition_goals_id=new_log["daily_nutrition_goals_id"])
 
-            db.session.add(nb)
+        db.session.add(nb)
 
-        if new_log['meal'] == 'lunch':
-            nl = Lunch(
-                calories=new_log['calories'],
-                carbohydrates=new_log['carbohydrates'],
-                fat=new_log['fat'],
-                protein=new_log['protein'],
-                foodlog_id=log.to_dict()['id'],
-                daily_nutrition_goals_id=new_log["daily_nutrition_goals_id"])
+    if new_log['meal'] == 'lunch':
+        nl = Lunch(
+            calories=new_log['calories'],
+            carbohydrates=new_log['carbohydrates'],
+            fat=new_log['fat'],
+            protein=new_log['protein'],
+            foodlog_id=log.to_dict()['id'],
+            daily_nutrition_goals_id=new_log["daily_nutrition_goals_id"])
 
-            db.session.add(nl)
+        db.session.add(nl)
 
-        if new_log['meal'] == 'dinner':
-            nd = Dinner(
-                calories=new_log['calories'],
-                carbohydrates=new_log['carbohydrates'],
-                fat=new_log['fat'],
-                protein=new_log['protein'],
-                foodlog_id=log.to_dict()['id'],
-                daily_nutrition_goals_id=new_log["daily_nutrition_goals_id"])
+    if new_log['meal'] == 'dinner':
+        nd = Dinner(
+            calories=new_log['calories'],
+            carbohydrates=new_log['carbohydrates'],
+            fat=new_log['fat'],
+            protein=new_log['protein'],
+            foodlog_id=log.to_dict()['id'],
+            daily_nutrition_goals_id=new_log["daily_nutrition_goals_id"])
 
-            db.session.add(nd)
+        db.session.add(nd)
 
-        db.session.commit()
+    db.session.commit()
     # Return user food_log and nutrition
     return get_food_log(user_id)
 

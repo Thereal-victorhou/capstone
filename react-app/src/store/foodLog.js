@@ -52,13 +52,13 @@ export const userFoodLog = (userId) => async (dispatch) => {
 // Create new foodlog
 export const createFoodLog = (nfl) => async (dispatch) => {
     const { user_id } = nfl;
+    // console.log("create thunk =================", nfl)
     const res = await fetch(`api/food-log/${user_id}`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(nfl)
     })
     let log = await res.json();
-    // console.log("create thunk =================", log)
     if (!(log.user_food_log === 'False')){
         dispatch(newFoodLog(log))
     }
