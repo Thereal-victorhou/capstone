@@ -274,12 +274,6 @@ const AddFood = ({ selectedMeal }) => {
     const searchForSpecificItem = async(e) => {
         e.preventDefault();
         await dispatch(specificFoodItem(e.target.innerText))
-        // console.log(currentSearchResults && currentSearchResults)
-        // setFoodName(currentSearchResults.selected?.name);
-        // setCalories(currentSearchResults.selected?.calories);
-        // setCarbohydrates(currentSearchResults.selected?.carbohydrates);
-        // setFat(currentSearchResults.selected?.fat);
-        // setProtein(currentSearchResults.selected?.protein);
     }
 
     return (

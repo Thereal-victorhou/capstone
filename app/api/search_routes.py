@@ -17,7 +17,7 @@ def specific_item(user_id):
     res = requests.post(api_url, headers=headers, data=json.dumps(body))
     result = res.json()
     nutrients = result['foods'][0]
-    # print('n\n\n\n\n\n', result, '\n\n\n\n\n\n')
+    print('n\n\n\n\n\n', result, '\n\n\n\n\n\n')
     # print(result['foods'][0]['nf_dietary_fiber'] == None)
     # print(result['foods'][0]['nf_total_carbohydrate'])
     # print(result['foods'][0]['nf_total_fat'])
