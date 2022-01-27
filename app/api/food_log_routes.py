@@ -23,11 +23,24 @@ def get_food_log(user_id):
     # lunch = [lunch.to_dict() for lunch in list(user_lunch)]
     # dinner = [dinner.to_dict() for dinner in list(user_dinner)]
 
-    # Testing Breakfast
-    bf = db.session.query(Breakfast).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).all()
-    print("\n\n\n\n\n", bf, "\n\n\n\n")
-    bfl = [tup[0] for tup in bf]
-    print("\n\n\n\n\n", bfl[0].to_dict(), "\n\n\n\n")
+    # Testing Dinner
+    def merge(tup1, tup2):
+        # print("\n\n\n\n", tup1, "\n\n\n\n")
+        # print("\n\n\n\n", tup2.to_dict(), "\n\n\n\n")
+        return {**tup1.to_dict(), **tup2.to_dict()}
+
+    di = db.session.query(Dinner).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).all()
+    print("\n\n\n\n\n", di, "\n\n\n\n")
+    # bfl = [[each for each in tup] for tup in di]
+    # print("\n\n\n\n\n", bfl, "\n\n\n\n")
+    # res = map(merge, di)
+    # print(list(res))
+    # def starmap(iterable):
+    #     return [merge(*args) for args in iterable]
+
+    # print(list(starmap(di)))
+    di_res = [merge(*args) for args in di]
+    print("\n\n\n\n", di_res, "\n\n\n\n")
 
 
     # Breakfast
