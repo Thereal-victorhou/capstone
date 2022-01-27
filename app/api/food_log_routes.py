@@ -19,38 +19,50 @@ def get_food_log(user_id):
     if not user_breakfast and not user_lunch and not user_dinner:
         # print({'user_food_log': 'False'})
         return {'user_food_log': 'False'}
-
     # breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
     # lunch = [lunch.to_dict() for lunch in list(user_lunch)]
     # dinner = [dinner.to_dict() for dinner in list(user_dinner)]
 
+    # Testing Breakfast
+    bf = db.session.query(Breakfast).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).all()
+    print("\n\n\n\n\n", bf, "\n\n\n\n")
+    bfl = [tup[0] for tup in bf]
+    print("\n\n\n\n\n", bfl[0].to_dict(), "\n\n\n\n")
+
+
+    # Breakfast
     if not user_lunch and not user_dinner:
         breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
         # print("\n\n\n\n", {"user_food_log": [{**breakfast[0], **breakfast[1]}]}, "\n\n\n\n")
         return {'user_food_log': [{**breakfast[0], **breakfast[1]}]}
 
+    # Lunch
     if not user_dinner and not user_breakfast:
         lunch = [lunch.to_dict() for lunch in list(user_lunch)]
         # print("\n\n\n\n", {'user_food_log': [{**lunch[0], **lunch[1]}]}, "\n\n\n\n")
         return {'user_food_log': [{**lunch[0], **lunch[1]}]}
 
+    # Dinner
     if not user_breakfast and not user_lunch:
         dinner = [dinner.to_dict() for dinner in list(user_dinner)]
         # print("\n\n\n\n", {'user_food_log': [{**dinner[0], **dinner[1]}]}, "\n\n\n\n")
         return {'user_food_log': [{**dinner[0], **dinner[1]}]}
 
+    # Lunch & Dinner
     if not user_breakfast:
         lunch = [lunch.to_dict() for lunch in list(user_lunch)]
         dinner = [dinner.to_dict() for dinner in list(user_dinner)]
         # print("\n\n\n\n", {'user_food_log': [{**lunch[0], **lunch[1]}, {**dinner[0], **dinner[1]}]}, "\n\n\n\n")
         return {'user_food_log': [{**lunch[0], **lunch[1]}, {**dinner[0], **dinner[1]}]}
 
+    # Breakfast & Dinner
     if not user_lunch:
         breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
         dinner = [dinner.to_dict() for dinner in list(user_dinner)]
         # print("\n\n\n\n", {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**dinner[0], **dinner[1]}]}, "\n\n\n\n")
         return {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**dinner[0], **dinner[1]}]}
 
+    # Breakfast & Lunch
     if not user_dinner:
         breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
         lunch = [lunch.to_dict() for lunch in list(user_lunch)]
@@ -85,8 +97,11 @@ def new_food_log(user_id):
 
     db.session.add(nfl)
     # Find id of the new food_log entry to satisfy foreign key constaint in secondary table
-    log = Food_Log.query.filter_by(user_id=user_id, meal=new_log['meal']).first()
-    print("\n\n\n\n log=============", log, "\n\n\n\n")
+    log = Food_Log.query.filter_by(user_id=user_id, meal=new_log['meal']).all()
+    # print("\n\n\n\n log=============", log, "\n\n\n\n")
+
+    # lg = Food_Log.query.filter_by(user_id=user_id, meal=new_log['meal']).all()
+    # print("\n\n\n\n log=============", lg[len(lg)-1].to_dict(), "\n\n\n\n")
 
     if new_log['meal'] == 'breakfast':
         nb = Breakfast(
@@ -94,7 +109,7 @@ def new_food_log(user_id):
             carbohydrates=new_log['carbohydrates'],
             fat=new_log['fat'],
             protein=new_log['protein'],
-            foodlog_id=log.to_dict()['id'],
+            foodlog_id=log[len(log)-1].to_dict()['id'],
             daily_nutrition_goals_id=new_log["daily_nutrition_goals_id"])
 
         db.session.add(nb)
@@ -105,7 +120,7 @@ def new_food_log(user_id):
             carbohydrates=new_log['carbohydrates'],
             fat=new_log['fat'],
             protein=new_log['protein'],
-            foodlog_id=log.to_dict()['id'],
+            foodlog_id=log[len(log)-1].to_dict()['id'],
             daily_nutrition_goals_id=new_log["daily_nutrition_goals_id"])
 
         db.session.add(nl)
@@ -116,7 +131,7 @@ def new_food_log(user_id):
             carbohydrates=new_log['carbohydrates'],
             fat=new_log['fat'],
             protein=new_log['protein'],
-            foodlog_id=log.to_dict()['id'],
+            foodlog_id=log[len(log)-1].to_dict()['id'],
             daily_nutrition_goals_id=new_log["daily_nutrition_goals_id"])
 
         db.session.add(nd)
