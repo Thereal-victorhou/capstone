@@ -12,9 +12,13 @@ food_log_routes = Blueprint('food_log_routes', __name__)
 # @login_required
 def get_food_log(user_id):
 
-    user_breakfast = db.session.query(Breakfast).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first()
-    user_lunch = db.session.query(Lunch).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first()
-    user_dinner = db.session.query(Dinner).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).first()
+    # Dictionary Merge Helper
+    def merge(tup1, tup2):
+        return {**tup1.to_dict(), **tup2.to_dict()}
+
+    user_breakfast = db.session.query(Breakfast).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).all()
+    user_lunch = db.session.query(Lunch).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).all()
+    user_dinner = db.session.query(Dinner).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).all()
 
     if not user_breakfast and not user_lunch and not user_dinner:
         # print({'user_food_log': 'False'})
@@ -23,71 +27,66 @@ def get_food_log(user_id):
     # lunch = [lunch.to_dict() for lunch in list(user_lunch)]
     # dinner = [dinner.to_dict() for dinner in list(user_dinner)]
 
-    # Testing Dinner
-    def merge(tup1, tup2):
-        # print("\n\n\n\n", tup1, "\n\n\n\n")
-        # print("\n\n\n\n", tup2.to_dict(), "\n\n\n\n")
-        return {**tup1.to_dict(), **tup2.to_dict()}
+    # di = db.session.query(Dinner).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).all()
+    # print("\n\n\n\n\n", di, "\n\n\n\n")
+    # di_res = [merge(*args) for args in di]
+    # print("\n\n\n\n", di_res, "\n\n\n\n")
 
-    di = db.session.query(Dinner).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).all()
-    print("\n\n\n\n\n", di, "\n\n\n\n")
-    # bfl = [[each for each in tup] for tup in di]
-    # print("\n\n\n\n\n", bfl, "\n\n\n\n")
-    # res = map(merge, di)
-    # print(list(res))
-    # def starmap(iterable):
-    #     return [merge(*args) for args in iterable]
-
-    # print(list(starmap(di)))
-    di_res = [merge(*args) for args in di]
-    print("\n\n\n\n", di_res, "\n\n\n\n")
-
+    # Breakfast Helper
+    def breakfast_func(user_breakfast):
+        return [merge(*args) for args in user_breakfast]
+    # Lunch Helper
+    def lunch_func(user_lunch):
+        return [merge(*args) for args in user_lunch]
+    # Dinner Helper
+    def dinner_func(user_dinner):
+        return [merge(*args) for args in user_dinner]
 
     # Breakfast
     if not user_lunch and not user_dinner:
-        breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
+        # breakfast = [merge(*args) for args in user_breakfast]
         # print("\n\n\n\n", {"user_food_log": [{**breakfast[0], **breakfast[1]}]}, "\n\n\n\n")
-        return {'user_food_log': [{**breakfast[0], **breakfast[1]}]}
+        return {'user_food_log': breakfast_func(user_breakfast)}
 
     # Lunch
     if not user_dinner and not user_breakfast:
-        lunch = [lunch.to_dict() for lunch in list(user_lunch)]
+        # lunch = [merge(*args) for args in user_lunch]
         # print("\n\n\n\n", {'user_food_log': [{**lunch[0], **lunch[1]}]}, "\n\n\n\n")
-        return {'user_food_log': [{**lunch[0], **lunch[1]}]}
+        return {'user_food_log': lunch_func(user_lunch)}
 
     # Dinner
     if not user_breakfast and not user_lunch:
-        dinner = [dinner.to_dict() for dinner in list(user_dinner)]
+        # dinner = [merge(*args) for args in user_dinner]
         # print("\n\n\n\n", {'user_food_log': [{**dinner[0], **dinner[1]}]}, "\n\n\n\n")
-        return {'user_food_log': [{**dinner[0], **dinner[1]}]}
+        return {'user_food_log': dinner_func(user_dinner)}
 
     # Lunch & Dinner
     if not user_breakfast:
-        lunch = [lunch.to_dict() for lunch in list(user_lunch)]
-        dinner = [dinner.to_dict() for dinner in list(user_dinner)]
+        # lunch = [lunch.to_dict() for lunch in list(user_lunch)]
+        # dinner = [dinner.to_dict() for dinner in list(user_dinner)]
         # print("\n\n\n\n", {'user_food_log': [{**lunch[0], **lunch[1]}, {**dinner[0], **dinner[1]}]}, "\n\n\n\n")
-        return {'user_food_log': [{**lunch[0], **lunch[1]}, {**dinner[0], **dinner[1]}]}
+        return {'user_food_log': [{lunch_func(user_lunch), dinner_func(user_dinner)}]}
 
     # Breakfast & Dinner
     if not user_lunch:
-        breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
-        dinner = [dinner.to_dict() for dinner in list(user_dinner)]
+        # breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
+        # dinner = [dinner.to_dict() for dinner in list(user_dinner)]
         # print("\n\n\n\n", {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**dinner[0], **dinner[1]}]}, "\n\n\n\n")
-        return {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**dinner[0], **dinner[1]}]}
+        return {'user_food_log': [{breakfast_func(user_breakfast)}, {dinner_func(user_dinner)}]}
 
     # Breakfast & Lunch
     if not user_dinner:
-        breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
-        lunch = [lunch.to_dict() for lunch in list(user_lunch)]
+        # breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
+        # lunch = [lunch.to_dict() for lunch in list(user_lunch)]
         # print("\n\n\n\n", {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**lunch[0], **lunch[1]}]}, "\n\n\n\n")
-        return {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**lunch[0], **lunch[1]}]}
+        return {'user_food_log': [{breakfast_func(user_breakfast)}, {lunch_func(user_lunch)}]}
 
-    breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
-    lunch = [lunch.to_dict() for lunch in list(user_lunch)]
-    dinner = [dinner.to_dict() for dinner in list(user_dinner)]
+    # breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
+    # lunch = [lunch.to_dict() for lunch in list(user_lunch)]
+    # dinner = [dinner.to_dict() for dinner in list(user_dinner)]
 
-    # print("\n\n\n\n", {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**lunch[0], **lunch[1]}, {**dinner[0], **dinner[1]}]}, "\n\n\n\n")
-    return {'user_food_log': [{**breakfast[0], **breakfast[1]}, {**lunch[0], **lunch[1]}, {**dinner[0], **dinner[1]}]}
+    # print("\n\n\n\n", {'user_food_log': [{"breakfast": breakfast_func(user_breakfast)}, {"lunch": lunch_func(user_lunch)}, {"dinner": dinner_func(user_dinner)}]}, "\n\n\n\n")
+    return {'user_food_log': [{"breakfast": breakfast_func(user_breakfast)}, {"lunch": lunch_func(user_lunch)}, {"dinner": dinner_func(user_dinner)}]}
 
 
 # Create new food log

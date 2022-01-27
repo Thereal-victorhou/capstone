@@ -39,10 +39,10 @@ const deleteAll = (food) => ({
 export const userFoodLog = (userId) => async (dispatch) => {
     const res = await fetch(`api/food-log/${userId}`);
     let foodLog = await res.json();
-
-    if (!(foodLog.user_food_log === "False")) {
-        dispatch(getFoodLog(foodLog));
-    }
+    console.log(foodLog);
+    // if (!(foodLog.user_food_log === "False")) {
+    //     dispatch(getFoodLog(foodLog));
+    // }
     // else {
     // const err = {"user_food_log": [{}]}
     //     dispatch(getFoodLog(err));
