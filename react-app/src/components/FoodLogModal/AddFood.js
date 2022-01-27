@@ -39,16 +39,20 @@ const AddFood = ({ selectedMeal }) => {
 
     // },[currentFoodLog, selectedMeal])
 
+    const precisionTwo = (num) => {
+        return +(Math.round(num + "e+2") + "e-2")
+    }
+
     useEffect(() =>  {
         if (currentSearchResults && currentSearchResults.length > 20) {
             // console.log("Inside current UseEffect")
             // console.log('=========', currentSearchResults[currentSearchResults.length-1])
             const currentlySelected = currentSearchResults[currentSearchResults.length-1]
             setFoodName(currentlySelected.food);
-            setCalories(currentlySelected.calories);
-            setCarbohydrates(currentlySelected.carbohydrates);
-            setFat(currentlySelected.fat);
-            setProtein(currentlySelected.protein);
+            setCalories(precisionTwo(currentlySelected.calories));
+            setCarbohydrates(precisionTwo(currentlySelected.carbohydrates));
+            setFat(precisionTwo(currentlySelected.fat));
+            setProtein(precisionTwo(currentlySelected.protein));
 
         } else {
             setFoodName("");
@@ -208,7 +212,7 @@ const AddFood = ({ selectedMeal }) => {
                 setCarbBool(false);
                 setFatBool(false);
                 setProBool(true);
-                console.log("inside protein")
+                // console.log("inside protein")
                 break;
         }
     }
@@ -242,46 +246,23 @@ const AddFood = ({ selectedMeal }) => {
         e.preventDefault()
 
         if (currentGoal) {
-            switch (e.target.innerText) {
-                case "Add New Item":
-                    if (!errors.length && calories && carbohydrates && fat && protein) {
-                        await dispatch(createFoodLog({
-                            "name": foodName,
-                            "meal": selectedMeal,
-                            "user_id": parseInt(user?.id, 10),
-                            "calories": parseInt(calories, 10),
-                            "carbohydrates": parseInt(carbohydrates, 10),
-                            "fat": parseInt(fat, 10),
-                            "protein": parseInt(protein, 10),
-                            "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
-                        }));
-                        alert("New food item has been added.")
-                        history.push('/home')
-                        break;
-                    } else {
-                        alert(`Please complete ${selectedMeal} entry before adding item.` );
-                        break;
-                    }
-
-                case "Update Item":
-                    if (!errors.length && calories && carbohydrates && fat && protein) {
-                        await dispatch(updateFoodLog({
-                            "name": foodName,
-                            "meal": selectedMeal,
-                            "user_id": parseInt(user?.id, 10),
-                            "calories": parseInt(calories, 10),
-                            "carbohydrates": parseInt(carbohydrates, 10),
-                            "fat": parseInt(fat, 10),
-                            "protein": parseInt(protein, 10),
-                            "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
-                        }));
-                        alert("Existing food item has been updated.")
-                        history.push('/home')
-                        break;
-                    } else {
-                        alert(`Please complete ${selectedMeal} entry before updating item.` );
-                        break;
-                    }
+            if (!errors.length && calories && carbohydrates && fat && protein) {
+                await dispatch(createFoodLog({
+                    "name": foodName,
+                    "meal": selectedMeal,
+                    "user_id": parseInt(user?.id, 10),
+                    "calories": parseInt(calories, 10),
+                    "carbohydrates": parseInt(carbohydrates, 10),
+                    "fat": parseInt(fat, 10),
+                    "protein": parseInt(protein, 10),
+                    "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
+                }));
+                alert("New food item has been added.")
+                history.push('/home')
+                return;
+            } else {
+                alert(`Please complete ${selectedMeal} entry before adding item.` );
+                return;
             }
 
         } else {
@@ -343,7 +324,7 @@ const AddFood = ({ selectedMeal }) => {
                             value={calories}
                             onChange={updateCalories}
                             onClick={handleBool}
-                            maxLength="4"
+                            maxLength="5"
                         />
                     </div>
                     <div className="foodlog-container">
@@ -355,7 +336,7 @@ const AddFood = ({ selectedMeal }) => {
                             value={carbohydrates}
                             onChange={updateCarbohydrates}
                             onClick={handleBool}
-                            maxLength="3"
+                            maxLength="5"
                         />
                     </div>
                     <div className="foodlog-container">
@@ -367,7 +348,7 @@ const AddFood = ({ selectedMeal }) => {
                             value={fat}
                             onChange={updateFat}
                             onClick={handleBool}
-                            maxLength="3"
+                            maxLength="5"
                         />
                     </div>
                     <div className="foodlog-container">
