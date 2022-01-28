@@ -5,6 +5,10 @@ import { userDng } from '../../store/daily_nutrition_goals';
 import { userFoodLog, createFoodLog, updateFoodLog, deleteFoodLog } from '../../store/foodLog';
 import FoodLogModal from '../FoodLogModal/FoodLogModal';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
+
 const FoodLog = () => {
 
     const user = useSelector(state => state.session.user)
@@ -290,7 +294,6 @@ const FoodLog = () => {
 
     // }
 
-
     const handleDelete = async (e) => {
         e.preventDefault();
         await dispatch(deleteFoodLog({"user_id": user?.id, "meal": selectedMeal}))
@@ -298,18 +301,37 @@ const FoodLog = () => {
         history.push('/home')
     }
 
+    // Nutrition for Food Log item
     const eachFoodNutrition = (log) => {
         return (
-            <div key={log.id}>
-                <div>{log.name}</div>
-                <div>{log.carbohydrates}</div>
-                <div>{log.fat}</div>
-                <div>{log.protein}</div>
-                <div>{log.calories}</div>
+            <div className="foodlog-existing-nutrition" key={log.id}>
+                <div>
+                    <p>{log.name}</p>
+                </div>
+                <div>
+                    <p>{log.carbohydrates}g</p>
+                </div>
+                <div>
+                    <p>{log.fat}g</p>
+                </div>
+                <div>
+                    <p>{log.protein}g</p>
+                </div>
+                <div>
+                    <p>{log.calories}</p>
+                </div>
+                <div>
+                    <span className="foodlog-existing-edit">
+                        <FontAwesomeIcon icon={faPenToSquare} />
+                    </span>
+                    <span className="foodlog-existing-delete">
+                        <FontAwesomeIcon icon={faTrash} />
+                    </span>
+                </div>
             </div>
         )
     }
-    
+
     // Conditional Rendering of Current FoodLog for Each Meal
     const existingFoodEntries = (meal) => {
         if (meal === "breakfast") {
@@ -343,20 +365,30 @@ const FoodLog = () => {
                         </div>
                     </div>
                     <div className="foodlog-mid">
-                        <div className="foodlog-nutrition">
-                            <FoodLogModal selectedMeal={selectedMeal}/>
-                            <div className="foodlog-existing">
-                                {selectedMeal && currentFoodLog && existingFoodEntries(selectedMeal)}
-                            </div>
-                            {/* <div className="foodlog-lower">
-                                <button className="foodlog-submit-btn" type="submit" onClick={handleUpdate}>
-                                    <h4>Update Item</h4>
-                                </button>
-                                <button className="foodlog-delete-btn" type="submit" onClick={handleDelete}>
-                                    <h4>Delete Item</h4>
-                                </button>
-                            </div> */}
+                        <div className="foodlog-existing">
+                            {selectedMeal && (
+                                <>
+                                    <div className="foodlog-existing-title-container">
+                                        <div>Name</div>
+                                        <div>Carbs</div>
+                                        <div>Fat</div>
+                                        <div>Protein</div>
+                                        <div>Cal</div>
+                                    </div>
+                                    <div className="foodlog-existing-title-container-btm-brder"></div>
+                                </>
+                            )}
+                            {selectedMeal && currentFoodLog && existingFoodEntries(selectedMeal)}
                         </div>
+                        <FoodLogModal selectedMeal={selectedMeal}/>
+                        {/* <div className="foodlog-lower">
+                            <button className="foodlog-submit-btn" type="submit" onClick={handleUpdate}>
+                                <h4>Update Item</h4>
+                            </button>
+                            <button className="foodlog-delete-btn" type="submit" onClick={handleDelete}>
+                                <h4>Delete Item</h4>
+                            </button>
+                        </div> */}
                     </div>
                 </div>
             </div>
