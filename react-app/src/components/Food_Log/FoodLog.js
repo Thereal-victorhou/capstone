@@ -42,30 +42,30 @@ const FoodLog = () => {
 
     const [curLog, setCurFoodLog] = useState({})
 
-    useEffect(() => {
-        const filtered = Object.values(currentFoodLog)?.filter(log => log.meal === `${selectedMeal}`)[0];
-        setCurFoodLog(filtered);
+    // useEffect(() => {
+    //     const filtered = Object.values(currentFoodLog)?.filter(log => log.meal === `${selectedMeal}`)[0];
+    //     setCurFoodLog(filtered);
 
-    },[count, currentFoodLog, selectedMeal])
+    // },[count, currentFoodLog, selectedMeal])
 
-    useEffect(() =>  {
-        if (curLog) {
-            // console.log(curLog)
-            setFoodName(curLog.name);
-            setCalories(curLog.calories);
-            setCarbohydrates(curLog.carbohydrates);
-            setFat(curLog.fat);
-            setProtein(curLog.protein);
-            // console.log('after', curLog)
+    // useEffect(() =>  {
+    //     if (curLog) {
+    //         // console.log(curLog)
+    //         setFoodName(curLog.name);
+    //         setCalories(curLog.calories);
+    //         setCarbohydrates(curLog.carbohydrates);
+    //         setFat(curLog.fat);
+    //         setProtein(curLog.protein);
+    //         // console.log('after', curLog)
 
-        } else {
-            setFoodName("");
-            setCalories("");
-            setCarbohydrates("");
-            setFat("");
-            setProtein("");
-        }
-    }, [curLog])
+    //     } else {
+    //         setFoodName("");
+    //         setCalories("");
+    //         setCarbohydrates("");
+    //         setFat("");
+    //         setProtein("");
+    //     }
+    // }, [curLog])
 
     useEffect(() =>  {
         dispatch(userDng(user?.id))
@@ -313,15 +313,18 @@ const FoodLog = () => {
 
     // Conditional Rendering of Current FoodLog for Each Meal
     const existingFoodEntries = (meal) => {
-        if (meal === "breakfast") {
+        if (meal === "breakfast" && currentFoodLog.length > 0 && currentFoodLog[0]) {
             return currentFoodLog[0].breakfast?.map(log => eachFoodNutrition(log))
         }
-        if (meal === "lunch") {
+        if (meal === "lunch" && currentFoodLog.length > 0 && currentFoodLog[1]) {
             return currentFoodLog[1].lunch?.map(log => eachFoodNutrition(log))
         }
-        if (meal === "dinner") {
+        if (meal === "dinner" && currentFoodLog.length > 0 && currentFoodLog[2]) {
             return currentFoodLog[2].dinner?.map(log => eachFoodNutrition(log))
         }
+        return (
+            <h3>No Existing Entries</h3>
+        )
     }
 
     return (
@@ -345,7 +348,7 @@ const FoodLog = () => {
                     </div>
                     <div className="foodlog-mid">
                         <div className="foodlog-existing">
-                            {selectedMeal && (
+                            {selectedMeal && currentFoodLog.length > 0 && (
                                 <>
                                     <div className="foodlog-existing-title-container">
                                         <div>Name</div>

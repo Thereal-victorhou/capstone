@@ -119,9 +119,10 @@ const foodLogReducer = (state = {}, action) => {
                 return state;
             }
             newState = {...state}
-            action.food.user_food_log.forEach(log => {
-                newState[action.food.user_food_log.indexOf(log)] = log;
-            })
+            // Object.values(action.food.user_food_log).forEach(log => {
+            //     newState[action.food.user_food_log.indexOf(log)] = log;
+            // })
+            newState = {...action.food.user_food_log}
             return newState;
 
         case CREATE_FOOD_LOG:
@@ -132,6 +133,7 @@ const foodLogReducer = (state = {}, action) => {
                 newState[log.id] = {...newState[log.id]}
             })
             return newState;
+
         case UPDATE_FOOD_LOG:
             newState = {...state}
             action.food.user_food_log.forEach(log => {
