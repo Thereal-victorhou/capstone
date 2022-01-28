@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
-import { userDng } from '../../store/daily_nutrition_goals';
 import { userFoodLog, createFoodLog, updateFoodLog, deleteFoodLog } from '../../store/foodLog';
 import { searchForFoodItem } from '../../store/search';
 import { specificFoodItem } from "../../store/search";
@@ -17,11 +16,11 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
     const history = useHistory();
 
     const [errors, setErrors] = useState([]);
-    const [foodName, setFoodName] = useState(mealName ? mealName : "")
-    const [calories, setCalories] = useState(selectedCal ? selectedCal : "");
-    const [carbohydrates, setCarbohydrates] = useState(selectedCarb ? selectedCarb : "");
-    const [fat, setFat] = useState(selectedFat ? selectedFat : "");
-    const [protein, setProtein] = useState(selectedProtein ? selectedProtein : "");
+    const [foodName, setFoodName] = useState("")
+    const [calories, setCalories] = useState("");
+    const [carbohydrates, setCarbohydrates] = useState("");
+    const [fat, setFat] = useState("");
+    const [protein, setProtein] = useState("");
 
     const [nameBool, setNameBool] = useState(false);
     const [calBool, setCalBool] = useState(false);
@@ -31,7 +30,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
 
     const [search, setSearch] = useState("");
 
-    // const [curLog, setCurFoodLog] = useState({})
+    const [curLog, setCurFoodLog] = useState({})
 
     // useEffect(() => {
     //     const filtered = Object.values(currentFoodLog)?.filter(log => log.meal === `${selectedMeal}`)[0];
@@ -42,6 +41,25 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
     const precisionTwo = (num) => {
         return +(Math.round(num + "e+2") + "e-2")
     }
+
+    useEffect(() =>  {
+        if (mealName || selectedCarb || selectedFat || selectedProtein || selectedCal) {
+            console.log(mealName)
+            setFoodName(mealName);
+            setCalories(selectedCal);
+            setCarbohydrates(selectedCarb);
+            setFat(selectedFat);
+            setProtein(selectedProtein);
+            // console.log('after', curLog)
+
+        } else {
+            setFoodName("");
+            setCalories("");
+            setCarbohydrates("");
+            setFat("");
+            setProtein("");
+        }
+    }, [selectedMeal, mealName, selectedCarb, selectedFat, selectedProtein, selectedCal])
 
     useEffect(() =>  {
         if (currentSearchResults && currentSearchResults.length > 20) {
@@ -242,34 +260,34 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
         }
     }
 
-    const handleButton = async (e) => {
-        e.preventDefault()
+    // const handleButton = async (e) => {
+    //     e.preventDefault()
 
-        if (currentGoal) {
-            if (!errors.length && calories && carbohydrates && fat && protein) {
-                await dispatch(createFoodLog({
-                    "name": foodName,
-                    "meal": selectedMeal,
-                    "user_id": parseInt(user?.id, 10),
-                    "calories": parseInt(calories, 10),
-                    "carbohydrates": parseInt(carbohydrates, 10),
-                    "fat": parseInt(fat, 10),
-                    "protein": parseInt(protein, 10),
-                    "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
-                }));
-                alert("New food item has been added.")
-                history.push('/home')
-                return;
-            } else {
-                alert(`Please complete ${selectedMeal} entry before adding item.` );
-                return;
-            }
+    //     if (currentGoal) {
+    //         if (!errors.length && calories && carbohydrates && fat && protein) {
+    //             await dispatch(createFoodLog({
+    //                 "name": foodName,
+    //                 "meal": selectedMeal,
+    //                 "user_id": parseInt(user?.id, 10),
+    //                 "calories": parseInt(calories, 10),
+    //                 "carbohydrates": parseInt(carbohydrates, 10),
+    //                 "fat": parseInt(fat, 10),
+    //                 "protein": parseInt(protein, 10),
+    //                 "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
+    //             }));
+    //             alert("New food item has been added.")
+    //             history.push('/home')
+    //             return;
+    //         } else {
+    //             alert(`Please complete ${selectedMeal} entry before adding item.` );
+    //             return;
+    //         }
 
-        } else {
-            alert("A Daily Nutrition Goal must be created first.")
-        }
+    //     } else {
+    //         alert("A Daily Nutrition Goal must be created first.")
+    //     }
 
-    }
+    // }
 
     const handleUpdate = async (e) => {
         e.preventDefault()
