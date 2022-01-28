@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { userDng } from '../../store/daily_nutrition_goals';
 import { userFoodLog, createFoodLog, updateFoodLog, deleteFoodLog } from '../../store/foodLog';
-import FoodLogModal from '../FoodLogModal/FoodLogModal';
+import NewFoodLogModal from '../FoodLogModal/NewFoodLogModal';
+import UpdateFoodLogModal from '../FoodLogModal/UpdateFoodLogModal';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
@@ -263,36 +264,6 @@ const FoodLog = () => {
         }
     }};
 
-    // const handleUpdate = async (e) => {
-    //     e.preventDefault()
-
-    //     if (currentGoal) {
-//                 if (!errors.length && calories && carbohydrates && fat && protein) {
-//                     await dispatch(updateFoodLog({
-//                         "name": foodName,
-//                         "meal": selectedMeal,
-//                         "user_id": parseInt(user?.id, 10),
-//                         "calories": parseInt(calories, 10),
-//                         "carbohydrates": parseInt(carbohydrates, 10),
-//                         "fat": parseInt(fat, 10),
-//                         "protein": parseInt(protein, 10),
-//                         "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
-//                     }));
-//                     alert("Existing food item has been updated.")
-//                     history.push('/home')
-//                     break;
-//                 } else {
-//                     alert(`Please complete ${selectedMeal} entry before updating item.` );
-//                     break;
-//                 }
-//         }
-
-    //     } else {
-    //         alert("A Daily Nutrition Goal must be created first.")
-
-    //     }
-
-    // }
 
     const handleDelete = async (e) => {
         e.preventDefault();
@@ -321,9 +292,7 @@ const FoodLog = () => {
                     <p>{log.calories}</p>
                 </div>
                 <div>
-                    <span className="foodlog-existing-edit">
-                        <FontAwesomeIcon icon={faPenToSquare} />
-                    </span>
+                    <UpdateFoodLogModal selectedMeal={selectedMeal}/>
                     <span className="foodlog-existing-delete">
                         <FontAwesomeIcon icon={faTrash} />
                     </span>
@@ -380,7 +349,7 @@ const FoodLog = () => {
                             )}
                             {selectedMeal && currentFoodLog && existingFoodEntries(selectedMeal)}
                         </div>
-                        <FoodLogModal selectedMeal={selectedMeal}/>
+                        <NewFoodLogModal selectedMeal={selectedMeal}/>
                         {/* <div className="foodlog-lower">
                             <button className="foodlog-submit-btn" type="submit" onClick={handleUpdate}>
                                 <h4>Update Item</h4>
