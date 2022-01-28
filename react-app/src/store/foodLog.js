@@ -39,10 +39,10 @@ const deleteAll = (food) => ({
 export const userFoodLog = (userId) => async (dispatch) => {
     const res = await fetch(`api/food-log/${userId}`);
     let foodLog = await res.json();
-    console.log(foodLog);
-    // if (!(foodLog.user_food_log === "False")) {
-    //     dispatch(getFoodLog(foodLog));
-    // }
+    // console.log(foodLog);
+    if (!(foodLog.user_food_log === "False")) {
+        dispatch(getFoodLog(foodLog));
+    }
     // else {
     // const err = {"user_food_log": [{}]}
     //     dispatch(getFoodLog(err));
@@ -120,7 +120,7 @@ const foodLogReducer = (state = {}, action) => {
             }
             newState = {...state}
             action.food.user_food_log.forEach(log => {
-                newState[log.id] = log;
+                newState[action.food.user_food_log.indexOf(log)] = log;
             })
             return newState;
 

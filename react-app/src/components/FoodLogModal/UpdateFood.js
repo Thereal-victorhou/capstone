@@ -6,7 +6,7 @@ import { userFoodLog, createFoodLog, updateFoodLog, deleteFoodLog } from '../../
 import { searchForFoodItem } from '../../store/search';
 import { specificFoodItem } from "../../store/search";
 
-const AddFood = ({ selectedMeal }) => {
+const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selectedProtein, selectedCal, dng, foodLogId, selectedMealId }) => {
 
     const user = useSelector(state => state.session.user)
     const currentGoal = useSelector(state => state.dng[user?.id])
@@ -17,11 +17,11 @@ const AddFood = ({ selectedMeal }) => {
     const history = useHistory();
 
     const [errors, setErrors] = useState([]);
-    const [foodName, setFoodName] = useState("")
-    const [calories, setCalories] = useState("");
-    const [carbohydrates, setCarbohydrates] = useState("");
-    const [fat, setFat] = useState("");
-    const [protein, setProtein] = useState("");
+    const [foodName, setFoodName] = useState(mealName ? mealName : "")
+    const [calories, setCalories] = useState(selectedCal ? selectedCal : "");
+    const [carbohydrates, setCarbohydrates] = useState(selectedCarb ? selectedCarb : "");
+    const [fat, setFat] = useState(selectedFat ? selectedFat : "");
+    const [protein, setProtein] = useState(selectedProtein ? selectedProtein : "");
 
     const [nameBool, setNameBool] = useState(false);
     const [calBool, setCalBool] = useState(false);
@@ -271,6 +271,35 @@ const AddFood = ({ selectedMeal }) => {
 
     }
 
+    const handleUpdate = async (e) => {
+        e.preventDefault()
+
+        if (currentGoal) {
+                if (!errors.length && calories && carbohydrates && fat && protein) {
+                    await dispatch(updateFoodLog({
+                        "name": foodName,
+                        "meal": selectedMeal,
+                        "user_id": parseInt(user?.id, 10),
+                        "calories": parseInt(calories, 10),
+                        "carbohydrates": parseInt(carbohydrates, 10),
+                        "fat": parseInt(fat, 10),
+                        "protein": parseInt(protein, 10),
+                        "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
+                    }));
+                    alert("Existing food item has been updated.")
+                    history.push('/home')
+                    return;
+                } else {
+                    alert(`Please complete ${selectedMeal} entry before updating item.` );
+                    return;
+                }
+
+        } else {
+            alert("A Daily Nutrition Goal must be created first.")
+
+        }
+    }
+
     const searchForSpecificItem = async(e) => {
         e.preventDefault();
         await dispatch(specificFoodItem(e.target.innerText))
@@ -278,16 +307,27 @@ const AddFood = ({ selectedMeal }) => {
 
     return (
         <>
-            <h1>{`New ${selectedMeal.replace(selectedMeal.split('')[0], selectedMeal.split('')[0].toUpperCase())} Item`}</h1>
+            <h1>{`Update ${selectedMeal.replace(selectedMeal.split('')[0], selectedMeal.split('')[0].toUpperCase())} Item`}</h1>
             <div className="foodlog-modal-main">
                 <div className="search-container">
-                    <input className="search-bar" placeholder="Search for food..." value={search} onChange={(e) => setSearch(e.target.value)}></input>
+                    <input className="search-bar"
+                        placeholder="Search for food..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}>
+                    </input>
                     {/* <button className='testing-search' onClick={searchForItem}>search</button> */}
                     <div className="search-results">
-                        {search.length > 0 && currentSearchResults?.length > 0 && currentSearchResults?.map((res) => (
-                            <div className="result-box" key={currentSearchResults?.indexOf(res)} value={res?.food_name} onClick={searchForSpecificItem}>{res?.food_name}</div>
+                        {search.length > 0
+                            && currentSearchResults?.length > 0
+                            && currentSearchResults?.map((res) => (
+                            <div className="result-box"
+                                key={currentSearchResults?.indexOf(res)}
+                                value={res?.food_name}
+                                onClick={searchForSpecificItem}>
+                                    {res?.food_name}
+                            </div>
                             )
-                            )}
+                        )}
                     </div>
                 </div>
                 <form className="foodlog-form">
@@ -357,8 +397,8 @@ const AddFood = ({ selectedMeal }) => {
                         />
                     </div>
                     <div className="foodlog-lower">
-                        <button className="foodlog-submit-btn" type="submit" onClick={handleButton}>
-                            <h4>Add New Item</h4>
+                        <button className="foodlog-submit-btn" type="submit" onClick={handleUpdate}>
+                            <h4>Update Item</h4>
                         </button>
                     </div>
                 </form>
@@ -367,4 +407,4 @@ const AddFood = ({ selectedMeal }) => {
     )
 }
 
-export default AddFood;
+export default UpdateFood;

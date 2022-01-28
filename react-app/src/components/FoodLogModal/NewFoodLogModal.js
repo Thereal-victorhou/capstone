@@ -3,7 +3,7 @@ import { Modal } from "../../context/Modal";
 import AddFood from './AddFood';
 
 
-const FoodLogModal = ({ selectedMeal }) => {
+const NewFoodLogModal = ({ selectedMeal }) => {
   const [modal, setShowModal] = useState(false);
 
   return (
@@ -26,4 +26,4 @@ const FoodLogModal = ({ selectedMeal }) => {
   );
 };
 
-export default FoodLogModal;
+export default NewFoodLogModal;
