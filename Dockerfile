@@ -8,7 +8,6 @@ ENV REACT_APP_BASE_URL=https://lean-on-me.herokuapp.com/
 
 # Build our React App
 RUN npm install
-RUN npm i -f
 RUN npm run build
 
 FROM python:3.9
