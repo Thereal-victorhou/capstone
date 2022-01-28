@@ -7,7 +7,7 @@ import NewFoodLogModal from '../FoodLogModal/NewFoodLogModal';
 import UpdateFoodLogModal from '../FoodLogModal/UpdateFoodLogModal';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
+// import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
 const FoodLog = () => {
