@@ -32,25 +32,31 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
 
     const [curLog, setCurFoodLog] = useState({})
 
-    // useEffect(() => {
-    //     const filtered = Object.values(currentFoodLog)?.filter(log => log.meal === `${selectedMeal}`)[0];
-    //     setCurFoodLog(filtered);
-
-    // },[currentFoodLog, selectedMeal])
-
     const precisionTwo = (num) => {
         return +(Math.round(num + "e+2") + "e-2")
     }
 
+    useEffect(() => {
+
+        const filteredBreakfast = currentFoodLog['0'].breakfast.filter(breObj => breObj.foodlog_id === foodLogId)
+        const filteredLunch = currentFoodLog['1'].lunch.filter(lunObj => lunObj.foodlog_id === foodLogId)
+        const filteredDinner = currentFoodLog['2'].dinner.filter(dinObj => dinObj.foodlog_id === foodLogId)
+
+        if (selectedMeal === 'breakfast') setCurFoodLog(filteredBreakfast)
+        if (selectedMeal === 'lunch') setCurFoodLog(filteredLunch)
+        if (selectedMeal === 'dinner') setCurFoodLog(filteredDinner)
+
+    },[currentFoodLog, selectedMeal])
+
+
     useEffect(() =>  {
-        if (mealName || selectedCarb || selectedFat || selectedProtein || selectedCal) {
-            console.log(mealName)
+        if (curLog) {
+            console.log("curLog======== ",curLog)
             setFoodName(mealName);
             setCalories(selectedCal);
             setCarbohydrates(selectedCarb);
             setFat(selectedFat);
             setProtein(selectedProtein);
-            // console.log('after', curLog)
 
         } else {
             setFoodName("");
@@ -59,7 +65,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
             setFat("");
             setProtein("");
         }
-    }, [selectedMeal, mealName, selectedCarb, selectedFat, selectedProtein, selectedCal])
+    }, [curLog, selectedMeal, mealName, selectedCarb, selectedFat, selectedProtein, selectedCal])
 
     useEffect(() =>  {
         if (currentSearchResults && currentSearchResults.length > 20) {
