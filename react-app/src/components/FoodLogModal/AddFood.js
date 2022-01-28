@@ -278,7 +278,7 @@ const AddFood = ({ selectedMeal }) => {
 
     return (
         <>
-            <h1>New Item</h1>
+            <h1>{`New ${selectedMeal.replace(selectedMeal.split('')[0], selectedMeal.split('')[0].toUpperCase())} Item`}</h1>
             <div className="foodlog-modal-main">
                 <div className="search-container">
                     <input className="search-bar" placeholder="Search for food..." value={search} onChange={(e) => setSearch(e.target.value)}></input>

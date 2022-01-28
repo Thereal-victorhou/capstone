@@ -5,21 +5,26 @@ import UpdateFood from "./UpdateFood";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 
-const UpdateFoodLogModal = ({ selectedMeal }) => {
+const UpdateFoodLogModal = ({ selectedMeal, mealName, selectedCarb, selectedFat, selectedProtein, selectedCal, dng, foodLogId, selectedMealId }) => {
     const [modal, setShowModal] = useState(false);
 
     return (
       <>
-        {selectedMeal ?
-          (<span className="foodlog-existing-edit" onClick={() => setShowModal(true)}>
+          <span className="foodlog-existing-edit" onClick={() => setShowModal(true)}>
             <FontAwesomeIcon icon={faPenToSquare} />
           </span>
-          ) :
-          (<h3>Please Select A Meal Time</h3>)
-        }
           {modal && (
               <Modal onClose={() => setShowModal(false)}>
-                  <UpdateFood selectedMeal={selectedMeal}/>
+                  <UpdateFood selectedMeal={selectedMeal}
+                    mealName={mealName}
+                    selectedCarb={selectedCarb}
+                    selectedFat={selectedFat}
+                    selectedProtein={selectedProtein}
+                    selectedCal={selectedCal}
+                    dng={dng}
+                    foodLogId={foodLogId}
+                    selectedMealId={selectedMealId}
+                  />
               </Modal>
           )}
 

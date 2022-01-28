@@ -6,7 +6,7 @@ import { userFoodLog, createFoodLog, updateFoodLog, deleteFoodLog } from '../../
 import { searchForFoodItem } from '../../store/search';
 import { specificFoodItem } from "../../store/search";
 
-const UpdateFood = ({ selectedMeal }) => {
+const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selectedProtein, selectedCal, dng, foodLogId, selectedMealId }) => {
 
     const user = useSelector(state => state.session.user)
     const currentGoal = useSelector(state => state.dng[user?.id])
@@ -17,11 +17,11 @@ const UpdateFood = ({ selectedMeal }) => {
     const history = useHistory();
 
     const [errors, setErrors] = useState([]);
-    const [foodName, setFoodName] = useState("")
-    const [calories, setCalories] = useState("");
-    const [carbohydrates, setCarbohydrates] = useState("");
-    const [fat, setFat] = useState("");
-    const [protein, setProtein] = useState("");
+    const [foodName, setFoodName] = useState(mealName ? mealName : "")
+    const [calories, setCalories] = useState(selectedCal ? selectedCal : "");
+    const [carbohydrates, setCarbohydrates] = useState(selectedCarb ? selectedCarb : "");
+    const [fat, setFat] = useState(selectedFat ? selectedFat : "");
+    const [protein, setProtein] = useState(selectedProtein ? selectedProtein : "");
 
     const [nameBool, setNameBool] = useState(false);
     const [calBool, setCalBool] = useState(false);

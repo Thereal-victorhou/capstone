@@ -292,7 +292,17 @@ const FoodLog = () => {
                     <p>{log.calories}</p>
                 </div>
                 <div>
-                    <UpdateFoodLogModal selectedMeal={selectedMeal}/>
+                    <UpdateFoodLogModal
+                        selectedMeal={selectedMeal}
+                        mealName={log.name}
+                        selectedCarb={log.carbohydrates}
+                        selectedFat={log.fat}
+                        selectedProtein={log.protein}
+                        selectedCal={log.calories}
+                        dng={log.daily_nutrition_goals_id}
+                        foodLogId={log.foodlog_id}
+                        selectedMealId={log.id}
+                    />
                     <span className="foodlog-existing-delete">
                         <FontAwesomeIcon icon={faTrash} />
                     </span>
