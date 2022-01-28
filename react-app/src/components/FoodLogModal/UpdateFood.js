@@ -16,11 +16,11 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
     const history = useHistory();
 
     const [errors, setErrors] = useState([]);
-    const [foodName, setFoodName] = useState(mealName ? mealName : "")
-    const [calories, setCalories] = useState(selectedCal ? selectedCal : "");
-    const [carbohydrates, setCarbohydrates] = useState(selectedCarb ? selectedCarb : "");
-    const [fat, setFat] = useState(selectedFat ? selectedFat : "");
-    const [protein, setProtein] = useState(selectedProtein ? selectedProtein : "");
+    const [foodName, setFoodName] = useState("")
+    const [calories, setCalories] = useState("");
+    const [carbohydrates, setCarbohydrates] = useState("");
+    const [fat, setFat] = useState("");
+    const [protein, setProtein] = useState("");
 
     const [nameBool, setNameBool] = useState(false);
     const [calBool, setCalBool] = useState(false);
@@ -30,7 +30,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
 
     const [search, setSearch] = useState("");
 
-    // const [curLog, setCurFoodLog] = useState({})
+    const [curLog, setCurFoodLog] = useState({})
 
     // useEffect(() => {
     //     const filtered = Object.values(currentFoodLog)?.filter(log => log.meal === `${selectedMeal}`)[0];
@@ -41,6 +41,25 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
     const precisionTwo = (num) => {
         return +(Math.round(num + "e+2") + "e-2")
     }
+
+    useEffect(() =>  {
+        if (mealName || selectedCarb || selectedFat || selectedProtein || selectedCal) {
+            console.log(mealName)
+            setFoodName(mealName);
+            setCalories(selectedCal);
+            setCarbohydrates(selectedCarb);
+            setFat(selectedFat);
+            setProtein(selectedProtein);
+            // console.log('after', curLog)
+
+        } else {
+            setFoodName("");
+            setCalories("");
+            setCarbohydrates("");
+            setFat("");
+            setProtein("");
+        }
+    }, [selectedMeal, mealName, selectedCarb, selectedFat, selectedProtein, selectedCal])
 
     useEffect(() =>  {
         if (currentSearchResults && currentSearchResults.length > 20) {
