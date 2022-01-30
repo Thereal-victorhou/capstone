@@ -8,7 +8,6 @@ import { specificFoodItem } from "../../store/search";
 const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selectedProtein, selectedCal, dng, foodLogId, selectedMealId }) => {
 
     const user = useSelector(state => state.session.user)
-    const currentGoal = useSelector(state => state.dng[user?.id])
     const currentSearchResults = useSelector(state => Object.values(state.search));
 
     const dispatch = useDispatch();
@@ -29,9 +28,17 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
 
     const [search, setSearch] = useState("");
 
+    const foodNameLength = document.querySelector(".food-name-input")?.getAttribute("value")?.length
+    const caloriesLength = document.querySelector(".calories-input")?.getAttribute("value")?.length
+    const carbLength = document.querySelector(".carbohydrates-input")?.getAttribute("value")?.length
+    const fatLength = document.querySelector(".fat-input")?.getAttribute("value")?.length
+    const proteinLength = document.querySelector(".protein-input")?.getAttribute("value")?.length
+
+
     const precisionTwo = (num) => {
         return +(Math.round(num + "e+2") + "e-2")
     }
+
 
     // useEffect(() => {
 
@@ -275,31 +282,25 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
     const handleUpdate = async (e) => {
         e.preventDefault()
 
-        if (currentGoal) {
-                if (!errors.length && calories && carbohydrates && fat && protein) {
-                    
-                    await dispatch(updateFoodLog({
-                        "name": foodName,
-                        "meal": selectedMeal,
-                        "user_id": parseInt(user?.id, 10),
-                        "calories": parseInt(calories, 10),
-                        "carbohydrates": parseInt(carbohydrates, 10),
-                        "fat": parseInt(fat, 10),
-                        "protein": parseInt(protein, 10),
-                        "daily_nutrition_goals_id": parseInt(currentGoal?.id, 10)
-                    }));
-                    alert("Existing food item has been updated.")
-                    history.push('/home')
-                    return;
-                } else {
-                    alert(`Please complete ${selectedMeal} entry before updating item.` );
-                    return;
-                }
+            if (!errors.length && foodNameLength && caloriesLength && carbLength && fatLength && proteinLength) {
 
-        } else {
-            alert("A Daily Nutrition Goal must be created first.")
-
-        }
+                await dispatch(updateFoodLog({
+                    "name": foodName,
+                    "meal": selectedMeal,
+                    "user_id": parseInt(user?.id, 10),
+                    "calories": parseInt(calories, 10),
+                    "carbohydrates": parseInt(carbohydrates, 10),
+                    "fat": parseInt(fat, 10),
+                    "protein": parseInt(protein, 10),
+                    "daily_nutrition_goals_id": parseInt(dng, 10)
+                }));
+                alert("Existing food item has been updated.")
+                history.push('/home')
+                return;
+            } else {
+                alert(`Please complete ${selectedMeal} entry before updating item.` );
+                return;
+            }
     }
 
     const searchForSpecificItem = async(e) => {
