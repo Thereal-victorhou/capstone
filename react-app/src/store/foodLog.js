@@ -1,5 +1,7 @@
 // Type
-const GET_FOOD_LOG = "foodlog/GET_FOOD_LOG"
+const GET_FOOD_LOG = "foodlog/GET_FOOD_LOG";
+
+const GET_ONE_FOOD_LOG = "foodlog/GET_ONE_FOOD_LOG";
 
 const CREATE_FOOD_LOG = "foodlog/CREATE_FOOD_LOG";
 
@@ -15,6 +17,11 @@ const getFoodLog = (food) => ({
     type: GET_FOOD_LOG,
     food
 });
+
+const getOneFoodLog = (food) => ({
+    type: GET_ONE_FOOD_LOG,
+    food
+})
 
 const newFoodLog = (food) => ({
     type: CREATE_FOOD_LOG,
@@ -47,6 +54,11 @@ export const userFoodLog = (userId) => async (dispatch) => {
     // const err = {"user_food_log": [{}]}
     //     dispatch(getFoodLog(err));
     // }
+}
+
+// Get one foodlog
+export const getOneLog = (item) => async (dispatch) => {
+    
 }
 
 // Create new foodlog
