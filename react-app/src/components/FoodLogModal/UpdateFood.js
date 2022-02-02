@@ -39,52 +39,6 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
         return +(Math.round(num + "e+2") + "e-2")
     }
 
-
-    // useEffect(() => {
-
-    //     if (selectedMeal === 'breakfast') {
-    //         const filteredBreakfast = currentFoodLog['0'].breakfast.filter(breObj => breObj.foodlog_id === foodLogId)
-    //         setCurFoodLog(...filteredBreakfast)
-    //     }
-    //     if (selectedMeal === 'lunch') {
-    //         const filteredLunch = currentFoodLog['1'].lunch.filter(lunObj => lunObj.foodlog_id === foodLogId)
-    //         setCurFoodLog(...filteredLunch)
-    //     }
-    //     if (selectedMeal === 'dinner') {
-    //         const filteredDinner = currentFoodLog['2'].dinner.filter(dinObj => dinObj.foodlog_id === foodLogId)
-    //         setCurFoodLog(...filteredDinner)
-    //     }
-    // },[currentFoodLog, selectedMeal])
-    // useEffect(() => {
-    //     console.log(typeof mealName)
-    //     setFoodName(mealName);
-    //     setCalories(selectedCal);
-    //     setCarbohydrates(selectedCarb);
-    //     setFat(selectedFat);
-    //     setProtein(selectedProtein);
-    //     console.log("mealName======= ", foodName)
-    //     console.log("calories======= ", calories)
-    //     console.log("carbs======= ", carbohydrates)
-    // }, [])
-
-    // useEffect(() =>  {
-    //     if (curLog) {
-    //         console.log("curLog======== ", curLog.name)
-    //         setFoodName(curLog.name);
-    //         setCalories(curLog.calories);
-    //         setCarbohydrates(curLog.carbohydrates);
-    //         setFat(curLog.fat);
-    //         setProtein(curLog.protein);
-
-    //     } else {
-    //         setFoodName("");
-    //         setCalories("");
-    //         setCarbohydrates("");
-    //         setFat("");
-    //         setProtein("");
-    //     }
-    // }, [curLog])
-
     // Setting current search results to input values
     useEffect(() =>  {
         if (currentSearchResults && currentSearchResults.length > 20) {
@@ -92,10 +46,10 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
             // console.log('=========', currentSearchResults[currentSearchResults.length-1])
             const currentlySelected = currentSearchResults[currentSearchResults.length-1]
             setFoodName(currentlySelected.food);
-            setCalories(precisionTwo(currentlySelected.calories));
-            setCarbohydrates(precisionTwo(currentlySelected.carbohydrates));
-            setFat(precisionTwo(currentlySelected.fat));
-            setProtein(precisionTwo(currentlySelected.protein));
+            setCalories(parseInt(precisionTwo(currentlySelected.calories)), 10);
+            setCarbohydrates(parseInt(precisionTwo(currentlySelected.carbohydrates)), 10);
+            setFat(parseInt(precisionTwo(currentlySelected.fat)), 10);
+            setProtein(parseInt(precisionTwo(currentlySelected.protein)), 10);
         }
     }, [currentSearchResults])
 
@@ -310,7 +264,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
 
     return (
         <>
-            <h1>{`Update ${selectedMeal.replace(selectedMeal.split('')[0], selectedMeal.split('')[0].toUpperCase())} Item`}</h1>
+            <h1 className="modal-title">{`Update ${selectedMeal.replace(selectedMeal.split('')[0], selectedMeal.split('')[0].toUpperCase())} Item`}</h1>
             <div className="foodlog-modal-main">
                 <div className="search-container">
                     <input className="search-bar"

@@ -20,17 +20,30 @@ const FoodLog = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const defaultLog = currentFoodLog ?
-        Object.values(currentFoodLog).filter(log => log.meal === "breakfast") &&
-        Object.values(currentFoodLog).filter(log => log.meal === "breakfast")[0] : "";
-
-    const [selectedMeal, setSelectedMeal] = useState(defaultLog ? "breakfast" : "")
+    // const defaultLog = currentFoodLog ?
+    //     Object.values(currentFoodLog).filter(log => log.meal === "breakfast") &&
+    //     Object.values(currentFoodLog).filter(log => log.meal === "breakfast")[0] : "";
+    const [logLocation, setLogLocation] = useState([])
+    const [selectedMeal, setSelectedMeal] = useState("")
+    const [mealNo, setMealNo] = useState(null)
     const [delTask, setDelTask] = useState(false)
+
+    const [mealInfo, setMealInfo] = useState({});
+
+    // find meal indices
+    const breIdx = logLocation.indexOf('breakfast');
+    const lunIdx = logLocation.indexOf('lunch');
+    const dinIdx = logLocation.indexOf('dinner');
 
     useEffect(() =>  {
         dispatch(userDng(user?.id))
         dispatch(userFoodLog(user?.id))
 
+        let loArr = []
+        currentFoodLog?.forEach(obj => {
+            loArr.push(...Object.keys(obj))
+        })
+        setLogLocation(loArr)
     },[dispatch, selectedMeal])
 
 
@@ -40,27 +53,32 @@ const FoodLog = () => {
         switch (e.target.getAttribute('name')) {
             case 'breakfast':
                 setSelectedMeal('breakfast')
+                setMealNo(breIdx)
                 break
             case 'lunch':
                 setSelectedMeal('lunch')
-
+                setMealNo(lunIdx)
                 break
             case 'dinner':
                 setSelectedMeal('dinner')
+                setMealNo(dinIdx)
                 break
         }
     }};
 
-
+    // Handle delete request
     const handleDelete = async (e) => {
         e.preventDefault();
-        await dispatch(deleteFoodLog({"user_id": user?.id, "meal": selectedMeal}))
+        // console.log("meal info ==========",mealInfo);
+        await dispatch(deleteFoodLog(mealInfo))
         alert("Food item has been deleted.")
         history.push('/home')
     }
 
-    const handleConfirmationBox = (e) => {
+    // Confirm box conditional render
+    const handleConfirmationBox = (e, mealData) => {
         e.preventDefault();
+        setMealInfo(mealData);
 
         if (!delTask) {
             document.querySelector(".confirm-background").style.display = "flex"
@@ -75,6 +93,18 @@ const FoodLog = () => {
 
     // Nutrition for Food Log item
     const eachFoodNutrition = (log) => {
+        const mealData = {
+            "name": log.name,
+            "meal": selectedMeal,
+            "dngId": log.daily_nutrition_goals_id,
+            "foodLogId": log.foodlog_id,
+            "selectedMealId": log.id,
+            "userId": user?.id,
+            "breIdx": breIdx,
+            "lunIdx": lunIdx,
+            "dinIdx": dinIdx
+        }
+
         return (
             <div className="foodlog-existing-nutrition" key={log.id}>
                 <div>
@@ -104,7 +134,7 @@ const FoodLog = () => {
                         foodLogId={log.foodlog_id}
                         selectedMealId={log.id}
                     />
-                    <span className="foodlog-existing-delete" onClick={handleConfirmationBox}>
+                    <span className="foodlog-existing-delete" onClick={(e) => handleConfirmationBox(e, mealData)}>
                         <FontAwesomeIcon icon={faTrash} />
                     </span>
                 </div>
@@ -112,16 +142,19 @@ const FoodLog = () => {
         )
     }
 
-    // Conditional Rendering of Current FoodLog for Each Meal
+    // Conditional Rendering of Current FoodLog for Each Meal Time
     const existingFoodEntries = (meal) => {
-        if (meal === "breakfast" && currentFoodLog.length > 0 && currentFoodLog[0]) {
-            return currentFoodLog[0].breakfast?.map(log => eachFoodNutrition(log))
+
+        if (meal === "breakfast" && currentFoodLog.length > 0 && breIdx >=0) {
+            return currentFoodLog[breIdx].breakfast?.map(log => eachFoodNutrition(log))
         }
-        if (meal === "lunch" && currentFoodLog.length > 0 && currentFoodLog[1]) {
-            return currentFoodLog[1].lunch?.map(log => eachFoodNutrition(log))
+
+        if (meal === "lunch" && currentFoodLog.length > 0 && lunIdx >=0) {
+            return currentFoodLog[lunIdx].lunch?.map(log => eachFoodNutrition(log))
         }
-        if (meal === "dinner" && currentFoodLog.length > 0 && currentFoodLog[2]) {
-            return currentFoodLog[2].dinner?.map(log => eachFoodNutrition(log))
+
+        if (meal === "dinner" && currentFoodLog.length > 0 && dinIdx >=0) {
+            return currentFoodLog[dinIdx].dinner?.map(log => eachFoodNutrition(log))
         }
         return (
             <h3>No Existing Entries</h3>
@@ -149,7 +182,7 @@ const FoodLog = () => {
                     </div>
                     <div className="foodlog-mid">
                         <div className="foodlog-existing">
-                            {selectedMeal && currentFoodLog.length > 0 && (
+                            {selectedMeal && currentFoodLog[mealNo] && (
                                 <>
                                     <div className="foodlog-existing-title-container">
                                         <div>Name</div>
@@ -179,11 +212,11 @@ const FoodLog = () => {
                                     </button>
                                 </div>
                             </div>
-                                <div
-                                    className="confirm-background"
-                                    onClick={(e) => handleConfirmationBox(e)}
-                                    >
-                                </div>
+                            <div
+                                className="confirm-background"
+                                onClick={(e) => handleConfirmationBox(e)}
+                                >
+                            </div>
                         </div>
                         <NewFoodLogModal selectedMeal={selectedMeal}/>
                     </div>
