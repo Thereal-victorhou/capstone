@@ -4,12 +4,14 @@ import session from './session'
 import dng from './daily_nutrition_goals';
 import foodlog from './foodLog';
 import search from './search';
+import favoriteList from './favoriteFoods';
 
 const rootReducer = combineReducers({
   session,
   dng,
   foodlog,
-  search
+  search,
+  favoriteList
 });
 
 

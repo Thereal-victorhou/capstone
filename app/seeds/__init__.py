@@ -5,6 +5,7 @@ from .food_log import seed_food_log, undo_food_log
 from .breakfast import seed_breakfast, undo_breakfast
 from .lunch import seed_lunch, undo_lunch
 from .dinner import seed_dinner, undo_dinner
+from .favorite_foods import seed_favorite_foods, undo_favorite_foods
 
 
 # Creates a seed group to hold our commands
@@ -21,6 +22,7 @@ def seed():
     seed_breakfast()
     seed_lunch()
     seed_dinner()
+    seed_favorite_foods()
     # Add other seed functions here
 
 
@@ -33,4 +35,5 @@ def undo():
     undo_breakfast()
     undo_lunch()
     undo_dinner()
+    undo_favorite_foods()
     # Add other undo functions here

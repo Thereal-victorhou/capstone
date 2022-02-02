@@ -10,7 +10,7 @@ const AddFood = ({ selectedMeal }) => {
 
     const user = useSelector(state => state.session.user)
     const currentGoal = useSelector(state => state.dng[user?.id])
-    const currentFoodLog = useSelector(state => state.foodlog);
+    // const currentFoodLog = useSelector(state => state.foodlog);
     const currentSearchResults = useSelector(state => Object.values(state.search));
 
     const dispatch = useDispatch();
