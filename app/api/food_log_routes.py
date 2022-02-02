@@ -48,7 +48,7 @@ def get_food_log(user_id):
 
     # Lunch
     if not user_dinner and not user_breakfast:
-        return {'user_food_log': [{"dinner": lunch_func(user_lunch)}]}
+        return {'user_food_log': [{"lunch": lunch_func(user_lunch)}]}
 
     # Dinner
     if not user_breakfast and not user_lunch:
@@ -197,7 +197,7 @@ def delete_food_log(user_id):
         Food_Log.query.filter_by(id=data['foodLogId']).delete()
         db.session.commit()
 
-    return {"user_food_log": [{"foodLogId": data['foodLogId']}, {"meal": "breakfast"}]}
+    return {"user_food_log": [{"foodLogId": data['foodLogId']}, {"meal": data['meal']}]}
 
 # Delete all foodlogs for current dng
 @food_log_routes.route('/all/<int:user_id>', methods=['DELETE'])

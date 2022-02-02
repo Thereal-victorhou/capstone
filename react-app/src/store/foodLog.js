@@ -32,9 +32,10 @@ const changeFoodLog = (food) => ({
     type: UPDATE_FOOD_LOG,
     food
 });
-const deletefl = (food) => ({
+const deletefl = (food, idxObj) => ({
     type: DELETE_FOOD_LOG,
-    food
+    food,
+    idxObj
 })
 
 const deleteAll = (food) => ({
@@ -100,7 +101,13 @@ export const updateFoodLog = (ufl) => async (dispatch) => {
 
 // Delete food log
 export const deleteFoodLog = (mealInfo) => async (dispatch) => {
-    const { userId } = mealInfo;
+    const { userId, breIdx, lunIdx, dinIdx } = mealInfo;
+    const idxObj = {
+        breIdx,
+        lunIdx,
+        dinIdx
+    };
+    console.log("index obj", idxObj)
     const res = await fetch(`/api/food-log/${userId}`,{
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
@@ -108,7 +115,7 @@ export const deleteFoodLog = (mealInfo) => async (dispatch) => {
     });
     const info = await res.json();
     // console.log("inside delete thunk==========", info);
-    dispatch(deletefl(info));
+    dispatch(deletefl(info, idxObj));
 };
 
 // Delete all food logs
@@ -131,7 +138,7 @@ const foodLogReducer = (state = {}, action) => {
             if (action.food.user_food_log === "False") {
                 return state;
             }
-            newState = {...state}
+            // newState = {...state}
             // Object.values(action.food.user_food_log).forEach(log => {
             //     newState[action.food.user_food_log.indexOf(log)] = log;
             // })
@@ -159,17 +166,17 @@ const foodLogReducer = (state = {}, action) => {
             newState = {...state}
 
             if (action.food.user_food_log[1].meal === "breakfast") {
-                delete newState[0].breakfast.filter(obj => obj.foodlog_id === action.food.user_food_log[0].foodLogId);
+                delete newState[0].breakfast.filter(obj => obj.foodlog_id === action.food.user_food_log[action.idxObj.breIdx].foodLogId);
             }
 
             if (action.food.user_food_log[1].meal === "lunch") {
-                delete newState[0].lunch.filter(obj => obj.foodlog_id === action.food.user_food_log[1].foodLogId);
+                delete newState[0].lunch.filter(obj => obj.foodlog_id === action.food.user_food_log[action.idxObj.lunIdx].foodLogId);
             }
 
             if (action.food.user_food_log[1].meal === "dinner") {
-                delete newState[0].dinner.filter(obj => obj.foodlog_id === action.food.user_food_log[2].foodLogId);
+                delete newState[0].dinner.filter(obj => obj.foodlog_id === action.food.user_food_log[action.idxObj.dinIdx].foodLogId);
             }
-            
+
             return newState;
 
         case DELETE_ALL_LOGS:
