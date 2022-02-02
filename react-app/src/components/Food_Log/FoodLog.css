@@ -188,7 +188,6 @@
         top: 75%;
         left: 50%;
         transform: translate(-50%, -225%);
-        border-radius: 0.3rem;
         padding: 1rem;
         z-index: 5; /* Higher than the z-index of the background */
       }
