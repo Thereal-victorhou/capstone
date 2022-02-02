@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { userDng } from '../../store/daily_nutrition_goals';
 import { userFoodLog, createFoodLog, updateFoodLog, deleteFoodLog } from '../../store/foodLog';
+import { getFavList } from "../../store/favoriteFoods";
 import NewFoodLogModal from '../FoodLogModal/NewFoodLogModal';
 import UpdateFoodLogModal from '../FoodLogModal/UpdateFoodLogModal';
 
@@ -16,7 +17,7 @@ const FoodLog = () => {
     const currentGoal = useSelector(state => state.dng[user?.id])
 
     const currentFoodLog = useSelector(state => Object.values(state.foodlog));
-    console.log("currentFoodLog", currentFoodLog)
+    // console.log("currentFoodLog", currentFoodLog)
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -38,6 +39,7 @@ const FoodLog = () => {
     useEffect(() =>  {
         dispatch(userDng(user?.id))
         dispatch(userFoodLog(user?.id))
+        dispatch(getFavList(user?.id))
 
         let loArr = []
         currentFoodLog?.forEach(obj => {
