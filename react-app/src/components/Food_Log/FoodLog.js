@@ -14,7 +14,8 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 const FoodLog = () => {
 
     const user = useSelector(state => state.session.user)
-    const currentGoal = useSelector(state => state.dng[user?.id])
+    const favoritesList = useSelector(state => state.favoriteList?.favList)
+    // console.log(favorites && favorites)
 
     const currentFoodLog = useSelector(state => Object.values(state.foodlog));
     // console.log("currentFoodLog", currentFoodLog)
@@ -220,7 +221,7 @@ const FoodLog = () => {
                                 >
                             </div>
                         </div>
-                        <NewFoodLogModal selectedMeal={selectedMeal}/>
+                        <NewFoodLogModal selectedMeal={selectedMeal} />
                     </div>
                 </div>
             </div>

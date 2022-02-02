@@ -5,8 +5,9 @@ import { userDng } from '../../store/daily_nutrition_goals';
 import { userFoodLog, createFoodLog, updateFoodLog, deleteFoodLog } from '../../store/foodLog';
 import { searchForFoodItem } from '../../store/search';
 import { specificFoodItem } from "../../store/search";
+import { addFavoriteFood } from "../../store/favoriteFoods";
 
-const AddFood = ({ selectedMeal }) => {
+const AddFood = ({ selectedMeal}) => {
 
     const user = useSelector(state => state.session.user)
     const currentGoal = useSelector(state => state.dng[user?.id])
@@ -15,6 +16,8 @@ const AddFood = ({ selectedMeal }) => {
 
     const dispatch = useDispatch();
     const history = useHistory();
+    const favoritesList = useSelector(state => state.favoriteList?.favList)
+    // console.log(favoritesList.favorite_foods)
 
     const [errors, setErrors] = useState([]);
     const [foodName, setFoodName] = useState("")
@@ -269,6 +272,23 @@ const AddFood = ({ selectedMeal }) => {
         await dispatch(specificFoodItem(e.target.innerText))
     }
 
+    // Conditional render for favorite foods
+    const favListRender = (each, i) => {
+
+            if (each.meal === selectedMeal) {
+                return (
+                    <div className="favorite-items" key={i}>
+                        <div id="item-name">
+                            <p>{each.meal === selectedMeal && each.name}</p>
+                        </div>
+                        <div id="fav-symbl" >
+
+                        </div>
+                    </div>
+                )
+            }
+    }
+
     return (
         <div className="new-modal-main">
             <div className="modal-title">
@@ -288,6 +308,9 @@ const AddFood = ({ selectedMeal }) => {
                     </div>
                     <div className="favorite-foodlist">
                         <h3>Favorites</h3>
+                        {favoritesList && favoritesList.favorite_foods.map((each, i) =>
+                            favListRender(each, i)
+                        )}
                     </div>
                 </div>
                 <form className="foodlog-form">
