@@ -138,10 +138,8 @@ const foodLogReducer = (state = {}, action) => {
             if (action.food.user_food_log === "False") {
                 return state;
             }
-            // newState = {...state}
-            // Object.values(action.food.user_food_log).forEach(log => {
-            //     newState[action.food.user_food_log.indexOf(log)] = log;
-            // })
+            newState = {...state}
+
             newState = {...action.food.user_food_log}
             // console.log("newState========= ", newState)
             return newState;
@@ -166,18 +164,20 @@ const foodLogReducer = (state = {}, action) => {
             newState = {...state}
 
             if (action.food.user_food_log[1].meal === "breakfast") {
-                delete newState[0].breakfast.filter(obj => obj.foodlog_id === action.food.user_food_log[action.idxObj.breIdx].foodLogId);
+                delete newState[0].breakfast?.filter(obj => obj.foodlog_id === action.food.user_food_log[0].foodLogId);
+                return newState;
             }
 
             if (action.food.user_food_log[1].meal === "lunch") {
-                delete newState[0].lunch.filter(obj => obj.foodlog_id === action.food.user_food_log[action.idxObj.lunIdx].foodLogId);
+                delete newState[0].lunch?.filter(obj => obj.foodlog_id === action.food.user_food_log[0].foodLogId);
+                return newState;
             }
 
             if (action.food.user_food_log[1].meal === "dinner") {
-                delete newState[0].dinner.filter(obj => obj.foodlog_id === action.food.user_food_log[action.idxObj.dinIdx].foodLogId);
+                delete newState[0].dinner?.filter(obj => obj.foodlog_id === action.food.user_food_log[0].foodLogId);
+                return newState;
             }
 
-            return newState;
 
         case DELETE_ALL_LOGS:
             return {};

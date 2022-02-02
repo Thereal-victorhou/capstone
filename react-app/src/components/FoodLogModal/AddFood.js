@@ -49,17 +49,10 @@ const AddFood = ({ selectedMeal }) => {
             // console.log('=========', currentSearchResults[currentSearchResults.length-1])
             const currentlySelected = currentSearchResults[currentSearchResults.length-1]
             setFoodName(currentlySelected.food);
-            setCalories(precisionTwo(currentlySelected.calories));
-            setCarbohydrates(precisionTwo(currentlySelected.carbohydrates));
-            setFat(precisionTwo(currentlySelected.fat));
-            setProtein(precisionTwo(currentlySelected.protein));
-
-        } else {
-            setFoodName("");
-            setCalories("");
-            setCarbohydrates("");
-            setFat("");
-            setProtein("");
+            setCalories(parseInt(precisionTwo(currentlySelected.calories)), 10);
+            setCarbohydrates(parseInt(precisionTwo(currentlySelected.carbohydrates)), 10);
+            setFat(parseInt(precisionTwo(currentlySelected.fat)), 10);
+            setProtein(parseInt(precisionTwo(currentlySelected.protein)), 10);
         }
     }, [currentSearchResults])
 
@@ -277,17 +270,24 @@ const AddFood = ({ selectedMeal }) => {
     }
 
     return (
-        <>
-            <h1>{`New ${selectedMeal.replace(selectedMeal.split('')[0], selectedMeal.split('')[0].toUpperCase())} Item`}</h1>
+        <div className="new-modal-main">
+            <div className="modal-title">
+                <h1>{`New ${selectedMeal.replace(selectedMeal.split('')[0], selectedMeal.split('')[0].toUpperCase())} Item`}</h1>
+            </div>
             <div className="foodlog-modal-main">
                 <div className="search-container">
                     <input className="search-bar" placeholder="Search for food..." value={search} onChange={(e) => setSearch(e.target.value)}></input>
                     {/* <button className='testing-search' onClick={searchForItem}>search</button> */}
                     <div className="search-results">
                         {search.length > 0 && currentSearchResults?.length > 0 && currentSearchResults?.map((res) => (
-                            <div className="result-box" key={currentSearchResults?.indexOf(res)} value={res?.food_name} onClick={searchForSpecificItem}>{res?.food_name}</div>
+                            <div className="result-box" key={currentSearchResults?.indexOf(res)} value={res?.food_name} onClick={searchForSpecificItem}>
+                                <p>{res?.food_name}</p>
+                            </div>
                             )
                             )}
+                    </div>
+                    <div className="favorite-foodlist">
+                        <h3>Favorites</h3>
                     </div>
                 </div>
                 <form className="foodlog-form">
@@ -358,12 +358,15 @@ const AddFood = ({ selectedMeal }) => {
                     </div>
                     <div className="foodlog-lower">
                         <button className="foodlog-submit-btn" type="submit" onClick={handleButton}>
+                            <h4>Add to favorite</h4>
+                        </button>
+                        <button className="foodlog-submit-btn" type="submit" onClick={handleButton}>
                             <h4>Add New Item</h4>
                         </button>
                     </div>
                 </form>
             </div>
-        </>
+        </div>
     )
 }
 
