@@ -3,6 +3,8 @@ const GET_FOOD_ITEM = "search/GET_FOOD_ITEM";
 
 const PUT_FOOD_ITEM = "search/PUT_FOOD_ITEM";
 
+const REMOVE_FOOD_ITEM = "search/REMOVE_FOOD_ITEM";
+
 // Action
 const getFoodItem = (food) => ({
     type: GET_FOOD_ITEM,
@@ -12,6 +14,10 @@ const getFoodItem = (food) => ({
 const putFoodItem = (foodList) => ({
     type: PUT_FOOD_ITEM,
     foodList
+})
+
+const removeFoodItem = () => ({
+    type: REMOVE_FOOD_ITEM
 })
 
 // Thunk
@@ -67,6 +73,10 @@ export const searchForFoodItem = (foodName) => async (dispatch) => {
 
 }
 
+export const removeSearchItem = () => (dispatch) => {
+    dispatch(removeFoodItem());
+}
+
 // Reducer
 const searchReducer = (state = {}, action) => {
     let newState;
@@ -79,6 +89,10 @@ const searchReducer = (state = {}, action) => {
             action.foodList.forEach(item => {
                 newState[action.foodList.indexOf(item)] = item
             })
+            return newState;
+        case REMOVE_FOOD_ITEM:
+            newState = {...state}
+            delete newState.selected
             return newState;
         default:
             return state;

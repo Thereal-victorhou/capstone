@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
-import { userDng } from '../../store/daily_nutrition_goals';
-import { getOneLog, createFoodLog } from '../../store/foodLog';
-import { searchForFoodItem } from '../../store/search';
-import { specificFoodItem } from "../../store/search";
-import { addFavoriteFood } from "../../store/favoriteFoods";
-import { getFavList } from "../../store/favoriteFoods";
+import { createFoodLog } from '../../store/foodLog';
+import { searchForFoodItem, specificFoodItem, removeSearchItem } from '../../store/search';
+import { addFavFood, getFavList, deleteFavFood } from "../../store/favoriteFoods";
+
 
 
 const AddFood = ({ selectedMeal }) => {
@@ -33,21 +31,22 @@ const AddFood = ({ selectedMeal }) => {
     const [carbBool, setCarbBool] = useState(false);
     const [fatBool, setFatBool] = useState(false);
     const [proBool, setProBool] = useState(false);
+    const [favExist, setFavExist] = useState(false);
 
     const [search, setSearch] = useState("");
 
-    // const [curLog, setCurFoodLog] = useState({})
+    const foodNameLength = document.querySelector(".food-name-input")?.getAttribute("value")?.length
+    const caloriesLength = document.querySelector(".calories-input")?.getAttribute("value")?.length
+    const carbLength = document.querySelector(".carbohydrates-input")?.getAttribute("value")?.length
+    const fatLength = document.querySelector(".fat-input")?.getAttribute("value")?.length
+    const proteinLength = document.querySelector(".protein-input")?.getAttribute("value")?.length
 
-    // useEffect(() => {
-    //     const filtered = Object.values(currentFoodLog)?.filter(log => log.meal === `${selectedMeal}`)[0];
-    //     setCurFoodLog(filtered);
-
-    // },[currentFoodLog, selectedMeal])
-
+    // Rounding helper
     const precisionTwo = (num) => {
         return +(Math.round(num + "e+2") + "e-2")
     }
 
+    // Autofill input fields based on search result
     useEffect(() =>  {
         if (currentSearchResults && currentSearchResults.length > 20) {
             // console.log("Inside current UseEffect")
@@ -58,14 +57,23 @@ const AddFood = ({ selectedMeal }) => {
             setCarbohydrates(parseInt(precisionTwo(currentlySelected.carbohydrates)), 10);
             setFat(parseInt(precisionTwo(currentlySelected.fat)), 10);
             setProtein(parseInt(precisionTwo(currentlySelected.protein)), 10);
+            setFavExist(false);
+
         }
     }, [currentSearchResults])
+
+    // Live search
+    useEffect(() => {
+        if (search.length > 0) {
+            dispatch(searchForFoodItem(search))
+        }
+    }, [search])
 
     // Input Validations
     useEffect(() => {
         let errArr = []
 
-        if (nameBool && !foodName) {
+        if (nameBool && !foodNameLength) {
             errArr.push({msg: "Please fill out Name field", type: 'foodName'})
             setErrors(errArr);
         } else {
@@ -73,7 +81,7 @@ const AddFood = ({ selectedMeal }) => {
             setErrors(errArr)
         }
 
-        if (calBool && !calories) {
+        if (calBool && !caloriesLength) {
             errArr.push({msg: "Please fill out Calories field"})
             setErrors(errArr);
             // console.log("errArr====================>",errArr)
@@ -81,7 +89,7 @@ const AddFood = ({ selectedMeal }) => {
 
 
         if (carbBool) {
-            if (carbohydrates && carbohydrates.length > 0) {
+            if (carbohydrates && carbLength) {
                 if(calories && (carbohydrates*4 > calories)) {
                     errArr.push({msg: "Carbohydrates cannot exceed calories", type: "carbohydrates"})
                     setErrors(errArr);
@@ -93,7 +101,7 @@ const AddFood = ({ selectedMeal }) => {
                     // console.log("errArr====================>",errArr)
                 }
 
-            } else if (!carbohydrates) {
+            } else if (!carbLength) {
                 errArr.push({msg: "Please fill out Carbohydrates field"})
                 setErrors(errArr);
                 // console.log("errArr====================>",errArr)
@@ -103,7 +111,7 @@ const AddFood = ({ selectedMeal }) => {
         if (fatBool) {
             // console.log("hello from fat")
             // console.log(fat.length)
-            if (fat && fat.length > 0) {
+            if (fat && fatLength) {
                 if (calories && (fat*9 > calories)) {
                         errArr.push({msg: "Fat cannot exceed calories", type: "fat"})
                         setErrors(errArr);
@@ -117,7 +125,7 @@ const AddFood = ({ selectedMeal }) => {
                     // console.log("errArr====================>",errArr)
                 }
 
-            } else if (!fat) {
+            } else if (!fatLength) {
                 errArr.push({msg: "Please fill out Fat field"})
                 setErrors(errArr);
                 // console.log("errArr====================>",errArr)
@@ -125,7 +133,7 @@ const AddFood = ({ selectedMeal }) => {
         }
 
         if (proBool) {
-            if (protein && protein.length > 0) {
+            if (protein && proteinLength) {
                 if(calories && (protein*4 > calories)) {
                     errArr.push({msg: `Protein cannot exceed calories`, type: "protein"})
                     setErrors(errArr);
@@ -138,7 +146,7 @@ const AddFood = ({ selectedMeal }) => {
                     // console.log("errArr====================>",errArr)
                 }
 
-            } else if (!protein) {
+            } else if (!proteinLength) {
                 errArr.push({msg: "Please fill out Protein field"})
                 setErrors(errArr);
                 // console.log("errArr====================>",errArr)
@@ -158,14 +166,7 @@ const AddFood = ({ selectedMeal }) => {
         }
     },[foodName, calories, carbohydrates, fat, protein, nameBool, calBool, carbBool, fatBool, proBool])
 
-    // Live search
-    useEffect(() => {
-        if (search.length > 0) {
-            dispatch(searchForFoodItem(search))
-        }
-    }, [search])
-
-
+    // Determine which input field has been selected
     const handleBool = (e) => {
         e.preventDefault();
 
@@ -215,10 +216,10 @@ const AddFood = ({ selectedMeal }) => {
         }
     }
 
+    // Parameters for Input fields
     const updateFoodName = (e) => {
         setFoodName(e.target.value);
     }
-
     const updateCalories = (e) => {
         if (e.target.value === '' || (/^[0-9]+$/.test(e.target.value))) {
             setCalories(e.target.value);
@@ -240,11 +241,18 @@ const AddFood = ({ selectedMeal }) => {
         }
     }
 
-    const handleButton = async (e) => {
+    // Search for specific item
+    const searchForSpecificItem = async(e) => {
+        e.preventDefault();
+        await dispatch(specificFoodItem(e.target.innerText))
+    }
+
+    // Add new foodlog item
+    const newItemButton = async (e) => {
         e.preventDefault()
 
         if (currentGoal) {
-            if (!errors.length && calories && carbohydrates && fat && protein) {
+            if (!errors.length && foodNameLength && caloriesLength && carbLength && fatLength && proteinLength) {
                 await dispatch(createFoodLog({
                     "name": foodName,
                     "meal": selectedMeal,
@@ -266,41 +274,92 @@ const AddFood = ({ selectedMeal }) => {
         } else {
             alert("A Daily Nutrition Goal must be created first.")
         }
+    }
+
+
+    // Add to favorite foods list
+    const addToFav = async (e) => {
+
+        if (!errors.length && foodNameLength && caloriesLength && carbLength && fatLength && proteinLength) {
+            await dispatch(addFavFood({
+                "name": foodName,
+                "calories": parseInt(calories, 10),
+                "carbohydrates": parseInt(carbohydrates, 10),
+                "fat": parseInt(fat, 10),
+                "protein": parseInt(protein, 10),
+                "user_id": parseInt(user?.id, 10)
+            }))
+            await dispatch(getFavList(parseInt(user?.id, 10)));
+
+        } else {
+            alert(`Please complete ${selectedMeal} entry before adding to favorites list.` );
+            return;
+        }
+    }
+
+    // Delete from favorite foods list
+    const deleteFromFav = async (e, favId) => {
+
+        await dispatch(deleteFavFood({
+            user_id: parseInt(user?.id, 10),
+            fav_id: parseInt(logId ? logId : favId, 10)
+        }));
+        await dispatch(getFavList(parseInt(user?.id, 10)));
 
     }
 
-    const searchForSpecificItem = async(e) => {
+    // Autofill Inputs from Favorites List
+    const favInput = async (e, favName, favCal, favCarb, favFat, favProtein, favId) => {
         e.preventDefault();
-        await dispatch(specificFoodItem(e.target.innerText))
+
+        if (currentSearchResults && currentSearchResults.length > 20) {
+            console.log("inside test")
+            await dispatch(removeSearchItem())
+        }
+
+        setSearch("");
+        setFoodName("");
+        setCalories(0);
+        setCarbohydrates(0);
+        setFat(0);
+        setProtein(0);
+
+        setFavExist(true)
+
+        setFoodName(favName);
+        setCalories(parseInt(precisionTwo(favCal)), 10);
+        setCarbohydrates(parseInt(precisionTwo(favCarb)), 10);
+        setFat(parseInt(precisionTwo(favFat)), 10);
+        setProtein(parseInt(precisionTwo(favProtein)), 10);
+        setLogId(favId);
+
     }
 
-    const favInput = async(e, foodLogId) => {
+    const handleFav = (e) => {
         e.preventDefault();
-        await dispatch(getOneLog(foodLogId));
-        
 
-    }
-
-    const handleFav = (foodLogId) => {
-        const exists = favoritesList.favorite_foods.filter(food => food.id === foodLogId)
-        console.log("Is already a favorite==== ", exists)
-    }
+        if (favExist) {
+            deleteFromFav();
+        } else {
+            addToFav();
+        };
+    };
 
     // Conditional render for favorite foods
     const favListRender = (each, i) => {
 
-            if (each.meal === selectedMeal) {
-                return (
-                    <div className="favorite-items" key={i} onClick={(e) => favInput(e, each.id)}>
-                        <div id="item-name">
-                            <p>{each.meal === selectedMeal && each.name}</p>
-                        </div>
-                        <div id="fav-symbl" onClick={handleFav(each.id)}>
+        return (
+            <div className="favorite-items" key={i}>
+                <div id="item-name" onClick={(e) => favInput(e, each.name,
+                    each.calories, each.carbohydrates,
+                    each.fat, each.protein, each.id)}
+                >
+                    <p>{each.name}</p>
+                </div>
+                <div id="fav-symbl" onClick={(e) => deleteFromFav(e, each.id)}></div>
+            </div>
+        )
 
-                        </div>
-                    </div>
-                )
-            }
     }
 
     return (
@@ -320,8 +379,8 @@ const AddFood = ({ selectedMeal }) => {
                             )
                             )}
                     </div>
+                    <h3>Favorites</h3>
                     <div className="favorite-foodlist">
-                        <h3>Favorites</h3>
                         {favoritesList && favoritesList.favorite_foods.map((each, i) =>
                             favListRender(each, i)
                         )}
@@ -394,10 +453,10 @@ const AddFood = ({ selectedMeal }) => {
                         />
                     </div>
                     <div className="foodlog-lower">
-                        {/* <button className="foodlog-submit-btn" type="submit" onClick={handleButton}>
-                            <h4>Add to favorite</h4>
-                        </button> */}
-                        <button className="foodlog-submit-btn" type="submit" onClick={handleButton}>
+                        <button className="foodlog-submit-btn" type="submit" onClick={handleFav}>
+                            {favExist ? (<h4 id="favRemoval">Remove From Favorites</h4>) : (<h4 id="favAdd">Add To Favorites</h4>)}
+                        </button>
+                        <button className="foodlog-submit-btn" type="submit" onClick={newItemButton}>
                             <h4>Add New Item</h4>
                         </button>
                     </div>

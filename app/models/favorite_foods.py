@@ -4,17 +4,24 @@ class Favorite_Foods(db.Model):
     __tablename__ = 'favorite_foods'
 
     id = db.Column(db.Integer, primary_key=True)
-    foodlog_id = db.Column(db.Integer, db.ForeignKey("food_log.id"), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    calories = db.Column(db.Integer, nullable=False)
+    carbohydrates = db.Column(db.Integer, nullable=False)
+    fat = db.Column(db.Integer, nullable=False)
+    protein = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False)
 
     def to_dict(self):
         return {
             "id": self.id,
-            "foodlog_id": self.foodlog_id,
+            "name": self.name,
+            "calories": self.calories,
+            "carbohydrates": self.carbohydrates,
+            "fat": self.fat,
+            "protein": self.protein,
             "user_id": self.user_id,
             "created_at": self.created_at
         }
 
-    food_log = db.relationship("Food_Log", back_populates="favorite_foods")
     user = db.relationship("User", back_populates="favorite_foods")
