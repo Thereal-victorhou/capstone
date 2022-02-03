@@ -274,33 +274,38 @@ const AddFood = ({ selectedMeal }) => {
         await dispatch(specificFoodItem(e.target.innerText))
     }
 
-    const favInput = async(e, foodLogId) => {
+    const favInput = (e, favName, favCal, favCarb, favFat, favProtein) => {
         e.preventDefault();
-        await dispatch(getOneLog(foodLogId));
-        
-
+        setFoodName(favName);
+        setCalories(parseInt(precisionTwo(favCal)), 10);
+        setCarbohydrates(parseInt(precisionTwo(favCarb)), 10);
+        setFat(parseInt(precisionTwo(favFat)), 10);
+        setProtein(parseInt(precisionTwo(favProtein)), 10);
     }
 
-    const handleFav = (foodLogId) => {
-        const exists = favoritesList.favorite_foods.filter(food => food.id === foodLogId)
+    const handleFav = (e, favId) => {
+        e.preventDefault();
+        const exists = favoritesList.favorite_foods.filter(food => food.id === favId)
         console.log("Is already a favorite==== ", exists)
     }
 
     // Conditional render for favorite foods
     const favListRender = (each, i) => {
 
-            if (each.meal === selectedMeal) {
-                return (
-                    <div className="favorite-items" key={i} onClick={(e) => favInput(e, each.id)}>
-                        <div id="item-name">
-                            <p>{each.meal === selectedMeal && each.name}</p>
-                        </div>
-                        <div id="fav-symbl" onClick={handleFav(each.id)}>
+        return (
+            <div className="favorite-items"
+                key={i}
+                onClick={(e) => favInput(e, each.name,
+                    each.calories, each.carbohydrates,
+                    each.fat, each.protein)}
+            >
+                <div id="item-name">
+                    <p>{each.name}</p>
+                </div>
+                <div id="fav-symbl" onClick={(e) => handleFav(e, each.id)}></div>
+            </div>
+        )
 
-                        </div>
-                    </div>
-                )
-            }
     }
 
     return (
@@ -320,8 +325,8 @@ const AddFood = ({ selectedMeal }) => {
                             )
                             )}
                     </div>
+                    <h3>Favorites</h3>
                     <div className="favorite-foodlist">
-                        <h3>Favorites</h3>
                         {favoritesList && favoritesList.favorite_foods.map((each, i) =>
                             favListRender(each, i)
                         )}

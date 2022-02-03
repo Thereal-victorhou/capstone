@@ -339,6 +339,14 @@
         align-items: center;
     }
 
+    #item-name p {
+        margin-left: .5rem;
+    }
+
+    .favorite-items:hover {
+        background-color: white;
+    }
+
     .favorite-items #fav-symbl {
         height: 100%;
         width: 2rem;

@@ -17,7 +17,6 @@ class Food_Log(db.Model):
             "created_at": self.created_at
         }
 
-    favorite_foods = db.relationship("Favorite_Foods", back_populates="food_log")
     breakfast = db.relationship("Breakfast", back_populates="food_log")
     lunch = db.relationship("Lunch", back_populates="food_log")
     dinner = db.relationship("Dinner", back_populates="food_log")
