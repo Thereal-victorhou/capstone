@@ -2,16 +2,20 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { userDng } from '../../store/daily_nutrition_goals';
-import { userFoodLog, createFoodLog, updateFoodLog, deleteFoodLog } from '../../store/foodLog';
+import { getOneLog, createFoodLog } from '../../store/foodLog';
 import { searchForFoodItem } from '../../store/search';
 import { specificFoodItem } from "../../store/search";
+import { addFavoriteFood } from "../../store/favoriteFoods";
+import { getFavList } from "../../store/favoriteFoods";
+
 
 const AddFood = ({ selectedMeal }) => {
 
     const user = useSelector(state => state.session.user)
     const currentGoal = useSelector(state => state.dng[user?.id])
-    // const currentFoodLog = useSelector(state => state.foodlog);
     const currentSearchResults = useSelector(state => Object.values(state.search));
+    const favoritesList = useSelector(state => state.favoriteList?.favList)
+    // console.log(favoritesList.favorite_foods)
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -22,6 +26,7 @@ const AddFood = ({ selectedMeal }) => {
     const [carbohydrates, setCarbohydrates] = useState("");
     const [fat, setFat] = useState("");
     const [protein, setProtein] = useState("");
+    const [logId, setLogId] = useState(0);
 
     const [nameBool, setNameBool] = useState(false);
     const [calBool, setCalBool] = useState(false);
@@ -269,6 +274,35 @@ const AddFood = ({ selectedMeal }) => {
         await dispatch(specificFoodItem(e.target.innerText))
     }
 
+    const favInput = async(e, foodLogId) => {
+        e.preventDefault();
+        await dispatch(getOneLog(foodLogId));
+        
+
+    }
+
+    const handleFav = (foodLogId) => {
+        const exists = favoritesList.favorite_foods.filter(food => food.id === foodLogId)
+        console.log("Is already a favorite==== ", exists)
+    }
+
+    // Conditional render for favorite foods
+    const favListRender = (each, i) => {
+
+            if (each.meal === selectedMeal) {
+                return (
+                    <div className="favorite-items" key={i} onClick={(e) => favInput(e, each.id)}>
+                        <div id="item-name">
+                            <p>{each.meal === selectedMeal && each.name}</p>
+                        </div>
+                        <div id="fav-symbl" onClick={handleFav(each.id)}>
+
+                        </div>
+                    </div>
+                )
+            }
+    }
+
     return (
         <div className="new-modal-main">
             <div className="modal-title">
@@ -288,6 +322,9 @@ const AddFood = ({ selectedMeal }) => {
                     </div>
                     <div className="favorite-foodlist">
                         <h3>Favorites</h3>
+                        {favoritesList && favoritesList.favorite_foods.map((each, i) =>
+                            favListRender(each, i)
+                        )}
                     </div>
                 </div>
                 <form className="foodlog-form">
@@ -357,9 +394,9 @@ const AddFood = ({ selectedMeal }) => {
                         />
                     </div>
                     <div className="foodlog-lower">
-                        <button className="foodlog-submit-btn" type="submit" onClick={handleButton}>
+                        {/* <button className="foodlog-submit-btn" type="submit" onClick={handleButton}>
                             <h4>Add to favorite</h4>
-                        </button>
+                        </button> */}
                         <button className="foodlog-submit-btn" type="submit" onClick={handleButton}>
                             <h4>Add New Item</h4>
                         </button>

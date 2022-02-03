@@ -6,15 +6,50 @@ from datetime import datetime
 
 food_log_routes = Blueprint('food_log_routes', __name__)
 
+ # Dictionary Merge Helper
+def merge(tup1, tup2):
+    return {**tup1.to_dict(), **tup2.to_dict()}
 
-# Get Food_log
+# Breakfast Helper
+def breakfast_func(user_breakfast):
+    return [merge(*args) for args in user_breakfast]
+# Lunch Helper
+def lunch_func(user_lunch):
+    return [merge(*args) for args in user_lunch]
+# Dinner Helper
+def dinner_func(user_dinner):
+    return [merge(*args) for args in user_dinner]
+
+
+# GET one foodlog
+@food_log_routes.route('/one/<int:foodlog_id>', methods=['GET'])
+# @login_required
+def get_one_log(foodlog_id):
+
+    one_log = Food_Log.query.filter_by(id=foodlog_id).first()
+    if one_log.to_dict()['meal'] == "breakfast":
+        user_breakfast = db.session.query(Breakfast).join(Food_Log).filter_by(id=foodlog_id).add_entity(Food_Log).first()
+        breList = list(user_breakfast)
+        return {"selected_log": {**breList[0].to_dict(), **breList[1].to_dict()}}
+
+    if one_log.to_dict()['meal'] == "lunch":
+        user_lunch = db.session.query(Lunch).join(Food_Log).filter_by(id=foodlog_id).add_entity(Food_Log).first()
+        lunList = list(user_lunch)
+        return {"selected_log": {**lunList[0].to_dict(), **lunList[1].to_dict()}}
+
+    if one_log.to_dict()['meal'] == "dinner":
+        user_dinner = db.session.query(Dinner).join(Food_Log).filter_by(foodlog_id=id).add_entity(Food_Log).first()
+        dinList = list(user_dinner)
+        return {"selected_log": {**dinList[0].to_dict(), **dinList[1].to_dict()}}
+
+    # return {'user_food_log': 'False'}
+
+# GET all Food_log
 @food_log_routes.route('/<int:user_id>', methods=['GET'])
 # @login_required
 def get_food_log(user_id):
 
-    # Dictionary Merge Helper
-    def merge(tup1, tup2):
-        return {**tup1.to_dict(), **tup2.to_dict()}
+
 
     user_breakfast = db.session.query(Breakfast).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).all()
     user_lunch = db.session.query(Lunch).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).all()
@@ -31,16 +66,6 @@ def get_food_log(user_id):
     # print("\n\n\n\n\n", di, "\n\n\n\n")
     # di_res = [merge(*args) for args in di]
     # print("\n\n\n\n", di_res, "\n\n\n\n")
-
-    # Breakfast Helper
-    def breakfast_func(user_breakfast):
-        return [merge(*args) for args in user_breakfast]
-    # Lunch Helper
-    def lunch_func(user_lunch):
-        return [merge(*args) for args in user_lunch]
-    # Dinner Helper
-    def dinner_func(user_dinner):
-        return [merge(*args) for args in user_dinner]
 
     # Breakfast
     if not user_lunch and not user_dinner:

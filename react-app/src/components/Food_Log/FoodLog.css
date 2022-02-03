@@ -295,7 +295,7 @@
         height: 2rem;
         width: 100%;
         border-bottom: 1px solid rgb(212, 212, 212);
-        background-color: rgb(242,242,248)
+        background-color: rgb(242,242,248);
 
     }
 
@@ -310,9 +310,44 @@
 
 .favorite-foodlist {
     /* background-color: orange; */
+    display: flex;
+    flex-direction: column;
     height: 30%;
     width: 100%;
+    margin-bottom: 1rem;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
+
+    .favorite-foodlist h3 {
+        margin-bottom: .5rem;
+        /* background-color: brown; */
+    }
+
+    .favorite-items {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        height: 2rem;
+        width: 100%;
+        background-color: rgb(242,242,248);
+        border-bottom: 1px solid rgb(212, 212, 212);
+    }
+
+    .favorite-items #item-name {
+        display: flex;
+        align-items: center;
+    }
+
+    .favorite-items #fav-symbl {
+        height: 100%;
+        width: 2rem;
+        background-color: orange;
+    }
+
+    .favorite-items #fav-symbl:hover {
+        background-color: red;
+    }
 
 .foodlog-form {
     display: flex;
