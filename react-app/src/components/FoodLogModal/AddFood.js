@@ -385,7 +385,7 @@ const AddFood = ({ selectedMeal }) => {
                             )
                             )}
                     </div>
-                    <h3>Favorites</h3>
+                    <h3 className="favorite-title">Favorites</h3>
                     <div className="favorite-foodlist">
                         {favoritesList && favoritesList.favorite_foods.map((each, i) =>
                             favListRender(each, i)
