@@ -301,12 +301,18 @@
 
     .result-box p {
         font-weight: 500;
+        width: 100%;
+        margin-left: .5rem;
     }
 
     .result-box:hover {
         background-color: white;
         text-shadow: 2px, 2px;
     }
+
+.favorite-title {
+    color: rgb(102,102,102);
+}
 
 .favorite-foodlist {
     /* background-color: orange; */
@@ -321,6 +327,7 @@
 
     .favorite-foodlist h3 {
         margin-bottom: .5rem;
+        font-weight: 500;
         /* background-color: brown; */
     }
 
@@ -349,13 +356,16 @@
     }
 
     .favorite-items #fav-symbl {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         height: 100%;
         width: 2rem;
-        background-color: orange;
+        color: rgb(239, 33, 112);
     }
 
     .favorite-items #fav-symbl:hover {
-        background-color: red;
+        color: grey;
     }
 
 .foodlog-form {
@@ -429,20 +439,65 @@
     border-style: none;
 }
 
-.foodlog-submit-btn h4{
+.foodlog-submit-btn {
     font-family: Arial, Helvetica, sans-serif;
-    color: rgb(15, 161, 10);
+    color: rgb(102,102,102);
 }
 
-.foodlog-submit-btn h4:hover {
+.foodlog-submit-btn #new-item-btn:hover{
     color:rgb(37, 209, 31);
 }
 
-.foodlog-delete-btn h4{
-    font-family: Arial, Helvetica, sans-serif;
-    color: rgb(161, 8, 8);
+.foodlog-submit-btn #update-item-btn:hover {
+    color: rgb(0,101,238);
 }
 
-.foodlog-delete-btn h4:hover {
+.foodlog-submit-btn #favAdd:hover {
+    color: rgb(206, 206, 24);
+}
+
+.foodlog-submit-btn #favRemoval:hover {
     color: rgb(206, 9, 9);
 }
+
+.add-button-container {
+    /* background-color: orange; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 5rem;
+}
+
+    .add_food_button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-style: none;
+        background-color: rgb(242, 242, 248);
+        height: 3rem;
+        width: 8rem;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .add_food_button:hover {
+
+    }
+
+    .add_food_button h4 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: rgb(102,102,102);
+        border-left: 1px solid rgb(212, 212, 212);
+        border-right: 1px solid rgb(212, 212, 212);
+        height: 100%;
+        width: 100%;
+    }
+
+    .add_food_button h4:hover {
+        color: rgb(37, 209, 31);
+        border-left: 3px solid rgb(37, 209, 31);
+        border-right: 3px solid rgb(37, 209, 31);
+    }

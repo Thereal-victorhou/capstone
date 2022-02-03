@@ -4,6 +4,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { createFoodLog } from '../../store/foodLog';
 import { searchForFoodItem, specificFoodItem, removeSearchItem } from '../../store/search';
 import { addFavFood, getFavList, deleteFavFood } from "../../store/favoriteFoods";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
+
+
 
 
 
@@ -356,7 +360,9 @@ const AddFood = ({ selectedMeal }) => {
                 >
                     <p>{each.name}</p>
                 </div>
-                <div id="fav-symbl" onClick={(e) => deleteFromFav(e, each.id)}></div>
+                <span id="fav-symbl" onClick={(e) => deleteFromFav(e, each.id)}>
+                    <FontAwesomeIcon icon={faHeart} />
+                </span>
             </div>
         )
 
@@ -379,7 +385,7 @@ const AddFood = ({ selectedMeal }) => {
                             )
                             )}
                     </div>
-                    <h3>Favorites</h3>
+                    <h3 className="favorite-title">Favorites</h3>
                     <div className="favorite-foodlist">
                         {favoritesList && favoritesList.favorite_foods.map((each, i) =>
                             favListRender(each, i)
@@ -457,7 +463,7 @@ const AddFood = ({ selectedMeal }) => {
                             {favExist ? (<h4 id="favRemoval">Remove From Favorites</h4>) : (<h4 id="favAdd">Add To Favorites</h4>)}
                         </button>
                         <button className="foodlog-submit-btn" type="submit" onClick={newItemButton}>
-                            <h4>Add New Item</h4>
+                            <h4 id="new-item-btn">Add New Item</h4>
                         </button>
                     </div>
                 </form>

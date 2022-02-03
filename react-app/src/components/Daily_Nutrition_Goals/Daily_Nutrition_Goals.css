@@ -138,7 +138,7 @@
 
 .submit-btn h4{
     font-family: Arial, Helvetica, sans-serif;
-    color: rgb(15, 161, 10);
+    color: rgb(102,102,102);
 }
 
 .submit-btn h4:hover {
@@ -147,7 +147,7 @@
 
 .delete-btn h4{
     font-family: Arial, Helvetica, sans-serif;
-    color: rgb(161, 8, 8);
+    color: rgb(102,102,102);
 }
 
 .delete-btn h4:hover {
