@@ -6,7 +6,7 @@ from datetime import datetime
 favorite_foods_routes = Blueprint('favorite_foods_routes', __name__)
 
 # GET all favorite foods
-@favorite_foods_routes.route('<int:user_id>', methods=['GET'])
+@favorite_foods_routes.route('/<int:user_id>', methods=['GET'])
 #@login_required
 def get_fav_foods(user_id):
     cur_list = Favorite_Foods.query.filter_by(user_id=user_id).all()
@@ -15,13 +15,18 @@ def get_fav_foods(user_id):
     return {'favorite_foods': [log.to_dict() for log in cur_list]}
 
 # Add to favorite foods
-@favorite_foods_routes.route('<int:user_id>', methods=['POST'])
+@favorite_foods_routes.route('/<int:user_id>', methods=['POST'])
 #@login_required
 def add_fav_foods(user_id):
     data = request.json
     new_fav = Favorite_Foods(
+        name=data['name'],
+        calories=data['calories'],
+        carbohydrates=data['carbohydrates'],
+        fat=data['fat'],
+        protein=data['protein'],
         user_id=user_id,
-        foodlog_id=data['foodLogId']
+        created_at=datetime.now()
     )
     db.session.add(new_fav)
     db.session.commit()

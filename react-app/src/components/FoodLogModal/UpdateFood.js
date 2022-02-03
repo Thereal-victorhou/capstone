@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
-import { userFoodLog, createFoodLog, updateFoodLog, deleteFoodLog } from '../../store/foodLog';
+import { updateFoodLog } from '../../store/foodLog';
 import { searchForFoodItem } from '../../store/search';
 import { specificFoodItem } from "../../store/search";
+import { addFavFood } from "../../store/favoriteFoods";
+import { getFavList } from "../../store/favoriteFoods";
 
 const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selectedProtein, selectedCal, dng, foodLogId, selectedMealId }) => {
 
     const user = useSelector(state => state.session.user)
     const currentSearchResults = useSelector(state => Object.values(state.search));
+    const favoritesList = useSelector(state => state.favoriteList?.favList)
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -52,6 +55,13 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
             setProtein(parseInt(precisionTwo(currentlySelected.protein)), 10);
         }
     }, [currentSearchResults])
+
+    // Live search
+    useEffect(() => {
+        if (search.length > 0) {
+            dispatch(searchForFoodItem(search))
+        }
+    }, [search])
 
     // Input Validations
     useEffect(() => {
@@ -150,13 +160,6 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
         }
     },[foodName, calories, carbohydrates, fat, protein, nameBool, calBool, carbBool, fatBool, proBool])
 
-    // Live search
-    useEffect(() => {
-        if (search.length > 0) {
-            dispatch(searchForFoodItem(search))
-        }
-    }, [search])
-
     // Differentiating between input selections
     const handleBool = (e) => {
         e.preventDefault();
@@ -207,10 +210,10 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
         }
     }
 
+    // Parameters for input fields
     const updateFoodName = (e) => {
         setFoodName(e.target.value);
     }
-
     const updateCalories = (e) => {
         if (e.target.value === '' || (/^[0-9]+$/.test(e.target.value))) {
             setCalories(e.target.value);
@@ -232,8 +235,14 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
         }
     }
 
+    // Search for specific item
+    const searchForSpecificItem = async(e) => {
+        e.preventDefault();
+        await dispatch(specificFoodItem(e.target.innerText))
+    }
+
     // Update foodlog
-    const handleUpdate = async (e) => {
+    const updateItemButton = async (e) => {
         e.preventDefault()
 
             if (!errors.length && foodNameLength && caloriesLength && carbLength && fatLength && proteinLength) {
@@ -257,33 +266,85 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
             }
     }
 
-    const searchForSpecificItem = async(e) => {
+    // Add to favorite foods list
+    const addToFavButton = async (e) => {
         e.preventDefault();
-        await dispatch(specificFoodItem(e.target.innerText))
+
+        if (!errors.length && foodNameLength && caloriesLength && carbLength && fatLength && proteinLength) {
+            await dispatch(addFavFood({
+                "name": foodName,
+                "calories": parseInt(calories, 10),
+                "carbohydrates": parseInt(carbohydrates, 10),
+                "fat": parseInt(fat, 10),
+                "protein": parseInt(protein, 10),
+                "user_id": parseInt(user?.id, 10)
+            }))
+            await dispatch(getFavList(parseInt(user?.id, 10)));
+
+        } else {
+            alert(`Please complete ${selectedMeal} entry before adding to favorites list.` );
+            return;
+        }
     }
 
+    // Autofill Inputs from Favorites List
+    const favInput = (e, favName, favCal, favCarb, favFat, favProtein) => {
+        e.preventDefault();
+        setFoodName(favName);
+        setCalories(parseInt(precisionTwo(favCal)), 10);
+        setCarbohydrates(parseInt(precisionTwo(favCarb)), 10);
+        setFat(parseInt(precisionTwo(favFat)), 10);
+        setProtein(parseInt(precisionTwo(favProtein)), 10);
+    }
+
+    const handleFav = (e, favId) => {
+        e.preventDefault();
+        const exists = favoritesList.favorite_foods.filter(food => food.id === favId)
+        console.log("Is already a favorite==== ", exists)
+    }
+
+    // Conditional render for favorite foods
+    const favListRender = (each, i) => {
+
+        return (
+            <div className="favorite-items"
+                key={i}
+                onClick={(e) => favInput(e, each.name,
+                    each.calories, each.carbohydrates,
+                    each.fat, each.protein)}
+            >
+                <div id="item-name">
+                    <p>{each.name}</p>
+                </div>
+                <div id="fav-symbl" onClick={(e) => handleFav(e, each.id)}></div>
+            </div>
+        )
+
+    }
+
+
+
     return (
-        <>
-            <h1 className="modal-title">{`Update ${selectedMeal.replace(selectedMeal.split('')[0], selectedMeal.split('')[0].toUpperCase())} Item`}</h1>
+        <div className="new-modal-main">
+            <div className="modal-title">
+                <h1>{`Update ${selectedMeal.replace(selectedMeal.split('')[0], selectedMeal.split('')[0].toUpperCase())} Item`}</h1>
+            </div>
             <div className="foodlog-modal-main">
                 <div className="search-container">
-                    <input className="search-bar"
-                        placeholder="Search for food..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}>
-                    </input>
+                    <input className="search-bar" placeholder="Search for food..." value={search} onChange={(e) => setSearch(e.target.value)}></input>
                     {/* <button className='testing-search' onClick={searchForItem}>search</button> */}
                     <div className="search-results">
-                        {search.length > 0
-                            && currentSearchResults?.length > 0
-                            && currentSearchResults?.map((res) => (
-                            <div className="result-box"
-                                key={currentSearchResults?.indexOf(res)}
-                                value={res?.food_name}
-                                onClick={searchForSpecificItem}>
-                                    {res?.food_name}
+                        {search.length > 0 && currentSearchResults?.length > 0 && currentSearchResults?.map((res) => (
+                            <div className="result-box" key={currentSearchResults?.indexOf(res)} value={res?.food_name} onClick={searchForSpecificItem}>
+                                <p>{res?.food_name}</p>
                             </div>
                             )
+                            )}
+                    </div>
+                    <h3>Favorites</h3>
+                    <div className="favorite-foodlist">
+                        {favoritesList && favoritesList.favorite_foods.map((each, i) =>
+                            favListRender(each, i)
                         )}
                     </div>
                 </div>
@@ -354,13 +415,16 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
                         />
                     </div>
                     <div className="foodlog-lower">
-                        <button className="foodlog-submit-btn" type="submit" onClick={handleUpdate}>
+                        <button className="foodlog-submit-btn" type="submit" onClick={addToFavButton}>
+                            <h4>Add to favorite</h4>
+                        </button>
+                        <button className="foodlog-submit-btn" type="submit" onClick={updateItemButton}>
                             <h4>Update Item</h4>
                         </button>
                     </div>
                 </form>
             </div>
-        </>
+        </div>
     )
 }
 

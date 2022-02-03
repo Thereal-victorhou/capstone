@@ -22,11 +22,13 @@ export const getFavList = (userId) => async (dispatch) => {
     dispatch(getFavoriteFoods(data));
 }
 
-export const addFavFood = (userId, foodLogId) => async (dispatch) => {
-    const res = await fetch(`api/favorite-foods/${userId}`, {
+export const addFavFood = (foodObj) => async (dispatch) => {
+    const { user_id } = foodObj;
+    console.log("user Id ========= ", user_id);
+    const res = await fetch(`api/favorite-foods/${user_id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify({foodLogId: foodLogId})
+        body: JSON.stringify(foodObj)
     })
     const result = await res.json();
     dispatch(addFavoriteFood(result));
