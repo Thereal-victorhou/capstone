@@ -58,8 +58,11 @@ export const userFoodLog = (userId) => async (dispatch) => {
 }
 
 // Get one foodlog
-export const getOneLog = (item) => async (dispatch) => {
-
+export const getOneLog = (foodLogId) => async (dispatch) => {
+    const res = await fetch(`api/food-log/one/${foodLogId}`)
+    const result = await res.json();
+    console.log("one food log ", result)
+    dispatch(getOneFoodLog(result))
 }
 
 // Create new foodlog
@@ -134,6 +137,7 @@ export const deleteAllFoodLog = (user_id) => async (dispatch) => {
 const foodLogReducer = (state = {}, action) => {
     let newState;
     switch(action.type) {
+
         case GET_FOOD_LOG:
             if (action.food.user_food_log === "False") {
                 return state;
@@ -143,6 +147,10 @@ const foodLogReducer = (state = {}, action) => {
             newState = {...action.food.user_food_log}
             // console.log("newState========= ", newState)
             return newState;
+
+        case GET_ONE_FOOD_LOG:
+            newState = {...state, ...action.food.selected_log}
+            return state;
 
         case CREATE_FOOD_LOG:
             newState = {...state}

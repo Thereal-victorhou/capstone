@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { userDng } from '../../store/daily_nutrition_goals';
 import { userFoodLog, createFoodLog, updateFoodLog, deleteFoodLog } from '../../store/foodLog';
+import { addFavoriteFood } from "../../store/favoriteFoods";
 import { getFavList } from "../../store/favoriteFoods";
 import NewFoodLogModal from '../FoodLogModal/NewFoodLogModal';
 import UpdateFoodLogModal from '../FoodLogModal/UpdateFoodLogModal';
@@ -14,17 +15,11 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 const FoodLog = () => {
 
     const user = useSelector(state => state.session.user)
-    const favoritesList = useSelector(state => state.favoriteList?.favList)
-    // console.log(favorites && favorites)
-
     const currentFoodLog = useSelector(state => Object.values(state.foodlog));
-    // console.log("currentFoodLog", currentFoodLog)
+    console.log("currentFoodLog", currentFoodLog)
     const dispatch = useDispatch();
     const history = useHistory();
 
-    // const defaultLog = currentFoodLog ?
-    //     Object.values(currentFoodLog).filter(log => log.meal === "breakfast") &&
-    //     Object.values(currentFoodLog).filter(log => log.meal === "breakfast")[0] : "";
     const [logLocation, setLogLocation] = useState([])
     const [selectedMeal, setSelectedMeal] = useState("")
     const [mealNo, setMealNo] = useState(null)
@@ -57,6 +52,7 @@ const FoodLog = () => {
             case 'breakfast':
                 setSelectedMeal('breakfast')
                 setMealNo(breIdx)
+
                 break
             case 'lunch':
                 setSelectedMeal('lunch')
