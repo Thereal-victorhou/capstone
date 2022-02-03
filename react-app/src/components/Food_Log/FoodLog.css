@@ -349,13 +349,16 @@
     }
 
     .favorite-items #fav-symbl {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         height: 100%;
         width: 2rem;
-        background-color: orange;
+        color: rgb(239, 33, 112);
     }
 
     .favorite-items #fav-symbl:hover {
-        background-color: red;
+        color: grey;
     }
 
 .foodlog-form {
@@ -429,20 +432,56 @@
     border-style: none;
 }
 
-.foodlog-submit-btn h4{
+.foodlog-submit-btn {
     font-family: Arial, Helvetica, sans-serif;
-    color: rgb(15, 161, 10);
+    color: grey
 }
 
-.foodlog-submit-btn h4:hover {
+.foodlog-submit-btn #new-item-btn:hover{
     color:rgb(37, 209, 31);
 }
 
-.foodlog-delete-btn h4{
-    font-family: Arial, Helvetica, sans-serif;
-    color: rgb(161, 8, 8);
+.foodlog-submit-btn #update-item-btn:hover {
+    color: rgb(0,101,238);
 }
 
-.foodlog-delete-btn h4:hover {
+.foodlog-submit-btn #favAdd:hover {
+    color: rgb(206, 206, 24);
+}
+
+.foodlog-submit-btn #favRemoval:hover {
     color: rgb(206, 9, 9);
 }
+
+.add-button-container {
+    /* background-color: orange; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 5rem;
+}
+
+    .add_food_button {
+        display: flex;
+        align-items: center;
+        border-top-style: none;
+        border-bottom-style: none;
+        border-left: 1px solid rgb(212, 212, 212);
+        border-right: 1px solid rgb(212, 212, 212);
+        background-color: rgb(242, 242, 248);
+        height: 3rem;
+    }
+
+    .add_food_button:hover {
+        border-left: 3px solid rgb(37, 209, 31);
+        border-right: 3px solid rgb(37, 209, 31);
+    }
+
+    .add_food_button h4 {
+        color: rgb(102,102,102);
+    }
+
+    .add_food_button h4:hover {
+        color: rgb(37, 209, 31);
+    }

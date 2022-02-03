@@ -217,7 +217,9 @@ const FoodLog = () => {
                                 >
                             </div>
                         </div>
-                        <NewFoodLogModal selectedMeal={selectedMeal} />
+                        <div className="add-button-container">
+                            <NewFoodLogModal selectedMeal={selectedMeal} />
+                        </div>
                     </div>
                 </div>
             </div>
