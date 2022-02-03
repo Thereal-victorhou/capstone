@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
-import { getOneLog, createFoodLog } from '../../store/foodLog';
+import { createFoodLog } from '../../store/foodLog';
 import { searchForFoodItem, specificFoodItem, removeSearchItem } from '../../store/search';
 import { addFavFood, getFavList, deleteFavFood } from "../../store/favoriteFoods";
 
@@ -279,7 +279,6 @@ const AddFood = ({ selectedMeal }) => {
 
     // Add to favorite foods list
     const addToFav = async (e) => {
-        e.preventDefault();
 
         if (!errors.length && foodNameLength && caloriesLength && carbLength && fatLength && proteinLength) {
             await dispatch(addFavFood({
@@ -299,12 +298,13 @@ const AddFood = ({ selectedMeal }) => {
     }
 
     // Delete from favorite foods list
-    const deleteFromFav = async(e) => {
-        e.preventDefault();
-        dispatch(deleteFavFood({
+    const deleteFromFav = async (e, favId) => {
+
+        await dispatch(deleteFavFood({
             user_id: parseInt(user?.id, 10),
-            fav_id: parseInt(logId)
-        }))
+            fav_id: parseInt(logId ? logId : favId, 10)
+        }));
+        await dispatch(getFavList(parseInt(user?.id, 10)));
 
     }
 
@@ -349,16 +349,14 @@ const AddFood = ({ selectedMeal }) => {
     const favListRender = (each, i) => {
 
         return (
-            <div className="favorite-items"
-                key={i}
-                onClick={(e) => favInput(e, each.name,
+            <div className="favorite-items" key={i}>
+                <div id="item-name" onClick={(e) => favInput(e, each.name,
                     each.calories, each.carbohydrates,
                     each.fat, each.protein, each.id)}
-            >
-                <div id="item-name">
+                >
                     <p>{each.name}</p>
                 </div>
-                <div id="fav-symbl" onClick={(e) => deleteFromFav(e)}></div>
+                <div id="fav-symbl" onClick={(e) => deleteFromFav(e, each.id)}></div>
             </div>
         )
 

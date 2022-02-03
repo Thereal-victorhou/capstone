@@ -17,9 +17,9 @@ const addFavoriteFood = (food) => ({
     food
 });
 
-const deleteFavoriteFood = (food) => ({
+const deleteFavoriteFood = (favId) => ({
     type: DELETE_FAVORITE_FOOD,
-    food
+    favId
 })
 
 // thunk
@@ -49,7 +49,7 @@ export const deleteFavFood = (foodObj) => async (dispatch) => {
         body: JSON.stringify(foodObj)
     });
     const result = await res.json();
-    console.log(result)
+    dispatch(deleteFavoriteFood(result));
 }
 
 // reducer
@@ -61,6 +61,11 @@ const favoriteFoodsReducer = (state = {}, action) => {
             return newState;
         case ADD_FAVORITE_FOOD:
             newState = {...state, ...{favList: action.favList}};
+            return newState;
+        case DELETE_FAVORITE_FOOD:
+            newState = {...state}
+            console.log(newState)
+            delete newState?.favList.favorite_foods.filter(obj => obj.id === action.favId)
             return newState;
         default:
             return state;

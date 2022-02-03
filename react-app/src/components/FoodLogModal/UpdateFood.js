@@ -2,10 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { updateFoodLog } from '../../store/foodLog';
-import { searchForFoodItem } from '../../store/search';
-import { specificFoodItem } from "../../store/search";
-import { addFavFood } from "../../store/favoriteFoods";
-import { getFavList } from "../../store/favoriteFoods";
+import { searchForFoodItem, specificFoodItem, removeSearchItem } from '../../store/search';
+import { addFavFood, getFavList, deleteFavFood } from "../../store/favoriteFoods";
 
 const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selectedProtein, selectedCal, dng, foodLogId, selectedMealId }) => {
 
@@ -22,12 +20,14 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
     const [carbohydrates, setCarbohydrates] = useState(selectedCarb);
     const [fat, setFat] = useState(selectedFat);
     const [protein, setProtein] = useState(selectedProtein);
+    const [logId, setLogId] = useState(0);
 
     const [nameBool, setNameBool] = useState(false);
     const [calBool, setCalBool] = useState(false);
     const [carbBool, setCarbBool] = useState(false);
     const [fatBool, setFatBool] = useState(false);
     const [proBool, setProBool] = useState(false);
+    const [favExist, setFavExist] = useState(false);
 
     const [search, setSearch] = useState("");
 
@@ -42,7 +42,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
         return +(Math.round(num + "e+2") + "e-2")
     }
 
-    // Setting current search results to input values
+    // Autofill input fields based on search result
     useEffect(() =>  {
         if (currentSearchResults && currentSearchResults.length > 20) {
             // console.log("Inside current UseEffect")
@@ -160,7 +160,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
         }
     },[foodName, calories, carbohydrates, fat, protein, nameBool, calBool, carbBool, fatBool, proBool])
 
-    // Differentiating between input selections
+    // Determine which input field has been selected
     const handleBool = (e) => {
         e.preventDefault();
 
@@ -267,7 +267,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
     }
 
     // Add to favorite foods list
-    const addToFavButton = async (e) => {
+    const addToFav = async (e) => {
         e.preventDefault();
 
         if (!errors.length && foodNameLength && caloriesLength && carbLength && fatLength && proteinLength) {
@@ -287,21 +287,51 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
         }
     }
 
-    // Autofill Inputs from Favorites List
-    const favInput = (e, favName, favCal, favCarb, favFat, favProtein) => {
+    // Delete from favorite foods list
+    const deleteFromFav = async(e) => {
         e.preventDefault();
+        dispatch(deleteFavFood({
+            user_id: parseInt(user?.id, 10),
+            fav_id: parseInt(logId)
+        }))
+
+    }
+
+    // Autofill Inputs from Favorites List
+    const favInput = async (e, favName, favCal, favCarb, favFat, favProtein, favId) => {
+        e.preventDefault();
+
+        if (currentSearchResults && currentSearchResults.length > 20) {
+            console.log("inside test")
+            await dispatch(removeSearchItem())
+        }
+
+        setSearch("");
+        setFoodName("");
+        setCalories(0);
+        setCarbohydrates(0);
+        setFat(0);
+        setProtein(0);
+
+        setFavExist(true)
+
         setFoodName(favName);
         setCalories(parseInt(precisionTwo(favCal)), 10);
         setCarbohydrates(parseInt(precisionTwo(favCarb)), 10);
         setFat(parseInt(precisionTwo(favFat)), 10);
         setProtein(parseInt(precisionTwo(favProtein)), 10);
+        setLogId(favId);
     }
 
-    const handleFav = (e, favId) => {
+    const handleFav = (e) => {
         e.preventDefault();
-        const exists = favoritesList.favorite_foods.filter(food => food.id === favId)
-        console.log("Is already a favorite==== ", exists)
-    }
+
+        if (favExist) {
+            deleteFromFav();
+        } else {
+            addToFav();
+        };
+    };
 
     // Conditional render for favorite foods
     const favListRender = (each, i) => {
@@ -311,12 +341,12 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
                 key={i}
                 onClick={(e) => favInput(e, each.name,
                     each.calories, each.carbohydrates,
-                    each.fat, each.protein)}
+                    each.fat, each.protein, each.id)}
             >
                 <div id="item-name">
                     <p>{each.name}</p>
                 </div>
-                <div id="fav-symbl" onClick={(e) => handleFav(e, each.id)}></div>
+                <div id="fav-symbl" onClick={(e) => deleteFromFav(e)}></div>
             </div>
         )
 
@@ -415,8 +445,8 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
                         />
                     </div>
                     <div className="foodlog-lower">
-                        <button className="foodlog-submit-btn" type="submit" onClick={addToFavButton}>
-                            <h4>Add to favorite</h4>
+                        <button className="foodlog-submit-btn" type="submit" onClick={handleFav}>
+                            {favExist ? (<h4 id="favRemoval">Remove From Favorites</h4>) : (<h4 id="favAdd">Add To Favorites</h4>)}
                         </button>
                         <button className="foodlog-submit-btn" type="submit" onClick={updateItemButton}>
                             <h4>Update Item</h4>
