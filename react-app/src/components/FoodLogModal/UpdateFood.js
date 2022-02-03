@@ -57,7 +57,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
     useEffect(() => {
         let errArr = []
 
-        if (nameBool && !foodName) {
+        if (nameBool && !foodNameLength) {
             errArr.push({msg: "Please fill out Name field", type: 'foodName'})
             setErrors(errArr);
         } else {
@@ -65,7 +65,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
             setErrors(errArr)
         }
 
-        if (calBool && !calories) {
+        if (calBool && !caloriesLength) {
             errArr.push({msg: "Please fill out Calories field"})
             setErrors(errArr);
             // console.log("errArr====================>",errArr)
@@ -73,7 +73,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
 
 
         if (carbBool) {
-            if (carbohydrates && carbohydrates.length > 0) {
+            if (carbohydrates && carbLength) {
                 if(calories && (carbohydrates*4 > calories)) {
                     errArr.push({msg: "Carbohydrates cannot exceed calories", type: "carbohydrates"})
                     setErrors(errArr);
@@ -85,7 +85,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
                     // console.log("errArr====================>",errArr)
                 }
 
-            } else if (!carbohydrates) {
+            } else if (!carbLength) {
                 errArr.push({msg: "Please fill out Carbohydrates field"})
                 setErrors(errArr);
                 // console.log("errArr====================>",errArr)
@@ -95,7 +95,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
         if (fatBool) {
             // console.log("hello from fat")
             // console.log(fat.length)
-            if (fat && fat.length > 0) {
+            if (fat && fatLength) {
                 if (calories && (fat*9 > calories)) {
                         errArr.push({msg: "Fat cannot exceed calories", type: "fat"})
                         setErrors(errArr);
@@ -109,7 +109,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
                     // console.log("errArr====================>",errArr)
                 }
 
-            } else if (!fat) {
+            } else if (!fatLength) {
                 errArr.push({msg: "Please fill out Fat field"})
                 setErrors(errArr);
                 // console.log("errArr====================>",errArr)
@@ -117,7 +117,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
         }
 
         if (proBool) {
-            if (protein && protein.length > 0) {
+            if (protein && proteinLength) {
                 if(calories && (protein*4 > calories)) {
                     errArr.push({msg: `Protein cannot exceed calories`, type: "protein"})
                     setErrors(errArr);
@@ -130,7 +130,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
                     // console.log("errArr====================>",errArr)
                 }
 
-            } else if (!protein) {
+            } else if (!proteinLength) {
                 errArr.push({msg: "Please fill out Protein field"})
                 setErrors(errArr);
                 // console.log("errArr====================>",errArr)

@@ -36,13 +36,12 @@ const AddFood = ({ selectedMeal }) => {
 
     const [search, setSearch] = useState("");
 
-    // const [curLog, setCurFoodLog] = useState({})
+    const foodNameLength = document.querySelector(".food-name-input")?.getAttribute("value")?.length
+    const caloriesLength = document.querySelector(".calories-input")?.getAttribute("value")?.length
+    const carbLength = document.querySelector(".carbohydrates-input")?.getAttribute("value")?.length
+    const fatLength = document.querySelector(".fat-input")?.getAttribute("value")?.length
+    const proteinLength = document.querySelector(".protein-input")?.getAttribute("value")?.length
 
-    // useEffect(() => {
-    //     const filtered = Object.values(currentFoodLog)?.filter(log => log.meal === `${selectedMeal}`)[0];
-    //     setCurFoodLog(filtered);
-
-    // },[currentFoodLog, selectedMeal])
 
     const precisionTwo = (num) => {
         return +(Math.round(num + "e+2") + "e-2")
@@ -65,7 +64,7 @@ const AddFood = ({ selectedMeal }) => {
     useEffect(() => {
         let errArr = []
 
-        if (nameBool && !foodName) {
+        if (nameBool && !foodNameLength) {
             errArr.push({msg: "Please fill out Name field", type: 'foodName'})
             setErrors(errArr);
         } else {
@@ -73,7 +72,7 @@ const AddFood = ({ selectedMeal }) => {
             setErrors(errArr)
         }
 
-        if (calBool && !calories) {
+        if (calBool && !caloriesLength) {
             errArr.push({msg: "Please fill out Calories field"})
             setErrors(errArr);
             // console.log("errArr====================>",errArr)
@@ -81,7 +80,7 @@ const AddFood = ({ selectedMeal }) => {
 
 
         if (carbBool) {
-            if (carbohydrates && carbohydrates.length > 0) {
+            if (carbohydrates && carbLength) {
                 if(calories && (carbohydrates*4 > calories)) {
                     errArr.push({msg: "Carbohydrates cannot exceed calories", type: "carbohydrates"})
                     setErrors(errArr);
@@ -93,7 +92,7 @@ const AddFood = ({ selectedMeal }) => {
                     // console.log("errArr====================>",errArr)
                 }
 
-            } else if (!carbohydrates) {
+            } else if (!carbLength) {
                 errArr.push({msg: "Please fill out Carbohydrates field"})
                 setErrors(errArr);
                 // console.log("errArr====================>",errArr)
@@ -103,7 +102,7 @@ const AddFood = ({ selectedMeal }) => {
         if (fatBool) {
             // console.log("hello from fat")
             // console.log(fat.length)
-            if (fat && fat.length > 0) {
+            if (fat && fatLength) {
                 if (calories && (fat*9 > calories)) {
                         errArr.push({msg: "Fat cannot exceed calories", type: "fat"})
                         setErrors(errArr);
@@ -117,7 +116,7 @@ const AddFood = ({ selectedMeal }) => {
                     // console.log("errArr====================>",errArr)
                 }
 
-            } else if (!fat) {
+            } else if (!fatLength) {
                 errArr.push({msg: "Please fill out Fat field"})
                 setErrors(errArr);
                 // console.log("errArr====================>",errArr)
@@ -125,7 +124,7 @@ const AddFood = ({ selectedMeal }) => {
         }
 
         if (proBool) {
-            if (protein && protein.length > 0) {
+            if (protein && proteinLength) {
                 if(calories && (protein*4 > calories)) {
                     errArr.push({msg: `Protein cannot exceed calories`, type: "protein"})
                     setErrors(errArr);
@@ -138,7 +137,7 @@ const AddFood = ({ selectedMeal }) => {
                     // console.log("errArr====================>",errArr)
                 }
 
-            } else if (!protein) {
+            } else if (!proteinLength) {
                 errArr.push({msg: "Please fill out Protein field"})
                 setErrors(errArr);
                 // console.log("errArr====================>",errArr)
@@ -244,7 +243,7 @@ const AddFood = ({ selectedMeal }) => {
         e.preventDefault()
 
         if (currentGoal) {
-            if (!errors.length && calories && carbohydrates && fat && protein) {
+            if (!errors.length && foodNameLength && caloriesLength && carbLength && fatLength && proteinLength) {
                 await dispatch(createFoodLog({
                     "name": foodName,
                     "meal": selectedMeal,
@@ -268,12 +267,13 @@ const AddFood = ({ selectedMeal }) => {
         }
 
     }
-
+    // Search for specific item
     const searchForSpecificItem = async(e) => {
         e.preventDefault();
         await dispatch(specificFoodItem(e.target.innerText))
     }
 
+    // Autofill Inputs
     const favInput = (e, favName, favCal, favCarb, favFat, favProtein) => {
         e.preventDefault();
         setFoodName(favName);
@@ -399,9 +399,9 @@ const AddFood = ({ selectedMeal }) => {
                         />
                     </div>
                     <div className="foodlog-lower">
-                        {/* <button className="foodlog-submit-btn" type="submit" onClick={handleButton}>
+                        <button className="foodlog-submit-btn" type="submit" onClick={handleButton}>
                             <h4>Add to favorite</h4>
-                        </button> */}
+                        </button>
                         <button className="foodlog-submit-btn" type="submit" onClick={handleButton}>
                             <h4>Add New Item</h4>
                         </button>
