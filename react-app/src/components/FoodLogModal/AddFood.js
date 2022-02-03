@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { getOneLog, createFoodLog } from '../../store/foodLog';
-import { searchForFoodItem } from '../../store/search';
-import { specificFoodItem } from "../../store/search";
-import { addFavFood } from "../../store/favoriteFoods";
-import { getFavList } from "../../store/favoriteFoods";
+import { searchForFoodItem, specificFoodItem, removeSearchItem } from '../../store/search';
+import { addFavFood, getFavList, deleteFavFood } from "../../store/favoriteFoods";
+
 
 
 const AddFood = ({ selectedMeal }) => {
@@ -32,6 +31,7 @@ const AddFood = ({ selectedMeal }) => {
     const [carbBool, setCarbBool] = useState(false);
     const [fatBool, setFatBool] = useState(false);
     const [proBool, setProBool] = useState(false);
+    const [favExist, setFavExist] = useState(false);
 
     const [search, setSearch] = useState("");
 
@@ -57,6 +57,8 @@ const AddFood = ({ selectedMeal }) => {
             setCarbohydrates(parseInt(precisionTwo(currentlySelected.carbohydrates)), 10);
             setFat(parseInt(precisionTwo(currentlySelected.fat)), 10);
             setProtein(parseInt(precisionTwo(currentlySelected.protein)), 10);
+            setFavExist(false);
+
         }
     }, [currentSearchResults])
 
@@ -245,7 +247,6 @@ const AddFood = ({ selectedMeal }) => {
         await dispatch(specificFoodItem(e.target.innerText))
     }
 
-
     // Add new foodlog item
     const newItemButton = async (e) => {
         e.preventDefault()
@@ -275,8 +276,9 @@ const AddFood = ({ selectedMeal }) => {
         }
     }
 
+
     // Add to favorite foods list
-    const addToFavButton = async (e) => {
+    const addToFav = async (e) => {
         e.preventDefault();
 
         if (!errors.length && foodNameLength && caloriesLength && carbLength && fatLength && proteinLength) {
@@ -296,21 +298,52 @@ const AddFood = ({ selectedMeal }) => {
         }
     }
 
-    // Autofill Inputs from Favorites List
-    const favInput = (e, favName, favCal, favCarb, favFat, favProtein) => {
+    // Delete from favorite foods list
+    const deleteFromFav = async(e) => {
         e.preventDefault();
+        dispatch(deleteFavFood({
+            user_id: parseInt(user?.id, 10),
+            fav_id: parseInt(logId)
+        }))
+
+    }
+
+    // Autofill Inputs from Favorites List
+    const favInput = async (e, favName, favCal, favCarb, favFat, favProtein, favId) => {
+        e.preventDefault();
+
+        if (currentSearchResults && currentSearchResults.length > 20) {
+            console.log("inside test")
+            await dispatch(removeSearchItem())
+        }
+
+        setSearch("");
+        setFoodName("");
+        setCalories(0);
+        setCarbohydrates(0);
+        setFat(0);
+        setProtein(0);
+
+        setFavExist(true)
+
         setFoodName(favName);
         setCalories(parseInt(precisionTwo(favCal)), 10);
         setCarbohydrates(parseInt(precisionTwo(favCarb)), 10);
         setFat(parseInt(precisionTwo(favFat)), 10);
         setProtein(parseInt(precisionTwo(favProtein)), 10);
+        setLogId(favId);
+
     }
 
-    const handleFav = (e, favId) => {
+    const handleFav = (e) => {
         e.preventDefault();
-        const exists = favoritesList.favorite_foods.filter(food => food.id === favId)
-        console.log("Is already a favorite==== ", exists)
-    }
+
+        if (favExist) {
+            deleteFromFav();
+        } else {
+            addToFav();
+        };
+    };
 
     // Conditional render for favorite foods
     const favListRender = (each, i) => {
@@ -320,12 +353,12 @@ const AddFood = ({ selectedMeal }) => {
                 key={i}
                 onClick={(e) => favInput(e, each.name,
                     each.calories, each.carbohydrates,
-                    each.fat, each.protein)}
+                    each.fat, each.protein, each.id)}
             >
                 <div id="item-name">
                     <p>{each.name}</p>
                 </div>
-                <div id="fav-symbl" onClick={(e) => handleFav(e, each.id)}></div>
+                <div id="fav-symbl" onClick={(e) => deleteFromFav(e)}></div>
             </div>
         )
 
@@ -422,8 +455,8 @@ const AddFood = ({ selectedMeal }) => {
                         />
                     </div>
                     <div className="foodlog-lower">
-                        <button className="foodlog-submit-btn" type="submit" onClick={addToFavButton}>
-                            <h4>Add to favorite</h4>
+                        <button className="foodlog-submit-btn" type="submit" onClick={handleFav}>
+                            {favExist ? (<h4 id="favRemoval">Remove From Favorites</h4>) : (<h4 id="favAdd">Add To Favorites</h4>)}
                         </button>
                         <button className="foodlog-submit-btn" type="submit" onClick={newItemButton}>
                             <h4>Add New Item</h4>

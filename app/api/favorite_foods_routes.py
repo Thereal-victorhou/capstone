@@ -32,3 +32,9 @@ def add_fav_foods(user_id):
     db.session.commit()
 
     return get_fav_foods(user_id)
+
+# Delete from favorite foods
+@favorite_foods_routes.route('/<int:user>', methods=['DELETE'])
+#@login_required
+def delete_fav_food(user_id):
+    data= request.json

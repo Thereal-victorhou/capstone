@@ -4,6 +4,8 @@ const GET_FAVORITE_FOODS = 'favoritefoods/GET_FAVORITE_FOODS';
 
 const ADD_FAVORITE_FOOD = 'addfavoritefood/ADD_FAVORITE_FOOD';
 
+const DELETE_FAVORITE_FOOD = 'deletefavoritefood/DELETE_FAVORITE_FOOD';
+
 // action
 const getFavoriteFoods = (favList) => ({
     type: GET_FAVORITE_FOODS,
@@ -14,6 +16,11 @@ const addFavoriteFood = (food) => ({
     type: ADD_FAVORITE_FOOD,
     food
 });
+
+const deleteFavoriteFood = (food) => ({
+    type: DELETE_FAVORITE_FOOD,
+    food
+})
 
 // thunk
 export const getFavList = (userId) => async (dispatch) => {
@@ -32,6 +39,17 @@ export const addFavFood = (foodObj) => async (dispatch) => {
     })
     const result = await res.json();
     dispatch(addFavoriteFood(result));
+}
+
+export const deleteFavFood = (foodObj) => async (dispatch) => {
+    const { user_id } = foodObj;
+    const res = await fetch(`api/favorite-foods/${user_id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(foodObj)
+    });
+    const result = await res.json();
+    console.log(result)
 }
 
 // reducer
