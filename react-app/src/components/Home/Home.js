@@ -191,7 +191,7 @@ const Home = () => {
 
                 if (carbohydrates && fat && protein) {
                     const carbPercent = precisionTwo((carbohydrates*4/currentGoal.calories) * 100);
-                    const fatPercent = precisionTwo((fat*4/currentGoal.calories) * 100);
+                    const fatPercent = precisionTwo((fat*9/currentGoal.calories) * 100);
                     const proPercent = precisionTwo((protein*4/currentGoal.calories) * 100);
 
                     const carbBarFunc = async () => {
