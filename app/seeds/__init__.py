@@ -6,6 +6,7 @@ from .breakfast import seed_breakfast, undo_breakfast
 from .lunch import seed_lunch, undo_lunch
 from .dinner import seed_dinner, undo_dinner
 from .favorite_foods import seed_favorite_foods, undo_favorite_foods
+from app.models.db import db, environment, SCHEMA
 
 
 # Creates a seed group to hold our commands
@@ -16,6 +17,16 @@ seed_commands = AppGroup('seed')
 # Creates the `flask seed all` command
 @seed_commands.command('all')
 def seed():
+    if environment == 'production':
+        # Before seeding, truncate all tables prefixed with schema name
+        db.session.execute(f'TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;')
+        db.session.execute(f'TRUNCATE table {SCHEMA}.daily_nutrition_goals RESTART IDENTITY CASCADE;')
+        db.session.execute(f'TRUNCATE table {SCHEMA}.food_log RESTART IDENTITY CASCADE;')
+        db.session.execute(f'TRUNCATE table {SCHEMA}.breakfast RESTART IDENTITY CASCADE;')
+        db.session.execute(f'TRUNCATE table {SCHEMA}.lunch RESTART IDENTITY CASCADE;')
+        db.session.execute(f'TRUNCATE table {SCHEMA}.dinner RESTART IDENTITY CASCADE;')
+        db.session.execute(f'TRUNCATE table {SCHEMA}.favorite_foods RESTART IDENTITY CASCADE;')
+        db.session.commit()
     seed_users()
     seed_daily_nutrition_goals()
     seed_food_log()
