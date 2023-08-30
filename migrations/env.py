@@ -87,7 +87,7 @@ def run_migrations_online():
 
         # Create a schema (only in production)
         if environment == 'production':
-            connection.excute(f'CREATE SCHEMA IF NOT EXIST {SCHEMA}')
+            connection.excute(f'CREATE SCHEMA IF NOT EXISTS {SCHEMA}')
 
         # Set search path to your schema (only in production)
         with context.begin_transaction():
