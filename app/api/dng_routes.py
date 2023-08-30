@@ -20,12 +20,9 @@ def get_goals(user_id):
 @login_required
 def change_goals(user_id):
     # calories, carbohydrates, fat, protein, user_id = itemgetter("calories", "carbohydrates", "fat", "protein")(request.json)
-    print("\n\n\n\n inside put route \n\n\n\n")
     updated_goal = request.json
 
     current_goal = Daily_Nutrition_Goals.query.filter_by(user_id=user_id).first()
-
-    # print("\n\n\n\n", request.json, "\n\n\n\n")
 
     # check to see if goal already exist
     if current_goal:
@@ -38,7 +35,6 @@ def change_goals(user_id):
 
     #return goals
     goals = Daily_Nutrition_Goals.query.filter_by(user_id=user_id).first()
-    # print("\n\n\n", goals.to_dict(), "\n\n\n")
     return {'daily_goals': goals.to_dict()}
 
 # Creating a new dng for current user
@@ -62,7 +58,6 @@ def create_goals():
 
     #return goals
     goals = Daily_Nutrition_Goals.query.filter_by(user_id=new_goal["user_id"]).first()
-    # print("\n\n\n", goals.to_dict(), "\n\n\n")
     return {'daily_goals': goals.to_dict()}
 
 # Deleting a user's dng
@@ -72,7 +67,6 @@ def delete_dng(user_id):
     dng_id = Daily_Nutrition_Goals.query.filter_by(user_id=user_id).first().to_dict()['id']
     # breakfast = Breakfast.query.filter_by(daily_nutrition_goals_id=dng_id).first().to_dict()
     food_log = Food_Log.query.filter_by(user_id=user_id).all()
-    # print("\n\n\n\n\n", [log.to_dict() for log in food_log], "\n\n\n\n\n")
 
     # for log in food_log:
     #     if log.to_dict()['meal'] == 'breakfast':

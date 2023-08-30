@@ -47,8 +47,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
     // Autofill input fields based on search result
     useEffect(() =>  {
         if (currentSearchResults && currentSearchResults.length > 20) {
-            // console.log("Inside current UseEffect")
-            // console.log('=========', currentSearchResults[currentSearchResults.length-1])
+
             const currentlySelected = currentSearchResults[currentSearchResults.length-1]
             setFoodName(currentlySelected.food);
             setCalories(parseInt(precisionTwo(currentlySelected.calories)), 10);
@@ -80,7 +79,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
         if (calBool && !caloriesLength) {
             errArr.push({msg: "Please fill out Calories field"})
             setErrors(errArr);
-            // console.log("errArr====================>",errArr)
+
         }
 
 
@@ -89,42 +88,38 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
                 if(calories && (carbohydrates*4 > calories)) {
                     errArr.push({msg: "Carbohydrates cannot exceed calories", type: "carbohydrates"})
                     setErrors(errArr);
-                    // console.log("errArr====================>",errArr)
 
                 } else {
                     errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'carbohydrates'), 1))
                     setErrors(errArr)
-                    // console.log("errArr====================>",errArr)
+
                 }
 
             } else if (!carbLength) {
                 errArr.push({msg: "Please fill out Carbohydrates field"})
                 setErrors(errArr);
-                // console.log("errArr====================>",errArr)
+
             }
         }
 
         if (fatBool) {
-            // console.log("hello from fat")
-            // console.log(fat.length)
             if (fat && fatLength) {
                 if (calories && (fat*9 > calories)) {
                         errArr.push({msg: "Fat cannot exceed calories", type: "fat"})
                         setErrors(errArr);
-                        // console.log("errArr====================>",errArr)
 
                 }
                 else {
                     // errArr.pop()
                     errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'fat'), 1))
                     setErrors(errArr)
-                    // console.log("errArr====================>",errArr)
+
                 }
 
             } else if (!fatLength) {
                 errArr.push({msg: "Please fill out Fat field"})
                 setErrors(errArr);
-                // console.log("errArr====================>",errArr)
+
             }
         }
 
@@ -133,19 +128,16 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
                 if(calories && (protein*4 > calories)) {
                     errArr.push({msg: `Protein cannot exceed calories`, type: "protein"})
                     setErrors(errArr);
-                    // console.log("errArr====================>",errArr)
-
 
                 } else {
                     errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'protein'), 1))
                     setErrors(errArr)
-                    // console.log("errArr====================>",errArr)
+
                 }
 
             } else if (!proteinLength) {
                 errArr.push({msg: "Please fill out Protein field"})
                 setErrors(errArr);
-                // console.log("errArr====================>",errArr)
 
             }
         }
@@ -157,7 +149,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
             } else {
                 errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'total'), 1))
                 setErrors(errArr)
-                // console.log("errArr====================>",errArr)
+
             }
         }
     },[foodName, calories, carbohydrates, fat, protein, nameBool, calBool, carbBool, fatBool, proBool])
@@ -173,6 +165,7 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
                 setProBool(false);
                 setCalBool(false);
                 setNameBool(true);
+                break;
 
             case 'calories':
                 setNameBool(false);
@@ -180,7 +173,6 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
                 setFatBool(false);
                 setProBool(false);
                 setCalBool(true);
-                // console.log("Hello from calories.")
                 break;
 
             case 'carbohydrates':
@@ -189,7 +181,6 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
                 setProBool(false);
                 setCalBool(false);
                 setCarbBool(true);
-                // console.log("inside carbs")
                 break;
 
             case 'fat':
@@ -198,7 +189,6 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
                 setCalBool(false);
                 setCarbBool(false);
                 setFatBool(true);
-                // console.log("inside fat")
                 break;
 
             case 'protein':
@@ -207,7 +197,6 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
                 setCarbBool(false);
                 setFatBool(false);
                 setProBool(true);
-                // console.log("inside protein")
                 break;
         }
     }
@@ -305,7 +294,6 @@ const UpdateFood = ({ selectedMeal, mealName, selectedCarb, selectedFat, selecte
         e.preventDefault();
 
         if (currentSearchResults && currentSearchResults.length > 20) {
-            console.log("inside test")
             await dispatch(removeSearchItem())
         }
 

@@ -46,7 +46,7 @@ export const specificFoodItem = (foodName) => async (dispatch) => {
     //     }
     // )
     // const result = await res.json();
-    // console.log("specific search result =============", result.foods[0])
+
     // const item = {name: result.foods[0].food_name}
 }
 
@@ -68,7 +68,7 @@ export const searchForFoodItem = (foodName) => async (dispatch) => {
         }
     )
     const result = await res.json()
-    // console.log("search results ==================== ",result)
+
     dispatch(putFoodItem(result.common));
 
 }

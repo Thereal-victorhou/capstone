@@ -31,7 +31,7 @@ export const getFavList = (userId) => async (dispatch) => {
 
 export const addFavFood = (foodObj) => async (dispatch) => {
     const { user_id } = foodObj;
-    console.log("user Id ========= ", user_id);
+
     const res = await fetch(`api/favorite-foods/${user_id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
@@ -64,7 +64,7 @@ const favoriteFoodsReducer = (state = {}, action) => {
             return newState;
         case DELETE_FAVORITE_FOOD:
             newState = {...state}
-            console.log(newState)
+
             delete newState?.favList.favorite_foods.filter(obj => obj.id === action.favId)
             return newState;
         default:

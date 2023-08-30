@@ -16,7 +16,7 @@ const FoodLog = () => {
 
     const user = useSelector(state => state.session.user)
     const currentFoodLog = useSelector(state => Object.values(state.foodlog));
-    console.log("currentFoodLog", currentFoodLog)
+
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -68,7 +68,7 @@ const FoodLog = () => {
     // Handle delete request
     const handleDelete = async (e) => {
         e.preventDefault();
-        // console.log("meal info ==========",mealInfo);
+
         await dispatch(deleteFoodLog(mealInfo))
         alert("Food item has been deleted.")
         history.push('/home')
@@ -166,7 +166,7 @@ const FoodLog = () => {
                 <div className="main-container">
                     <div className="foodlog-title-container">
                         <p>Food Log</p>
-                        {/* {console.log(defaultLog)} */}
+
                     </div>
                     <div className="foodlog-top">
                         <div className={selectedMeal === "breakfast" ? "foodlog-selected-container": "foodlog-meal-container"} id="breakfast" name="breakfast" onClick={handleClick}>

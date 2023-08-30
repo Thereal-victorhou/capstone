@@ -59,7 +59,7 @@ export const createNewDng = (newDng) => async (dispatch) => {
 // update existing dng
 export const updateCurrentDng = (modifiedDng) => async (dispatch) => {
     const { calories, carbohydrates, fat, protein, user_id } = modifiedDng;
-    console.log(modifiedDng);
+
     const res = await fetch(`/api/dng/${user_id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -72,7 +72,7 @@ export const updateCurrentDng = (modifiedDng) => async (dispatch) => {
         })
     })
     let dng = await res.json();
-    // console.log(dng)
+
     if (dng) {
         dispatch(updateDng(dng));
     }

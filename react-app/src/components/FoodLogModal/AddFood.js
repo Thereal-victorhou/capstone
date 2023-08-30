@@ -17,7 +17,6 @@ const AddFood = ({ selectedMeal }) => {
     const currentGoal = useSelector(state => state.dng[user?.id])
     const currentSearchResults = useSelector(state => Object.values(state.search));
     const favoritesList = useSelector(state => state.favoriteList?.favList)
-    // console.log(favoritesList.favorite_foods)
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -53,8 +52,6 @@ const AddFood = ({ selectedMeal }) => {
     // Autofill input fields based on search result
     useEffect(() =>  {
         if (currentSearchResults && currentSearchResults.length > 20) {
-            // console.log("Inside current UseEffect")
-            // console.log('=========', currentSearchResults[currentSearchResults.length-1])
             const currentlySelected = currentSearchResults[currentSearchResults.length-1]
             setFoodName(currentlySelected.food);
             setCalories(parseInt(precisionTwo(currentlySelected.calories)), 10);
@@ -88,7 +85,6 @@ const AddFood = ({ selectedMeal }) => {
         if (calBool && !caloriesLength) {
             errArr.push({msg: "Please fill out Calories field"})
             setErrors(errArr);
-            // console.log("errArr====================>",errArr)
         }
 
 
@@ -97,42 +93,33 @@ const AddFood = ({ selectedMeal }) => {
                 if(calories && (carbohydrates*4 > calories)) {
                     errArr.push({msg: "Carbohydrates cannot exceed calories", type: "carbohydrates"})
                     setErrors(errArr);
-                    // console.log("errArr====================>",errArr)
 
                 } else {
                     errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'carbohydrates'), 1))
                     setErrors(errArr)
-                    // console.log("errArr====================>",errArr)
                 }
 
             } else if (!carbLength) {
                 errArr.push({msg: "Please fill out Carbohydrates field"})
                 setErrors(errArr);
-                // console.log("errArr====================>",errArr)
             }
         }
 
         if (fatBool) {
-            // console.log("hello from fat")
-            // console.log(fat.length)
             if (fat && fatLength) {
                 if (calories && (fat*9 > calories)) {
                         errArr.push({msg: "Fat cannot exceed calories", type: "fat"})
                         setErrors(errArr);
-                        // console.log("errArr====================>",errArr)
 
                 }
                 else {
-                    // errArr.pop()
                     errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'fat'), 1))
                     setErrors(errArr)
-                    // console.log("errArr====================>",errArr)
                 }
 
             } else if (!fatLength) {
                 errArr.push({msg: "Please fill out Fat field"})
                 setErrors(errArr);
-                // console.log("errArr====================>",errArr)
             }
         }
 
@@ -141,20 +128,14 @@ const AddFood = ({ selectedMeal }) => {
                 if(calories && (protein*4 > calories)) {
                     errArr.push({msg: `Protein cannot exceed calories`, type: "protein"})
                     setErrors(errArr);
-                    // console.log("errArr====================>",errArr)
-
-
                 } else {
                     errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'protein'), 1))
                     setErrors(errArr)
-                    // console.log("errArr====================>",errArr)
                 }
 
             } else if (!proteinLength) {
                 errArr.push({msg: "Please fill out Protein field"})
                 setErrors(errArr);
-                // console.log("errArr====================>",errArr)
-
             }
         }
 
@@ -165,7 +146,6 @@ const AddFood = ({ selectedMeal }) => {
             } else {
                 errArr.forEach(obj => errArr.splice(errArr.indexOf(obj.type === 'total'), 1))
                 setErrors(errArr)
-                // console.log("errArr====================>",errArr)
             }
         }
     },[foodName, calories, carbohydrates, fat, protein, nameBool, calBool, carbBool, fatBool, proBool])
@@ -188,7 +168,6 @@ const AddFood = ({ selectedMeal }) => {
                 setFatBool(false);
                 setProBool(false);
                 setCalBool(true);
-                // console.log("Hello from calories.")
                 break;
 
             case 'carbohydrates':
@@ -197,7 +176,6 @@ const AddFood = ({ selectedMeal }) => {
                 setProBool(false);
                 setCalBool(false);
                 setCarbBool(true);
-                // console.log("inside carbs")
                 break;
 
             case 'fat':
@@ -206,7 +184,6 @@ const AddFood = ({ selectedMeal }) => {
                 setCalBool(false);
                 setCarbBool(false);
                 setFatBool(true);
-                // console.log("inside fat")
                 break;
 
             case 'protein':
@@ -215,7 +192,6 @@ const AddFood = ({ selectedMeal }) => {
                 setCarbBool(false);
                 setFatBool(false);
                 setProBool(true);
-                // console.log("inside protein")
                 break;
         }
     }
@@ -317,7 +293,6 @@ const AddFood = ({ selectedMeal }) => {
         e.preventDefault();
 
         if (currentSearchResults && currentSearchResults.length > 20) {
-            console.log("inside test")
             await dispatch(removeSearchItem())
         }
 

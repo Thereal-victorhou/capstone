@@ -47,7 +47,7 @@ const deleteAll = (food) => ({
 export const userFoodLog = (userId) => async (dispatch) => {
     const res = await fetch(`api/food-log/${userId}`);
     let foodLog = await res.json();
-    // console.log(foodLog);
+
     if (!(foodLog.user_food_log === "False")) {
         dispatch(getFoodLog(foodLog));
     }
@@ -61,14 +61,14 @@ export const userFoodLog = (userId) => async (dispatch) => {
 export const getOneLog = (foodLogId) => async (dispatch) => {
     const res = await fetch(`api/food-log/one/${foodLogId}`)
     const result = await res.json();
-    console.log("one food log ", result)
+
     dispatch(getOneFoodLog(result))
 }
 
 // Create new foodlog
 export const createFoodLog = (nfl) => async (dispatch) => {
     const { user_id } = nfl;
-    // console.log("create thunk =================", nfl)
+
     const res = await fetch(`api/food-log/${user_id}`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -110,26 +110,23 @@ export const deleteFoodLog = (mealInfo) => async (dispatch) => {
         lunIdx,
         dinIdx
     };
-    console.log("index obj", idxObj)
+
     const res = await fetch(`/api/food-log/${userId}`,{
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(mealInfo)
     });
     const info = await res.json();
-    // console.log("inside delete thunk==========", info);
     dispatch(deletefl(info, idxObj));
 };
 
 // Delete all food logs
 export const deleteAllFoodLog = (user_id) => async (dispatch) => {
-    // console.log("inside delete all=========", typeof user_id)
     const res = await fetch(`/api/food-log/all/${user_id}`,{
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' }
     });
     const remaining = await res.json();
-    // console.log("inside delete thunk==========", remaining);
     dispatch(deleteAll(remaining))
 };
 
@@ -145,7 +142,6 @@ const foodLogReducer = (state = {}, action) => {
             newState = {...state}
 
             newState = {...action.food.user_food_log}
-            // console.log("newState========= ", newState)
             return newState;
 
         case GET_ONE_FOOD_LOG:
@@ -154,7 +150,6 @@ const foodLogReducer = (state = {}, action) => {
 
         case CREATE_FOOD_LOG:
             newState = {...state}
-            console.log(action.food)
             action.food.user_food_log.forEach(log => {
                 newState[log.id] = log;
                 newState[log.id] = {...newState[log.id]}

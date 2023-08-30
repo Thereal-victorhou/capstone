@@ -54,16 +54,15 @@ def get_food_log(user_id):
     user_dinner = db.session.query(Dinner).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).all()
 
     if not user_breakfast and not user_lunch and not user_dinner:
-        # print({'user_food_log': 'False'})
+
         return {'user_food_log': 'False'}
     # breakfast = [breakfast.to_dict() for breakfast in list(user_breakfast)]
     # lunch = [lunch.to_dict() for lunch in list(user_lunch)]
     # dinner = [dinner.to_dict() for dinner in list(user_dinner)]
 
     # di = db.session.query(Dinner).join(Food_Log).filter_by(user_id=user_id).add_entity(Food_Log).all()
-    # print("\n\n\n\n\n", di, "\n\n\n\n")
+
     # di_res = [merge(*args) for args in di]
-    # print("\n\n\n\n", di_res, "\n\n\n\n")
 
     # Breakfast
     if not user_lunch and not user_dinner:
@@ -197,13 +196,11 @@ def update_food_log(user_id):
 @food_log_routes.route('/<int:user_id>', methods=['DELETE'])
 # @login_required
 def delete_food_log(user_id):
-    print('\n\n\n\n\n', user_id, '\n\n\n\n\n')
+
     data = request.json
     # food_log = Food_Log.query.filter_by(user_id=user_id, meal=data['meal']).all()
     bfast = Breakfast.query.filter_by(foodlog_id=data['foodLogId']).first()
     food_log = Food_Log.query.filter_by(id=data['foodLogId']).first()
-    # print('\n\n\n\n\n', food_log.to_dict(), '\n\n\n\n\n')
-    # print('\n\n\n\n\n', bfast.to_dict(), '\n\n\n\n\n')
 
     if data['meal'] == 'breakfast':
         Breakfast.query.filter_by(foodlog_id=data['foodLogId']).delete()
@@ -228,7 +225,7 @@ def delete_food_log(user_id):
 def delete_all_food_log(user_id):
     dng_id = Daily_Nutrition_Goals.query.filter_by(user_id=user_id).first().to_dict()['id']
     food_log = Food_Log.query.filter_by(user_id=user_id).all()
-    # print('\n\n\n\n\n', food_log, '\n\n\n\n\n')
+
     # db.session.commit()
     for log in food_log:
         if log.to_dict()['meal'] == 'breakfast':

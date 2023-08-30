@@ -38,7 +38,7 @@ const Home = () => {
 
     const valueTransform = async (num) => {
         let currNum = 0;
-        console.log("num=======", num)
+
         while (currNum <= num) {
             return new Promise((resolve, reject) => {
                 setCarbProg(currNum)
