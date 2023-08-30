@@ -1,15 +1,17 @@
-from .db import db
+from .db import db, environment, SCHEMA, add_prefix_for_prod
 
 class Lunch(db.Model):
     __tablename__ = "lunch"
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
     calories = db.Column(db.Integer, nullable=False)
     carbohydrates = db.Column(db.Integer, nullable=False)
     fat = db.Column(db.Integer, nullable=False)
     protein = db.Column(db.Integer, nullable=False)
-    foodlog_id = db.Column(db.Integer, db.ForeignKey("food_log.id"), nullable=False)
-    daily_nutrition_goals_id = db.Column(db.Integer, db.ForeignKey("daily_nutrition_goals.id", ondelete='CASCADE'), nullable=False)
+    foodlog_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("food_log.id")), nullable=False)
+    daily_nutrition_goals_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("daily_nutrition_goals.id"), ondelete='CASCADE'), nullable=False)
 
     def to_dict(self):
         return {

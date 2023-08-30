@@ -7,7 +7,7 @@ from flask import current_app
 
 from alembic import context
 
-from os import os
+import os
 environment = os.getenv("FLASK_ENV")
 SCHEMA = os.environ.get('SCHEMA')
 
